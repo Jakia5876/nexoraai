@@ -56,7 +56,8 @@
 │   ├── api-docs.html            # 3-column Developer API Documentation
 │   └── ...                      # Public marketing and compliance pages
 ├── supabase/
-│   ├── schema.sql               # 1) Tables + indexes
+│   ├── full_setup.sql           # ONE FILE: paste this into the SQL Editor (schema + auth + security)
+│   ├── schema.sql               # (part 1) Tables + indexes
 │   └── 02_auth_and_security.sql # 2) Sign-up trigger, super admin, RLS on every table
 ├── index.html                   # Public Homepage & interactive simulator
 └── .gitignore                   # Excludes secrets, credentials, and temp files
@@ -66,7 +67,7 @@
 
 ## 🗄️ Database Setup (Supabase)
 
-Run these in the Supabase **SQL Editor**, in order:
+Easiest: paste all of `supabase/full_setup.sql` into the Supabase **SQL Editor** and click Run (safe to run twice). It is schema.sql + 02_auth_and_security.sql combined. Or run them separately, in order:
 1. `supabase/schema.sql` — creates all tables and indexes.
 2. `supabase/02_auth_and_security.sql` — sign-up trigger (profile + workspace + owner membership), `super_admins` table, Row Level Security on every table, anonymous access removed. Safe to re-run.
 3. Register on the site with your admin email, confirm it, then run the commented `INSERT INTO public.super_admins ...` block at the bottom of file 2 once. That is what unlocks `admin.html`. No admin password lives in this code.
