@@ -12,7 +12,12 @@ const ThemeManager = (() => {
   const STORAGE_KEY = 'nexoraai-theme';
   const THEMES = { DARK: 'dark', LIGHT: 'light', SYSTEM: 'system' };
 
-  let currentTheme = localStorage.getItem(STORAGE_KEY) || THEMES.DARK;
+  // Default to light theme (clean white background)
+  let currentTheme = localStorage.getItem(STORAGE_KEY);
+  if (!currentTheme || currentTheme === THEMES.DARK) {
+    currentTheme = THEMES.LIGHT;
+    try { localStorage.setItem(STORAGE_KEY, THEMES.LIGHT); } catch (e) {}
+  }
 
   function applyTheme(theme) {
     const isDark = theme === THEMES.DARK ||
@@ -178,6 +183,16 @@ const Toast = (() => {
 
   return { show, success, error, warning, info };
 })();
+
+// Global showToast helper function for cross-page compatibility
+window.showToast = function(message, type = 'info') {
+  if (typeof Toast !== 'undefined') {
+    if (type === 'success' && Toast.success) return Toast.success('Success', message);
+    if (type === 'error' && Toast.error) return Toast.error('Error', message);
+    if (type === 'warning' && Toast.warning) return Toast.warning('Warning', message);
+    if (Toast.info) return Toast.info('Notification', message);
+  }
+};
 
 // ============================================
 // MODAL SYSTEM

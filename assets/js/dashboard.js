@@ -4,6 +4,24 @@
  */
 
 function createDashboardShell(activePage, pageTitle) {
+  let activeUser = {
+    name: 'Jakia Dantal',
+    email: 'jakiadantal@gmail.com',
+    role: 'super_admin',
+    isSuperAdmin: true
+  };
+  try {
+    const storedUser = localStorage.getItem('nexora_user');
+    if (storedUser) {
+      activeUser = Object.assign({}, activeUser, JSON.parse(storedUser));
+    }
+  } catch (e) {
+    console.error('Error loading session:', e);
+  }
+
+  const initial = (activeUser.name || 'J').charAt(0).toUpperCase();
+  const roleBadge = (activeUser.isSuperAdmin || activeUser.role === 'super_admin' || activeUser.email === 'jakiadantal@gmail.com') ? ' (Admin)' : '';
+
   const sidebarHTML = `
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
   <aside class="dash-sidebar" id="dashSidebar">
@@ -28,10 +46,11 @@ function createDashboardShell(activePage, pageTitle) {
         <a href="dashboard-leads.html" class="sidebar-item ${activePage==='leads'?'active':''}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line></svg><span class="sidebar-item-label">Leads</span></a>
         <a href="dashboard-lead-research.html" class="sidebar-item ${activePage==='lead-research'?'active':''}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><span class="sidebar-item-label">Lead Research</span></a>
       </div>
-      <span class="sidebar-group-label">Marketing</span>
+      <span class="sidebar-group-label">Marketing & Broadcast</span>
       <div class="sidebar-group">
-        <a href="dashboard-campaigns.html" class="sidebar-item ${activePage==='campaigns'?'active':''}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg><span class="sidebar-item-label">Campaigns</span></a>
-        <a href="dashboard-broadcasts.html" class="sidebar-item ${activePage==='broadcasts'?'active':''}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg><span class="sidebar-item-label">Broadcasts</span></a>
+        <a href="dashboard-broadcasts.html" class="sidebar-item ${activePage==='broadcasts'?'active':''}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg><span class="sidebar-item-label">WhatsApp Bulk SMS</span><span class="badge badge-accent" style="font-size:9px;padding:1px 5px;margin-left:auto">PRO</span></a>
+        <a href="dashboard-email.html" class="sidebar-item ${activePage==='email'?'active':''}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg><span class="sidebar-item-label">Bulk Email Blaster</span><span class="badge badge-green" style="font-size:9px;padding:1px 5px;margin-left:auto">NEW</span></a>
+        <a href="dashboard-campaigns.html" class="sidebar-item ${activePage==='campaigns'?'active':''}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg><span class="sidebar-item-label">Campaigns & Templates</span></a>
       </div>
       <span class="sidebar-group-label">AI & Automation</span>
       <div class="sidebar-group">
@@ -61,7 +80,13 @@ function createDashboardShell(activePage, pageTitle) {
       </div>
     </nav>
     <div class="sidebar-footer">
-      <div class="sidebar-user-card" onclick="window.location.href='admin.html'" style="cursor:pointer" title="Switch to Admin Center"><div class="avatar avatar-md" style="background:linear-gradient(135deg,#D9F000,#9BE600);color:#070B0D;font-weight:800">U</div><div class="sidebar-user-info"><div class="sidebar-user-name">User Account</div><div class="sidebar-user-email">user@example.com (Admin)</div></div></div>
+      <div class="sidebar-user-card" onclick="window.location.href='admin.html'" style="cursor:pointer" title="Switch to Admin Center">
+        <div class="avatar avatar-md" style="background:linear-gradient(135deg,#D9F000,#9BE600);color:#070B0D;font-weight:800">${initial}</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">${activeUser.name}</div>
+          <div class="sidebar-user-email">${activeUser.email}${roleBadge}</div>
+        </div>
+      </div>
     </div>
   </aside>
   <header class="dash-topbar">
@@ -74,7 +99,7 @@ function createDashboardShell(activePage, pageTitle) {
       <button class="btn-icon" id="themeToggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-sun" style="display:none"><circle cx="12" cy="12" r="5"></circle></svg></button>
       <div class="dropdown">
         <button class="user-profile-btn" data-dropdown>
-          <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#D9F000,#9BE600);color:#070B0D;font-weight:800">U</div>
+          <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#D9F000,#9BE600);color:#070B0D;font-weight:800">${initial}</div>
           <svg class="user-profile-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
         <div class="dropdown-menu">
@@ -83,7 +108,7 @@ function createDashboardShell(activePage, pageTitle) {
           <div class="dropdown-item" onclick="window.location.href='dashboard-settings.html'">Settings</div>
           <div class="dropdown-item" onclick="window.location.href='dashboard-billing.html'">Billing</div>
           <div class="dropdown-divider"></div>
-          <div class="dropdown-item danger" onclick="window.location.href='login.html'">Sign Out</div>
+          <div class="dropdown-item danger" onclick="localStorage.removeItem('nexora_user'); window.location.href='login.html'">Sign Out</div>
         </div>
       </div>
     </div>
@@ -104,7 +129,8 @@ function createDashboardShell(activePage, pageTitle) {
         <div class="cmd-item" onclick="window.location.href='dashboard-lead-research.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>🔍</span> AI Lead Intelligence & Research</div>
         <div class="cmd-item" onclick="window.location.href='dashboard-automations.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>⚡</span> Workflow Automations & Visual Canvas</div>
         <div class="cmd-item" onclick="window.location.href='dashboard-ai-agents.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>🤖</span> AI Agent Personas (GPT-4o & Claude)</div>
-        <div class="cmd-item" onclick="window.location.href='dashboard-broadcasts.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>📢</span> Bulk WhatsApp Broadcast Dispatcher</div>
+        <div class="cmd-item" onclick="window.location.href='dashboard-broadcasts.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>📢</span> WhatsApp Bulk SMS & Broadcast Dispatcher</div>
+        <div class="cmd-item" onclick="window.location.href='dashboard-email.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>✉️</span> Bulk Email Blaster & SMTP Dispatcher</div>
         <div class="cmd-item" onclick="window.location.href='dashboard-n8n.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>⚡</span> n8n Workflow Automation Hub</div>
         <div class="cmd-item" onclick="window.location.href='dashboard-api.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>🔑</span> Developer API & Webhook Keys</div>
         <div class="cmd-item" onclick="window.location.href='admin.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>🛡️</span> Super Admin Control Center</div>

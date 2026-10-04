@@ -10,17 +10,17 @@
   <link rel="stylesheet" href="../assets/css/design-system.css" />
   <style>
     body {
-      background: #06090B;
-      color: #F5F7F8;
+      background: #FFFFFF;
+      color: #0F172A;
       margin: 0;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       overflow-x: hidden;
     }
 
     .api-header {
       height: 60px;
-      border-bottom: 1px solid #263238;
-      background: #0C1114;
+      border-bottom: 1px solid #E2E8F0;
+      background: #FFFFFF;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -34,12 +34,13 @@
       display: grid;
       grid-template-columns: 260px minmax(0, 1fr) 460px;
       min-height: calc(100vh - 60px);
+      background: #FFFFFF;
     }
 
     /* LEFT SIDEBAR */
     .api-sidebar {
-      background: #0C1114;
-      border-right: 1px solid #263238;
+      background: #F8FAFC;
+      border-right: 1px solid #E2E8F0;
       padding: 24px 16px;
       position: sticky;
       top: 60px;
@@ -51,7 +52,7 @@
       font-size: 11px;
       font-weight: 800;
       text-transform: uppercase;
-      color: #66757D;
+      color: #64748B;
       letter-spacing: 0.08em;
       margin: 16px 0 8px 10px;
     }
@@ -61,7 +62,7 @@
       align-items: center;
       gap: 10px;
       padding: 8px 12px;
-      color: #92A0A8;
+      color: #334155;
       font-size: 13.5px;
       text-decoration: none;
       border-radius: 6px;
@@ -69,8 +70,8 @@
     }
 
     .api-nav-link:hover, .api-nav-link.active {
-      color: #D9F000;
-      background: rgba(217, 240, 0, 0.08);
+      color: #15803D;
+      background: rgba(22, 163, 74, 0.08);
       font-weight: 600;
     }
 
@@ -82,15 +83,17 @@
       border-radius: 4px;
     }
 
-    .method-post { background: rgba(59, 130, 246, 0.2); color: #3B82F6; }
-    .method-get { background: rgba(53, 216, 121, 0.2); color: #35D879; }
-    .method-delete { background: rgba(255, 91, 91, 0.2); color: #FF5B5B; }
+    .method-post { background: rgba(37, 99, 235, 0.12); color: #2563EB; }
+    .method-get { background: rgba(22, 163, 74, 0.12); color: #16A34A; }
+    .method-delete { background: rgba(220, 38, 38, 0.12); color: #DC2626; }
 
     /* CENTER CONTENT */
     .api-center {
       padding: 40px 48px;
       overflow-y: auto;
       max-width: 800px;
+      background: #FFFFFF;
+      color: #0F172A;
     }
 
     .api-section {
@@ -102,12 +105,13 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: #11181C;
-      border: 1px solid #263238;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
       border-radius: 8px;
       padding: 6px 12px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
+      color: #0F172A;
       margin-bottom: 16px;
     }
 
@@ -121,32 +125,37 @@
     .param-table th, .param-table td {
       text-align: left;
       padding: 10px 12px;
-      border-bottom: 1px solid #263238;
+      border-bottom: 1px solid #E2E8F0;
     }
 
     .param-table th {
-      color: #92A0A8;
+      color: #475569;
       font-weight: 600;
       font-size: 12px;
       text-transform: uppercase;
     }
 
+    .param-table td {
+      color: #334155;
+    }
+
     .param-name {
       font-family: 'JetBrains Mono', monospace;
-      color: #D9F000;
+      color: #15803D;
       font-size: 12.5px;
+      font-weight: 600;
     }
 
     .param-type {
       font-family: 'JetBrains Mono', monospace;
-      color: #A8E600;
+      color: #0284C7;
       font-size: 11px;
     }
 
     /* RIGHT COLUMN (CODE SAMPLES) */
     .api-right {
-      background: #090D10;
-      border-left: 1px solid #263238;
+      background: #F8FAFC;
+      border-left: 1px solid #E2E8F0;
       position: sticky;
       top: 60px;
       height: calc(100vh - 60px);
@@ -158,8 +167,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #11181C;
-      border: 1px solid #263238;
+      background: #0F172A;
+      border: 1px solid #1E293B;
       border-bottom: none;
       border-radius: 8px 8px 0 0;
       padding: 8px 14px;
@@ -173,7 +182,7 @@
     .lang-btn {
       background: transparent;
       border: none;
-      color: #92A0A8;
+      color: #94A3B8;
       font-size: 12px;
       font-weight: 600;
       padding: 4px 8px;
@@ -182,28 +191,28 @@
     }
 
     .lang-btn.active, .lang-btn:hover {
-      color: #D9F000;
-      background: rgba(217, 240, 0, 0.12);
+      color: #38BDF8;
+      background: rgba(56, 189, 248, 0.15);
     }
 
     .code-pre {
-      background: #0C1114;
-      border: 1px solid #263238;
+      background: #0F172A;
+      border: 1px solid #1E293B;
       border-radius: 0 0 8px 8px;
       padding: 16px;
       margin: 0 0 24px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 12.5px;
       line-height: 1.6;
-      color: #F5F7F8;
+      color: #E2E8F0;
       overflow-x: auto;
       white-space: pre;
     }
 
     .copy-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid #263238;
-      color: #92A0A8;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #CBD5E1;
       font-size: 11px;
       padding: 3px 8px;
       border-radius: 4px;
@@ -214,8 +223,8 @@
     }
 
     .copy-btn:hover {
-      color: #D9F000;
-      border-color: #D9F000;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.2);
     }
 
     @media (max-width: 1200px) {
@@ -245,12 +254,12 @@
             <circle cx="22" cy="10" r="1.5" fill="#D9F000"/>
           </svg>
         </div>
-        <span class="logo-text" style="font-size:18px;font-weight:900;color:#F5F7F8">NEXORA<span style="color:#D9F000">AI</span></span>
+        <span class="logo-text" style="font-size:18px;font-weight:900;color:#0F172A">NEXORA<span style="color:#15803D">AI</span></span>
       </a>
-      <span style="font-size:12px;background:rgba(217,240,0,0.15);color:#D9F000;padding:2px 8px;border-radius:4px;font-weight:700">REST API v1</span>
+      <span style="font-size:12px;background:rgba(21,128,61,0.1);color:#15803D;padding:2px 8px;border-radius:4px;font-weight:700">REST API v1</span>
     </div>
     <div style="display:flex;align-items:center;gap:16px">
-      <a href="documentation.html" style="font-size:13px;color:#92A0A8;text-decoration:none">Guides & SDKs</a>
+      <a href="documentation.html" style="font-size:13px;color:#475569;text-decoration:none">Guides & SDKs</a>
       <a href="dashboard-api.html" class="btn btn-secondary btn-sm" style="font-size:12px">Get API Key</a>
       <a href="login.html" class="btn btn-primary btn-sm" style="font-size:12px">Dashboard</a>
     </div>
@@ -283,6 +292,11 @@
 
       <div class="api-nav-heading">Campaigns & Broadcasts</div>
       <a href="#campaigns-dispatch" class="api-nav-link" onclick="setActiveNav(this); updateCode('postCampaign')"><span class="method-tag method-post">POST</span> /campaigns/dispatch</a>
+
+      <div class="api-nav-heading">Email Marketing API</div>
+      <a href="#email-send" class="api-nav-link" onclick="setActiveNav(this); updateCode('postEmailSend')"><span class="method-tag method-post">POST</span> /email/send</a>
+      <a href="#email-bulk" class="api-nav-link" onclick="setActiveNav(this); updateCode('postEmailBulk')"><span class="method-tag method-post">POST</span> /email/bulk</a>
+      <a href="#email-campaigns" class="api-nav-link" onclick="setActiveNav(this); updateCode('getEmailCampaigns')"><span class="method-tag method-get">GET</span> /email/campaigns</a>
 
       <div class="api-nav-heading">Webhooks</div>
       <a href="#webhooks" class="api-nav-link" onclick="setActiveNav(this); updateCode('webhooks')">Webhook Subscriptions</a>
@@ -419,6 +433,72 @@
         <h2 style="font-size:20px;font-weight:800;margin-bottom:8px">List WhatsApp Sessions</h2>
         <p style="font-size:14px;color:#92A0A8;line-height:1.6">
           Returns all active, connecting, and disconnected WhatsApp instances for the authenticated organization.
+        </p>
+      </section>
+
+      <!-- Section: Email Marketing - Send Single Email -->
+      <section class="api-section" id="email-send">
+        <div class="endpoint-badge">
+          <span class="method-tag method-post">POST</span>
+          <span>/email/send</span>
+        </div>
+        <h2 style="font-size:20px;font-weight:800;margin-bottom:8px">Send Transactional Email</h2>
+        <p style="font-size:14px;color:#92A0A8;line-height:1.6">
+          Dispatches a single transactional or trigger-based email with dynamic HTML content, attachments, custom headers, and open tracking via verified SMTP relays.
+        </p>
+
+        <h4 style="font-size:13px;color:#F5F7F8;margin-top:24px;text-transform:uppercase;letter-spacing:0.05em">Request Body</h4>
+        <table class="param-table">
+          <thead>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="param-name">to</span></td><td><span class="param-type">string</span></td><td><span style="color:#FF5B5B;font-weight:700">Yes</span></td><td>Destination recipient email address.</td></tr>
+            <tr><td><span class="param-name">subject</span></td><td><span class="param-type">string</span></td><td><span style="color:#FF5B5B;font-weight:700">Yes</span></td><td>Email subject line.</td></tr>
+            <tr><td><span class="param-name">html</span></td><td><span class="param-type">string</span></td><td><span style="color:#FF5B5B;font-weight:700">Yes</span></td><td>Rendered HTML message body.</td></tr>
+            <tr><td><span class="param-name">from_name</span></td><td><span class="param-type">string</span></td><td>No</td><td>Custom sender display name.</td></tr>
+            <tr><td><span class="param-name">reply_to</span></td><td><span class="param-type">string</span></td><td>No</td><td>Reply-to email destination address.</td></tr>
+            <tr><td><span class="param-name">track_opens</span></td><td><span class="param-type">boolean</span></td><td>No</td><td>Enable invisible tracking pixel (Default: <code>true</code>).</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section: Email Marketing - Bulk Email Blast -->
+      <section class="api-section" id="email-bulk">
+        <div class="endpoint-badge">
+          <span class="method-tag method-post">POST</span>
+          <span>/email/bulk</span>
+        </div>
+        <h2 style="font-size:20px;font-weight:800;margin-bottom:8px">Dispatch Bulk Email Campaign</h2>
+        <p style="font-size:14px;color:#92A0A8;line-height:1.6">
+          Broadcast a bulk email blast to a target CRM audience segment ID or an array of up to 50,000 recipient emails with merge variables and RFC-8058 unsubscribe headers.
+        </p>
+
+        <h4 style="font-size:13px;color:#F5F7F8;margin-top:24px;text-transform:uppercase;letter-spacing:0.05em">Request Body</h4>
+        <table class="param-table">
+          <thead>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="param-name">campaign_name</span></td><td><span class="param-type">string</span></td><td><span style="color:#FF5B5B;font-weight:700">Yes</span></td><td>Internal campaign name for tracking.</td></tr>
+            <tr><td><span class="param-name">segment_id</span></td><td><span class="param-type">string</span></td><td>No</td><td>Target CRM contact segment ID.</td></tr>
+            <tr><td><span class="param-name">recipients</span></td><td><span class="param-type">array&lt;object&gt;</span></td><td>No</td><td>Array of objects containing <code>email</code> and custom merge tags.</td></tr>
+            <tr><td><span class="param-name">subject</span></td><td><span class="param-type">string</span></td><td><span style="color:#FF5B5B;font-weight:700">Yes</span></td><td>Subject line supporting <code>{{first_name}}</code> tags.</td></tr>
+            <tr><td><span class="param-name">html_content</span></td><td><span class="param-type">string</span></td><td><span style="color:#FF5B5B;font-weight:700">Yes</span></td><td>Email HTML body with variable tags.</td></tr>
+            <tr><td><span class="param-name">throttle_rate</span></td><td><span class="param-type">integer</span></td><td>No</td><td>Max emails per second (e.g. 50, 100, 500).</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section: Email Marketing - List Campaigns -->
+      <section class="api-section" id="email-campaigns">
+        <div class="endpoint-badge">
+          <span class="method-tag method-get">GET</span>
+          <span>/email/campaigns</span>
+        </div>
+        <h2 style="font-size:20px;font-weight:800;margin-bottom:8px">List Email Marketing Campaigns</h2>
+        <p style="font-size:14px;color:#92A0A8;line-height:1.6">
+          Retrieves campaign performance metrics including dispatched counts, deliverability rate %, unique open rates, click-through rates (CTR), and bounce logs.
         </p>
       </section>
 
@@ -618,6 +698,102 @@ res = requests.get('https://api.nexoraai.com/v1/sessions',
 print(res.json())`,
         php: `<?php
 $res = file_get_contents('https://api.nexoraai.com/v1/sessions', false, stream_context_create([
+  'http' => ['header' => 'Authorization: Bearer nx_live_YOUR_KEY']
+]));`
+      },
+      postEmailSend: {
+        curl: `curl -X POST https://api.nexoraai.com/v1/email/send \\
+  -H "Authorization: Bearer nx_live_YOUR_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "to": "customer@company.com",
+    "subject": "Your Order Invoice #INV-2026",
+    "from_name": "NEXORAAI Billing",
+    "html": "<h2>Thank you for your order!</h2><p>Your payment has been settled.</p>",
+    "track_opens": true
+  }'`,
+        javascript: `import axios from 'axios';
+
+const res = await axios.post('https://api.nexoraai.com/v1/email/send', {
+  to: 'customer@company.com',
+  subject: 'Your Order Invoice #INV-2026',
+  from_name: 'NEXORAAI Billing',
+  html: '<h2>Thank you for your order!</h2><p>Your payment has been settled.</p>',
+  track_opens: true
+}, {
+  headers: { 'Authorization': 'Bearer nx_live_YOUR_KEY' }
+});`,
+        python: `import requests
+
+res = requests.post('https://api.nexoraai.com/v1/email/send', json={
+    'to': 'customer@company.com',
+    'subject': 'Your Order Invoice #INV-2026',
+    'from_name': 'NEXORAAI Billing',
+    'html': '<h2>Thank you for your order!</h2><p>Your payment has been settled.</p>',
+    'track_opens': True
+}, headers={'Authorization': 'Bearer nx_live_YOUR_KEY'})`,
+        php: `<?php
+$payload = [
+  "to" => "customer@company.com",
+  "subject" => "Your Order Invoice #INV-2026",
+  "html" => "<h2>Thank you for your order!</h2>",
+  "track_opens" => true
+];
+?>`
+      },
+      postEmailBulk: {
+        curl: `curl -X POST https://api.nexoraai.com/v1/email/bulk \\
+  -H "Authorization: Bearer nx_live_YOUR_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "campaign_name": "October Platform Launch",
+    "segment_id": "seg_vip_enterprise_882",
+    "subject": "Special Perk for {{company}}: 20% Off",
+    "html_content": "<p>Hello {{first_name}}, claim your perk now.</p>",
+    "throttle_rate": 100
+  }'`,
+        javascript: `import axios from 'axios';
+
+const res = await axios.post('https://api.nexoraai.com/v1/email/bulk', {
+  campaign_name: 'October Platform Launch',
+  segment_id: 'seg_vip_enterprise_882',
+  subject: 'Special Perk for {{company}}: 20% Off',
+  html_content: '<p>Hello {{first_name}}, claim your perk now.</p>',
+  throttle_rate: 100
+}, {
+  headers: { 'Authorization': 'Bearer nx_live_YOUR_KEY' }
+});`,
+        python: `import requests
+
+res = requests.post('https://api.nexoraai.com/v1/email/bulk', json={
+    'campaign_name': 'October Platform Launch',
+    'segment_id': 'seg_vip_enterprise_882',
+    'subject': 'Special Perk for {{company}}: 20% Off',
+    'html_content': '<p>Hello {{first_name}}, claim your perk now.</p>',
+    'throttle_rate': 100
+}, headers={'Authorization': 'Bearer nx_live_YOUR_KEY'})`,
+        php: `<?php
+// Bulk email campaign dispatch
+$campaign = [
+  "campaign_name" => "October Platform Launch",
+  "segment_id" => "seg_vip_enterprise_882",
+  "subject" => "Special Perk for {{company}}: 20% Off"
+];
+?>`
+      },
+      getEmailCampaigns: {
+        curl: `curl -X GET https://api.nexoraai.com/v1/email/campaigns \\
+  -H "Authorization: Bearer nx_live_YOUR_KEY"`,
+        javascript: `const res = await fetch('https://api.nexoraai.com/v1/email/campaigns', {
+  headers: { 'Authorization': 'Bearer nx_live_YOUR_KEY' }
+});
+const campaigns = await res.json();`,
+        python: `import requests
+res = requests.get('https://api.nexoraai.com/v1/email/campaigns',
+    headers={'Authorization': 'Bearer nx_live_YOUR_KEY'})
+print(res.json())`,
+        php: `<?php
+$res = file_get_contents('https://api.nexoraai.com/v1/email/campaigns', false, stream_context_create([
   'http' => ['header' => 'Authorization: Bearer nx_live_YOUR_KEY']
 ]));`
       }
