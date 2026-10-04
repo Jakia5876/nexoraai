@@ -385,7 +385,9 @@
         setBtn(btn, false);
         const msg = /confirm/i.test(res.error.message)
           ? 'Please confirm your email first. Check your inbox for the confirmation link.'
-          : res.error.message;
+          : (/invalid login/i.test(res.error.message)
+              ? 'Wrong email or password, or this account has not been created yet. New here? Use "Create one free" below first.'
+              : res.error.message);
         Toast.error('Sign in failed', msg);
         return;
       }
