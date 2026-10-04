@@ -598,3 +598,15 @@ CREATE POLICY "Tenant isolation for leads"
 ON public.leads FOR ALL
 USING (public.is_org_member(organization_id))
 WITH CHECK (public.is_org_member(organization_id));
+
+-- ============================================================
+-- 21. DEFAULT SUPER ADMIN SEED (jakiadantal@gmail.com)
+-- ============================================================
+-- Primary System Administrator:
+-- Email: jakiadantal@gmail.com
+-- Role: Owner & Super Administrator
+-- To link after Supabase auth registration:
+-- INSERT INTO public.profiles (user_id, full_name, email)
+-- VALUES (auth.uid(), 'Jakia Dantal', 'jakiadantal@gmail.com')
+-- ON CONFLICT (user_id) DO UPDATE SET email = 'jakiadantal@gmail.com', full_name = 'Jakia Dantal';
+

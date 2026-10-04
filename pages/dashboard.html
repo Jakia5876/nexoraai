@@ -172,11 +172,11 @@
 
     <!-- Sidebar Footer -->
     <div class="sidebar-footer">
-      <div class="sidebar-user-card" id="sidebarUserCard" role="button" tabindex="0">
-        <div class="avatar avatar-md" style="background: linear-gradient(135deg, #D9F000, #9BE600); color:#070B0D; font-weight:800;">U</div>
+      <div class="sidebar-user-card" id="sidebarUserCard" onclick="window.location.href='admin.html'" role="button" tabindex="0" title="Switch to Admin Center">
+        <div class="avatar avatar-md" id="dashSidebarAvatar" style="background: linear-gradient(135deg, #D9F000, #9BE600); color:#070B0D; font-weight:800;">J</div>
         <div class="sidebar-user-info">
-          <div class="sidebar-user-name">User Account</div>
-          <div class="sidebar-user-email">user@example.com</div>
+          <div class="sidebar-user-name" id="dashSidebarName">Jakia Dantal</div>
+          <div class="sidebar-user-email" id="dashSidebarEmail">jakiadantal@gmail.com (Admin)</div>
         </div>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#91A0A8" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
       </div>
@@ -246,8 +246,8 @@
       <!-- User Menu -->
       <div class="dropdown">
         <button class="user-profile-btn" data-dropdown aria-label="User menu" id="userMenuBtn">
-          <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#D9F000,#9BE600);color:#070B0D;font-weight:800">U</div>
-          <span class="user-profile-name">My Account</span>
+          <div class="avatar avatar-sm" id="dashTopAvatar" style="background:linear-gradient(135deg,#D9F000,#9BE600);color:#070B0D;font-weight:800">J</div>
+          <span class="user-profile-name" id="dashTopName">Jakia Dantal</span>
           <svg class="user-profile-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
         <div class="dropdown-menu">
@@ -658,6 +658,32 @@
 
   <script src="../assets/js/app.js"></script>
   <script>
+    // Initialize user session on dashboard
+    (function initUserSession() {
+      let activeUser = {
+        name: 'Jakia Dantal',
+        email: 'jakiadantal@gmail.com',
+        isSuperAdmin: true
+      };
+      try {
+        const stored = localStorage.getItem('nexora_user');
+        if (stored) activeUser = Object.assign(activeUser, JSON.parse(stored));
+      } catch (e) {}
+
+      const initial = (activeUser.name || 'J').charAt(0).toUpperCase();
+      const sidebarName = document.getElementById('dashSidebarName');
+      const sidebarEmail = document.getElementById('dashSidebarEmail');
+      const sidebarAvatar = document.getElementById('dashSidebarAvatar');
+      const topName = document.getElementById('dashTopName');
+      const topAvatar = document.getElementById('dashTopAvatar');
+
+      if (sidebarName) sidebarName.textContent = activeUser.name;
+      if (sidebarEmail) sidebarEmail.textContent = activeUser.email + (activeUser.isSuperAdmin ? ' (Admin)' : '');
+      if (sidebarAvatar) sidebarAvatar.textContent = initial;
+      if (topName) topName.textContent = activeUser.name;
+      if (topAvatar) topAvatar.textContent = initial;
+    })();
+
     // Dashboard-specific JS
     function handleLogout() {
       confirm({
@@ -668,8 +694,9 @@
         type: 'danger'
       }).then(confirmed => {
         if (confirmed) {
+          localStorage.removeItem('nexora_user');
           Toast.info('Signing out...', 'Redirecting to login page');
-          setTimeout(() => window.location.href = 'login.html', 1500);
+          setTimeout(() => window.location.href = 'login.html', 1000);
         }
       });
     }

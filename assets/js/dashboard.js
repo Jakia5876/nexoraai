@@ -4,6 +4,24 @@
  */
 
 function createDashboardShell(activePage, pageTitle) {
+  let activeUser = {
+    name: 'Jakia Dantal',
+    email: 'jakiadantal@gmail.com',
+    role: 'super_admin',
+    isSuperAdmin: true
+  };
+  try {
+    const storedUser = localStorage.getItem('nexora_user');
+    if (storedUser) {
+      activeUser = Object.assign({}, activeUser, JSON.parse(storedUser));
+    }
+  } catch (e) {
+    console.error('Error loading session:', e);
+  }
+
+  const initial = (activeUser.name || 'J').charAt(0).toUpperCase();
+  const roleBadge = (activeUser.isSuperAdmin || activeUser.role === 'super_admin' || activeUser.email === 'jakiadantal@gmail.com') ? ' (Admin)' : '';
+
   const sidebarHTML = `
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
   <aside class="dash-sidebar" id="dashSidebar">
@@ -61,7 +79,13 @@ function createDashboardShell(activePage, pageTitle) {
       </div>
     </nav>
     <div class="sidebar-footer">
-      <div class="sidebar-user-card" onclick="window.location.href='admin.html'" style="cursor:pointer" title="Switch to Admin Center"><div class="avatar avatar-md" style="background:linear-gradient(135deg,#D9F000,#9BE600);color:#070B0D;font-weight:800">U</div><div class="sidebar-user-info"><div class="sidebar-user-name">User Account</div><div class="sidebar-user-email">user@example.com (Admin)</div></div></div>
+      <div class="sidebar-user-card" onclick="window.location.href='admin.html'" style="cursor:pointer" title="Switch to Admin Center">
+        <div class="avatar avatar-md" style="background:linear-gradient(135deg,#D9F000,#9BE600);color:#070B0D;font-weight:800">${initial}</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">${activeUser.name}</div>
+          <div class="sidebar-user-email">${activeUser.email}${roleBadge}</div>
+        </div>
+      </div>
     </div>
   </aside>
   <header class="dash-topbar">
@@ -74,7 +98,7 @@ function createDashboardShell(activePage, pageTitle) {
       <button class="btn-icon" id="themeToggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-sun" style="display:none"><circle cx="12" cy="12" r="5"></circle></svg></button>
       <div class="dropdown">
         <button class="user-profile-btn" data-dropdown>
-          <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#D9F000,#9BE600);color:#070B0D;font-weight:800">U</div>
+          <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#D9F000,#9BE600);color:#070B0D;font-weight:800">${initial}</div>
           <svg class="user-profile-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
         <div class="dropdown-menu">
@@ -83,7 +107,7 @@ function createDashboardShell(activePage, pageTitle) {
           <div class="dropdown-item" onclick="window.location.href='dashboard-settings.html'">Settings</div>
           <div class="dropdown-item" onclick="window.location.href='dashboard-billing.html'">Billing</div>
           <div class="dropdown-divider"></div>
-          <div class="dropdown-item danger" onclick="window.location.href='login.html'">Sign Out</div>
+          <div class="dropdown-item danger" onclick="localStorage.removeItem('nexora_user'); window.location.href='login.html'">Sign Out</div>
         </div>
       </div>
     </div>

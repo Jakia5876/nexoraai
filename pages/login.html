@@ -315,6 +315,17 @@
           </button>
         </form>
 
+        <!-- Super Admin Quick Access Preset -->
+        <div style="margin-top:16px;background:rgba(217,240,0,0.06);border:1px dashed rgba(217,240,0,0.3);border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:0.04em">Admin Credentials Set</div>
+            <div style="font-size:12px;color:var(--text-secondary);font-family:var(--font-mono)">jakiadantal@gmail.com</div>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="fillAdminCredentials()" style="font-size:11px;padding:4px 10px;white-space:nowrap">
+            Auto-fill Admin
+          </button>
+        </div>
+
         <div class="auth-footer">
           Don't have an account? <a href="register.html" class="auth-link">Create one free →</a>
         </div>
@@ -334,9 +345,24 @@
 
   <script src="../assets/js/app.js"></script>
   <script>
+    const ADMIN_CREDENTIALS = {
+      email: 'jakiadantal@gmail.com',
+      password: 'Ajakia@220*#',
+      name: 'Jakia Dantal',
+      role: 'super_admin'
+    };
+
     function togglePasswordVisibility(inputId, btn) {
       const input = document.getElementById(inputId);
       input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    function fillAdminCredentials() {
+      const emailInput = document.getElementById('loginEmail');
+      const passInput = document.getElementById('loginPassword');
+      emailInput.value = ADMIN_CREDENTIALS.email;
+      passInput.value = ADMIN_CREDENTIALS.password;
+      Toast.info('Admin Credentials Loaded', 'Super Admin email and password set. Click "Sign In" to proceed.');
     }
 
     function handleGoogleLogin() {
@@ -363,12 +389,55 @@
 
       btn.classList.add('loading');
       btn.disabled = true;
-      btn.textContent = 'Signing in...';
+      btn.textContent = 'Verifying credentials...';
 
-      // Simulate auth (replace with Supabase auth in production)
-      await new Promise(r => setTimeout(r, 1200));
+      await new Promise(r => setTimeout(r, 800));
 
-      // Demo: redirect to dashboard
+      // 1. Check if user is signing in as Super Admin
+      if (email.toLowerCase() === ADMIN_CREDENTIALS.email.toLowerCase()) {
+        if (password !== ADMIN_CREDENTIALS.password) {
+          btn.classList.remove('loading');
+          btn.disabled = false;
+          btn.textContent = 'Sign In to NEXORAAI';
+          Toast.error('Authentication Failed', 'Invalid password for Super Admin account: ' + email);
+          return;
+        }
+
+        // Correct admin password
+        const adminSession = {
+          name: ADMIN_CREDENTIALS.name,
+          email: ADMIN_CREDENTIALS.email,
+          role: 'super_admin',
+          isSuperAdmin: true,
+          token: 'nexora_sec_' + Date.now(),
+          loginTime: new Date().toISOString()
+        };
+        localStorage.setItem('nexora_user', JSON.stringify(adminSession));
+
+        Toast.success('Admin Verified!', 'Welcome Super Admin Jakia! Redirecting to Admin Control Center...');
+        setTimeout(() => window.location.href = 'admin.html', 1000);
+        return;
+      }
+
+      // 2. Standard tenant account login
+      if (password.length < 6) {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        btn.textContent = 'Sign In to NEXORAAI';
+        Toast.error('Authentication Failed', 'Password must be at least 6 characters.');
+        return;
+      }
+
+      const userSession = {
+        name: email.split('@')[0],
+        email: email,
+        role: 'user',
+        isSuperAdmin: false,
+        token: 'nexora_usr_' + Date.now(),
+        loginTime: new Date().toISOString()
+      };
+      localStorage.setItem('nexora_user', JSON.stringify(userSession));
+
       Toast.success('Welcome back!', 'Redirecting to your dashboard...');
       setTimeout(() => window.location.href = 'dashboard.html', 1000);
     });
