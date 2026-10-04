@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact & Book a Demo — NEXORAAI</title>
+  <meta name="description" content="Talk to our product specialists or schedule a 1-on-1 walkthrough of NEXORAAI WhatsApp automation platform." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/homepage.css" />
+</head>
+<body class="dark-mode">
+<div class="toast-container" id="toastContainer"></div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../index.html" class="logo">
+          <div class="logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#D9F000" fill-opacity="0.15"/><path d="M8 24L14 8H16L10 24H8Z" fill="#D9F000"/><path d="M16 8L22 24H20L14 8H16Z" fill="#D9F000" fill-opacity="0.6"/><circle cx="22" cy="10" r="3" fill="#9BE600"/><circle cx="22" cy="10" r="1.5" fill="#D9F000"/></svg></div>
+          <span class="logo-text">NEXORA<span class="logo-accent">AI</span></span>
+        </a>
+        <nav class="site-nav">
+          <ul>
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
+            <li><a href="features.html" class="nav-link">Features</a></li>
+            <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+            <li><a href="documentation.html" class="nav-link">Docs</a></li>
+            <li><a href="help.html" class="nav-link">Help</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="login.html" class="btn btn-ghost">Login</a>
+          <a href="register.html" class="btn btn-primary">Start Free Trial</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <section style="padding:120px 0 80px">
+    <div class="container" style="max-width:960px">
+      <div style="text-align:center;margin-bottom:48px">
+        <span class="badge badge-accent" style="margin-bottom:12px">GET IN TOUCH</span>
+        <h1 style="font-size:44px;font-weight:900;letter-spacing:-0.03em;margin:0 0 16px">
+          Let’s Talk About Your <span style="color:var(--primary)">WhatsApp Strategy</span>
+        </h1>
+        <p style="font-size:16px;color:var(--text-secondary);max-width:600px;margin:0 auto">
+          Whether you want an enterprise SLA, high-volume broadcasting, or custom AI fine-tuning, our engineering team is ready.
+        </p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.2fr 1.8fr;gap:40px">
+        <!-- Direct Contacts -->
+        <div class="card" style="padding:32px;height:fit-content">
+          <h3 style="font-size:18px;font-weight:700;margin:0 0 20px">Direct Channels</h3>
+          
+          <div style="display:flex;flex-direction:column;gap:20px;font-size:14px">
+            <div style="display:flex;align-items:center;gap:14px">
+              <span style="font-size:24px">💬</span>
+              <div>
+                <div style="font-weight:600;color:var(--text-primary)">Direct WhatsApp</div>
+                <div style="font-family:var(--font-mono);color:var(--primary);font-size:13px">+880 1712-345678</div>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:14px">
+              <span style="font-size:24px">✉️</span>
+              <div>
+                <div style="font-weight:600;color:var(--text-primary)">Sales Inquiries</div>
+                <div style="color:var(--text-secondary);font-size:13px">sales@nexoraai.com</div>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:14px">
+              <span style="font-size:24px">🏢</span>
+              <div>
+                <div style="font-weight:600;color:var(--text-primary)">Dhaka Headquarters</div>
+                <div style="color:var(--text-secondary);font-size:13px">Road 11, Banani, Dhaka-1213, Bangladesh</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="card" style="padding:36px">
+          <h3 style="font-size:20px;font-weight:700;margin:0 0 20px">Request a Demo</h3>
+          <form onsubmit="handleDemoRequest(event)">
+            <div class="form-row">
+              <div class="form-group" style="flex:1">
+                <label class="form-label">Your Name *</label>
+                <input type="text" id="cName" class="form-control" placeholder="Shakib Al Hasan" required />
+              </div>
+              <div class="form-group" style="flex:1">
+                <label class="form-label">WhatsApp Number *</label>
+                <input type="tel" id="cPhone" class="form-control" placeholder="+8801700000000" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group" style="flex:1">
+                <label class="form-label">Work Email *</label>
+                <input type="email" id="cEmail" class="form-control" placeholder="user@company.com" required />
+              </div>
+              <div class="form-group" style="flex:1">
+                <label class="form-label">Company Name</label>
+                <input type="text" id="cCompany" class="form-control" placeholder="e.g. Apex Corp" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Estimated Monthly Message Volume</label>
+              <select class="form-control" id="cVolume">
+                <option>Under 10,000 messages / month</option>
+                <option>10,000 - 50,000 messages / month</option>
+                <option>50,000 - 250,000 messages / month</option>
+                <option>Enterprise (250,000+ messages)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">How can we help your business?</label>
+              <textarea class="form-control" id="cNotes" rows="3" placeholder="Tell us about your automation use cases, existing systems, or goals..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%;margin-top:12px;padding:12px">
+              Schedule My Product Demo 🚀
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer" style="padding:60px 0;background:var(--bg-card);border-top:1px solid var(--border)">
+    <div class="container" style="text-align:center;font-size:13px;color:var(--text-muted)">
+      <div style="font-size:18px;font-weight:800;color:var(--text-primary);margin-bottom:8px">NEXORA<span style="color:var(--primary)">AI</span></div>
+      <p>© 2026 NEXORAAI. WhatsApp API + AI Automation + Smart Lead Management. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+    function handleDemoRequest(e) {
+      e.preventDefault();
+      const name = document.getElementById('cName').value;
+      const phone = document.getElementById('cPhone').value;
+      showToast(`Thank you, ${name}! A demo link has been sent to your WhatsApp (${phone}).`, 'success');
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>

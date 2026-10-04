@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing Plans & ROI — NEXORAAI</title>
+  <meta name="description" content="Transparent, scalable pricing for WhatsApp API, AI Automations, and Smart Lead Management. Choose Starter, Professional, or Enterprise." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/homepage.css" />
+  <style>
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-top: 48px;
+      margin-bottom: 64px;
+    }
+    @media (max-width: 992px) {
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 36px 30px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+    .pricing-card.featured {
+      background: linear-gradient(180deg, rgba(217,240,0,0.06) 0%, var(--bg-card) 40%);
+      border: 2px solid var(--primary);
+      box-shadow: 0 16px 40px rgba(217,240,0,0.12);
+      transform: translateY(-8px);
+    }
+    .pricing-card:hover {
+      border-color: var(--primary);
+    }
+    .pricing-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: #070B0D;
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 14px;
+      border-radius: 20px;
+    }
+    .price-num {
+      font-size: 44px;
+      font-weight: 900;
+      color: var(--text-primary);
+      letter-spacing: -0.03em;
+    }
+    .price-period {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 28px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+    .feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .feature-list li.included svg {
+      stroke: var(--primary);
+      flex-shrink: 0;
+    }
+    .pricing-toggle-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 6px 14px;
+      margin: 24px auto 0;
+    }
+  </style>
+</head>
+<body class="dark-mode">
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../index.html" class="logo">
+          <div class="logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#D9F000" fill-opacity="0.15"/><path d="M8 24L14 8H16L10 24H8Z" fill="#D9F000"/><path d="M16 8L22 24H20L14 8H16Z" fill="#D9F000" fill-opacity="0.6"/><circle cx="22" cy="10" r="3" fill="#9BE600"/><circle cx="22" cy="10" r="1.5" fill="#D9F000"/></svg></div>
+          <span class="logo-text">NEXORA<span class="logo-accent">AI</span></span>
+        </a>
+        <nav class="site-nav">
+          <ul>
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
+            <li><a href="features.html" class="nav-link">Features</a></li>
+            <li><a href="pricing.html" class="nav-link active">Pricing</a></li>
+            <li><a href="documentation.html" class="nav-link">Docs</a></li>
+            <li><a href="help.html" class="nav-link">Help</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="login.html" class="btn btn-ghost">Login</a>
+          <a href="register.html" class="btn btn-primary">Start Free Trial</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Pricing Hero -->
+  <section style="padding:120px 0 60px;text-align:center">
+    <div class="container">
+      <span class="badge badge-accent" style="margin-bottom:16px">TRANSPARENT PRICING</span>
+      <h1 style="font-size:48px;font-weight:900;letter-spacing:-0.03em;margin:0 0 16px">
+        Simple Pricing, <span style="color:var(--primary)">Massive ROI</span>
+      </h1>
+      <p style="font-size:18px;color:var(--text-secondary);max-width:640px;margin:0 auto">
+        Start with a 14-day free trial on any tier. No credit card required. Cancel anytime.
+      </p>
+
+      <!-- Toggle -->
+      <div class="pricing-toggle-box">
+        <span id="monthlyLabel" style="font-weight:700;color:var(--text-primary);font-size:14px">Monthly</span>
+        <label class="switch" style="position:relative;display:inline-block;width:44px;height:24px">
+          <input type="checkbox" id="billingCycle" onchange="toggleBilling(this)" style="opacity:0;width:0;height:0">
+          <span class="slider round" style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:rgba(255,255,255,0.2);transition:.4s;border-radius:24px"></span>
+        </label>
+        <span id="annualLabel" style="color:var(--text-muted);font-size:14px">Annual <span class="badge badge-green" style="font-size:10px;margin-left:4px">Save 20%</span></span>
+      </div>
+
+      <!-- Pricing Cards -->
+      <div class="pricing-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
+        <!-- Starter -->
+        <div class="pricing-card">
+          <h3 style="font-size:20px;font-weight:700;margin:0 0 8px">Starter</h3>
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">For solopreneurs and local stores starting on WhatsApp</p>
+          <div style="margin-bottom:20px">
+            <span class="price-num" id="starterPrice">৳ 699</span>
+            <span class="price-period" id="starterPeriod">/ month</span>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px" id="starterBdt">≈ $6.50 USD</div>
+          </div>
+          <a href="register.html?plan=starter" class="btn btn-secondary" style="width:100%">Get Started</a>
+          <ul class="feature-list">
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 1 Connected WhatsApp Number</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 5,000 Messages / mo</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 1 AI Agent Persona</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 2 Team Agent Seats</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Unified Inbox & CRM Contacts</li>
+          </ul>
+        </div>
+
+        <!-- Professional (Featured) -->
+        <div class="pricing-card featured">
+          <div class="pricing-badge">MOST POPULAR</div>
+          <h3 style="font-size:20px;font-weight:700;margin:0 0 8px">Professional</h3>
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">For scaling brands wanting autonomous sales & RAG AI</p>
+          <div style="margin-bottom:20px">
+            <span class="price-num" style="color:var(--primary)" id="proPrice">৳ 2,999</span>
+            <span class="price-period" id="proPeriod">/ month</span>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px" id="proBdt">≈ $27.00 USD</div>
+          </div>
+          <a href="register.html?plan=pro" class="btn btn-primary" style="width:100%">Start 14-Day Free Trial</a>
+          <ul class="feature-list">
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 3 WhatsApp Numbers</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 50,000 Messages / mo</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Unlimited AI Agents & Knowledge Base</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Visual Flow Automation Builder</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Lead Pipeline & Research Tool</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 10 Team Seats</li>
+          </ul>
+        </div>
+
+        <!-- Business -->
+        <div class="pricing-card">
+          <h3 style="font-size:20px;font-weight:700;margin:0 0 8px">Business</h3>
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">High-volume marketing, ecommerce checkout & APIs</p>
+          <div style="margin-bottom:20px">
+            <span class="price-num" id="busPrice">৳ 4,999</span>
+            <span class="price-period" id="busPeriod">/ month</span>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px" id="busBdt">≈ $45.00 USD</div>
+          </div>
+          <a href="register.html?plan=business" class="btn btn-secondary" style="width:100%">Choose Business</a>
+          <ul class="feature-list">
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 10 WhatsApp Numbers</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 200,000 Messages / mo</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> REST API & Outbound Webhooks</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> WhatsApp Commerce & Payments</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Unlimited Team Seats</li>
+          </ul>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="pricing-card">
+          <h3 style="font-size:20px;font-weight:700;margin:0 0 8px">Enterprise</h3>
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px">Custom volume, private LLMs, SLA & dedicated cluster</p>
+          <div style="margin-bottom:20px">
+            <span class="price-num" id="entPrice">Custom</span>
+            <span class="price-period" id="entPeriod">/ quote</span>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:4px" id="entBdt">Tailored billing</div>
+          </div>
+          <a href="contact.html" class="btn btn-secondary" style="width:100%">Contact Sales</a>
+          <ul class="feature-list">
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Unlimited WhatsApp Numbers</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 1M+ High-Volume Throughput</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Dedicated Account Manager & SLA</li>
+            <li class="included"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Multi-tenant Agency Whitelabel</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive ROI Calculator Section -->
+  <section style="padding:60px 0;background:var(--bg-surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div class="container" style="max-width:880px">
+      <div style="text-align:center;margin-bottom:36px">
+        <h2 style="font-size:32px;font-weight:800;margin:0 0 8px">Interactive ROI Calculator</h2>
+        <p style="color:var(--text-secondary);font-size:15px">See how much NEXORAAI saves your business each month compared to traditional manual support staff</p>
+      </div>
+
+      <div class="card" style="padding:32px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+          <div>
+            <div class="form-group">
+              <label class="form-label">Incoming Inquiries / Day: <strong id="inquiryVal" style="color:var(--primary)">250</strong></label>
+              <input type="range" class="form-control" min="50" max="2000" step="50" value="250" oninput="calculateRoi(this.value)" style="padding:0;background:transparent" />
+            </div>
+            <div class="form-group" style="margin-top:20px">
+              <label class="form-label">Full-time Support Agents Required: <strong id="agentCount">3</strong></label>
+              <div style="font-size:12px;color:var(--text-muted)">Based on average 80 chats/day per human agent</div>
+            </div>
+          </div>
+
+          <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;text-align:center;display:flex;flex-direction:column;justify-content:center">
+            <div style="font-size:13px;color:var(--text-muted);text-transform:uppercase;font-weight:700">Estimated Monthly Savings</div>
+            <div style="font-size:38px;font-weight:900;color:var(--primary);margin:8px 0" id="savingsAmount">$1,280 / mo</div>
+            <div style="font-size:13px;color:var(--success)" id="bdtSavings">≈ ৳ 145,000 BDT Net Savings</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:8px">Plus 24/7 zero-wait response time!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer" style="padding:60px 0;background:var(--bg-card);border-top:1px solid var(--border)">
+    <div class="container" style="text-align:center;font-size:13px;color:var(--text-muted)">
+      <div style="font-size:18px;font-weight:800;color:var(--text-primary);margin-bottom:8px">NEXORA<span style="color:var(--primary)">AI</span></div>
+      <p>© 2026 NEXORAAI. WhatsApp API + AI Automation + Smart Lead Management. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleBilling(cb) {
+      const isAnnual = cb.checked;
+      document.getElementById('starterPrice').innerText = isAnnual ? '৳ 559' : '৳ 699';
+      document.getElementById('proPrice').innerText = isAnnual ? '৳ 2,399' : '৳ 2,999';
+      document.getElementById('busPrice').innerText = isAnnual ? '৳ 3,999' : '৳ 4,999';
+
+      document.getElementById('starterBdt').innerText = isAnnual ? '≈ $5.20 USD' : '≈ $6.50 USD';
+      document.getElementById('proBdt').innerText = isAnnual ? '≈ $21.50 USD' : '≈ $27.00 USD';
+      document.getElementById('busBdt').innerText = isAnnual ? '≈ $36.00 USD' : '≈ $45.00 USD';
+    }
+
+    function calculateRoi(val) {
+      document.getElementById('inquiryVal').innerText = val;
+      const agents = Math.max(1, Math.round(val / 80));
+      document.getElementById('agentCount').innerText = agents;
+      const savedUsd = agents * 450;
+      const savedBdt = agents * 50000;
+      document.getElementById('savingsAmount').innerText = '$' + savedUsd.toLocaleString() + ' / mo';
+      document.getElementById('bdtSavings').innerText = '≈ ৳ ' + savedBdt.toLocaleString() + ' BDT Net Savings';
+    }
+  </script>
+</body>
+</html>

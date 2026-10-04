@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+</head>
+<body class="dark-mode" data-page="settings">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('settings', 'Workspace & Provider Settings');</script>
+
+<main class="dash-main">
+<div class="page-content">
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1 class="page-title">Workspace Settings</h1>
+      <p class="page-subtitle">Configure business profile, WhatsApp gateway provider credentials, and account security</p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:280px 1fr;gap:24px">
+    <!-- Settings Navigation Sidebar -->
+    <div class="card" style="padding:16px;height:fit-content">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <button class="btn btn-primary btn-sm" style="text-align:left;justify-content:flex-start" id="tabGeneralBtn" onclick="switchSettingTab('general')">🏢 Business Profile</button>
+        <button class="btn btn-ghost btn-sm" style="text-align:left;justify-content:flex-start" id="tabWaBtn" onclick="switchSettingTab('wa')">💬 WhatsApp Provider</button>
+        <button class="btn btn-ghost btn-sm" style="text-align:left;justify-content:flex-start" id="tabSecBtn" onclick="switchSettingTab('sec')">🔒 Security & 2FA</button>
+        <button class="btn btn-ghost btn-sm" style="text-align:left;justify-content:flex-start" id="tabNotifBtn" onclick="switchSettingTab('notif')">🔔 Notifications</button>
+      </div>
+    </div>
+
+    <!-- Setting Sections Container -->
+    <div>
+      <!-- Section 1: Business Profile -->
+      <div id="secGeneral" class="card" style="padding:24px">
+        <h3 style="font-size:16px;margin:0 0 20px 0">Organization Profile</h3>
+        <form onsubmit="saveProfile(event)">
+          <div class="form-row">
+            <div class="form-group" style="flex:1">
+              <label class="form-label">Business / Brand Name</label>
+              <input type="text" class="form-control" value="Nexora Enterprises Ltd." />
+            </div>
+            <div class="form-group" style="flex:1">
+              <label class="form-label">Support Email</label>
+              <input type="email" class="form-control" value="support@nexora.com" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" style="flex:1">
+              <label class="form-label">Default Timezone</label>
+              <select class="form-control">
+                <option value="Asia/Dhaka">Asia/Dhaka (GMT+6)</option>
+                <option value="Asia/Kolkata">Asia/Kolkata (GMT+5:30)</option>
+                <option value="Asia/Dubai">Asia/Dubai (GMT+4)</option>
+                <option value="America/New_York">America/New_York (GMT-5)</option>
+              </select>
+            </div>
+            <div class="form-group" style="flex:1">
+              <label class="form-label">Default Currency</label>
+              <select class="form-control">
+                <option value="BDT">BDT (৳ Bangladeshi Taka)</option>
+                <option value="USD">USD ($ United States Dollar)</option>
+                <option value="INR">INR (₹ Indian Rupee)</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-top:20px">
+            <button type="submit" class="btn btn-primary">Save Profile</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Section 2: WhatsApp Provider Credentials -->
+      <div id="secWa" class="card" style="padding:24px;display:none">
+        <h3 style="font-size:16px;margin:0 0 10px 0">WhatsApp Provider Credentials</h3>
+        <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px">Choose your underlying WhatsApp connectivity architecture:</p>
+
+        <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:16px;margin-bottom:20px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-weight:700;font-size:14px;color:var(--text-primary)">Official Meta Cloud API Mode</div>
+              <div style="font-size:12px;color:var(--text-muted)">Recommended for 100k+ messages/day, verified green tick badge, and zero phone battery dependency.</div>
+            </div>
+            <input type="checkbox" checked style="transform:scale(1.3)" />
+          </div>
+        </div>
+
+        <form onsubmit="saveWaCredentials(event)">
+          <div class="form-group">
+            <label class="form-label">WhatsApp Business Account ID (WABA ID)</label>
+            <input type="text" class="form-control" value="94821038591823" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number ID</label>
+            <input type="text" class="form-control" value="10928374659281" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Permanent System User Access Token</label>
+            <input type="password" class="form-control" value="EAAGm0PX4ZCpsBAK84920491823091823091823" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Webhook Verification Token</label>
+            <input type="text" class="form-control" value="nexora_verify_token_secure_992" readonly />
+          </div>
+          <div style="margin-top:20px;display:flex;gap:10px">
+            <button type="submit" class="btn btn-primary">Save Provider Keys</button>
+            <button type="button" class="btn btn-secondary" onclick="testWaConnection()">Test Meta Handshake</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Section 3: Security & 2FA -->
+      <div id="secSec" class="card" style="padding:24px;display:none">
+        <h3 style="font-size:16px;margin:0 0 20px 0">Account Security & 2-Factor Authentication</h3>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:20px">
+          <div>
+            <div style="font-weight:700;font-size:14px;color:var(--text-primary)">Two-Factor Authentication (TOTP)</div>
+            <div style="font-size:12px;color:var(--text-muted)">Protect your account with Google Authenticator or 1Password.</div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="showToast('2FA setup QR generated', 'info')">Enable 2FA</button>
+        </div>
+
+        <form onsubmit="savePassword(event)">
+          <div class="form-group">
+            <label class="form-label">Current Password</label>
+            <input type="password" class="form-control" placeholder="••••••••••••" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">New Password</label>
+            <input type="password" class="form-control" placeholder="Min 8 characters, numbers & symbols" />
+          </div>
+          <div style="margin-top:20px">
+            <button type="submit" class="btn btn-secondary">Update Password</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Section 4: Notifications -->
+      <div id="secNotif" class="card" style="padding:24px;display:none">
+        <h3 style="font-size:16px;margin:0 0 20px 0">Notification Channels</h3>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer">
+            <input type="checkbox" checked /> <span>WhatsApp ping when a lead reaches <strong>Won Stage</strong></span>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer">
+            <input type="checkbox" checked /> <span>Daily executive summary email at 09:00 AM</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer">
+            <input type="checkbox" checked /> <span>Emergency alert if WhatsApp session drops offline</span>
+          </label>
+        </div>
+        <div style="margin-top:20px">
+          <button class="btn btn-primary" onclick="showToast('Notification preferences saved!', 'success')">Save Preferences</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+
+<script>
+function switchSettingTab(tab) {
+  const tabs = ['general', 'wa', 'sec', 'notif'];
+  tabs.forEach(t => {
+    document.getElementById('sec' + t.charAt(0).toUpperCase() + t.slice(1)).style.display = (t === tab) ? 'block' : 'none';
+    const btn = document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1) + 'Btn');
+    if (btn) btn.className = (t === tab) ? 'btn btn-primary btn-sm' : 'btn btn-ghost btn-sm';
+  });
+}
+
+function saveProfile(e) {
+  e.preventDefault();
+  showToast('Business profile updated successfully!', 'success');
+}
+
+function saveWaCredentials(e) {
+  e.preventDefault();
+  showToast('Meta Cloud API credentials saved and validated!', 'success');
+}
+
+function testWaConnection() {
+  showToast('Testing Meta Cloud API Handshake...', 'info');
+  setTimeout(() => showToast('Meta API Handshake successful! Verified Phone ID 10928374659281.', 'success'), 900);
+}
+
+function savePassword(e) {
+  e.preventDefault();
+  showToast('Security password updated!', 'success');
+}
+</script>
+</body>
+</html>

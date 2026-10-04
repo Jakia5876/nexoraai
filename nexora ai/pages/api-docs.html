@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference & Developer Documentation — NEXORAAI</title>
+  <meta name="description" content="Complete REST API documentation for NEXORAAI: WhatsApp messaging, sessions, media, contacts, webhooks, and campaign automation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <style>
+    body {
+      background: #06090B;
+      color: #F5F7F8;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .api-header {
+      height: 60px;
+      border-bottom: 1px solid #263238;
+      background: #0C1114;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .api-layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr) 460px;
+      min-height: calc(100vh - 60px);
+    }
+
+    /* LEFT SIDEBAR */
+    .api-sidebar {
+      background: #0C1114;
+      border-right: 1px solid #263238;
+      padding: 24px 16px;
+      position: sticky;
+      top: 60px;
+      height: calc(100vh - 60px);
+      overflow-y: auto;
+    }
+
+    .api-nav-heading {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #66757D;
+      letter-spacing: 0.08em;
+      margin: 16px 0 8px 10px;
+    }
+
+    .api-nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      color: #92A0A8;
+      font-size: 13.5px;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+
+    .api-nav-link:hover, .api-nav-link.active {
+      color: #D9F000;
+      background: rgba(217, 240, 0, 0.08);
+      font-weight: 600;
+    }
+
+    .method-tag {
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    .method-post { background: rgba(59, 130, 246, 0.2); color: #3B82F6; }
+    .method-get { background: rgba(53, 216, 121, 0.2); color: #35D879; }
+    .method-delete { background: rgba(255, 91, 91, 0.2); color: #FF5B5B; }
+
+    /* CENTER CONTENT */
+    .api-center {
+      padding: 40px 48px;
+      overflow-y: auto;
+      max-width: 800px;
+    }
+
+    .api-section {
+      margin-bottom: 64px;
+      scroll-margin-top: 80px;
+    }
+
+    .endpoint-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #11181C;
+      border: 1px solid #263238;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .param-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 13.5px;
+    }
+
+    .param-table th, .param-table td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid #263238;
+    }
+
+    .param-table th {
+      color: #92A0A8;
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .param-name {
+      font-family: 'JetBrains Mono', monospace;
+      color: #D9F000;
+      font-size: 12.5px;
+    }
+
+    .param-type {
+      font-family: 'JetBrains Mono', monospace;
+      color: #A8E600;
+      font-size: 11px;
+    }
+
+    /* RIGHT COLUMN (CODE SAMPLES) */
+    .api-right {
+      background: #090D10;
+      border-left: 1px solid #263238;
+      position: sticky;
+      top: 60px;
+      height: calc(100vh - 60px);
+      overflow-y: auto;
+      padding: 24px;
+    }
+
+    .code-box-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #11181C;
+      border: 1px solid #263238;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      padding: 8px 14px;
+    }
+
+    .lang-tabs {
+      display: flex;
+      gap: 6px;
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: #92A0A8;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .lang-btn.active, .lang-btn:hover {
+      color: #D9F000;
+      background: rgba(217, 240, 0, 0.12);
+    }
+
+    .code-pre {
+      background: #0C1114;
+      border: 1px solid #263238;
+      border-radius: 0 0 8px 8px;
+      padding: 16px;
+      margin: 0 0 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: #F5F7F8;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid #263238;
+      color: #92A0A8;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .copy-btn:hover {
+      color: #D9F000;
+      border-color: #D9F000;
+    }
+
+    @media (max-width: 1200px) {
+      .api-layout { grid-template-columns: 240px 1fr; }
+      .api-right { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .api-layout { grid-template-columns: 1fr; }
+      .api-sidebar { display: none; }
+      .api-center { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="api-header">
+    <div style="display:flex;align-items:center;gap:16px">
+      <a href="../index.html" class="logo" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+        <div class="logo-icon">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="8" fill="#D9F000" fill-opacity="0.15"/>
+            <path d="M8 24L14 8H16L10 24H8Z" fill="#D9F000"/>
+            <path d="M16 8L22 24H20L14 8H16Z" fill="#D9F000" fill-opacity="0.6"/>
+            <circle cx="22" cy="10" r="3" fill="#9BE600"/>
+            <circle cx="22" cy="10" r="1.5" fill="#D9F000"/>
+          </svg>
+        </div>
+        <span class="logo-text" style="font-size:18px;font-weight:900;color:#F5F7F8">NEXORA<span style="color:#D9F000">AI</span></span>
+      </a>
+      <span style="font-size:12px;background:rgba(217,240,0,0.15);color:#D9F000;padding:2px 8px;border-radius:4px;font-weight:700">REST API v1</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px">
+      <a href="documentation.html" style="font-size:13px;color:#92A0A8;text-decoration:none">Guides & SDKs</a>
+      <a href="dashboard-api.html" class="btn btn-secondary btn-sm" style="font-size:12px">Get API Key</a>
+      <a href="login.html" class="btn btn-primary btn-sm" style="font-size:12px">Dashboard</a>
+    </div>
+  </header>
+
+  <!-- 3-Column API Documentation Layout -->
+  <div class="api-layout">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside class="api-sidebar">
+      <div class="api-nav-heading">Overview</div>
+      <a href="#intro" class="api-nav-link active" onclick="setActiveNav(this)">Introduction</a>
+      <a href="#auth" class="api-nav-link" onclick="setActiveNav(this)">Authentication</a>
+      <a href="#errors" class="api-nav-link" onclick="setActiveNav(this)">Errors & Codes</a>
+
+      <div class="api-nav-heading">Sessions</div>
+      <a href="#sessions-list" class="api-nav-link" onclick="setActiveNav(this); updateCode('getSessions')"><span class="method-tag method-get">GET</span> /sessions</a>
+      <a href="#sessions-create" class="api-nav-link" onclick="setActiveNav(this); updateCode('postSession')"><span class="method-tag method-post">POST</span> /sessions</a>
+      <a href="#sessions-delete" class="api-nav-link" onclick="setActiveNav(this); updateCode('deleteSession')"><span class="method-tag method-delete">DEL</span> /sessions/:id</a>
+
+      <div class="api-nav-heading">Messages</div>
+      <a href="#msg-text" class="api-nav-link" onclick="setActiveNav(this); updateCode('postMsgText')"><span class="method-tag method-post">POST</span> /messages/text</a>
+      <a href="#msg-media" class="api-nav-link" onclick="setActiveNav(this); updateCode('postMsgMedia')"><span class="method-tag method-post">POST</span> /messages/media</a>
+      <a href="#msg-template" class="api-nav-link" onclick="setActiveNav(this); updateCode('postMsgTemplate')"><span class="method-tag method-post">POST</span> /messages/template</a>
+      <a href="#msg-list" class="api-nav-link" onclick="setActiveNav(this); updateCode('getMessages')"><span class="method-tag method-get">GET</span> /messages</a>
+
+      <div class="api-nav-heading">Contacts & CRM</div>
+      <a href="#contacts-list" class="api-nav-link" onclick="setActiveNav(this); updateCode('getContacts')"><span class="method-tag method-get">GET</span> /contacts</a>
+      <a href="#contacts-create" class="api-nav-link" onclick="setActiveNav(this); updateCode('postContact')"><span class="method-tag method-post">POST</span> /contacts</a>
+
+      <div class="api-nav-heading">Campaigns & Broadcasts</div>
+      <a href="#campaigns-dispatch" class="api-nav-link" onclick="setActiveNav(this); updateCode('postCampaign')"><span class="method-tag method-post">POST</span> /campaigns/dispatch</a>
+
+      <div class="api-nav-heading">Webhooks</div>
+      <a href="#webhooks" class="api-nav-link" onclick="setActiveNav(this); updateCode('webhooks')">Webhook Subscriptions</a>
+    </aside>
+
+    <!-- CENTER DOCUMENTATION CONTENT -->
+    <main class="api-center">
+      
+      <!-- Section 1: Intro -->
+      <section class="api-section" id="intro">
+        <h1 style="font-size:28px;font-weight:900;letter-spacing:-0.03em;margin-bottom:12px">NEXORAAI REST API</h1>
+        <p style="font-size:15px;color:#92A0A8;line-height:1.7">
+          The NEXORAAI API empowers developers to automate WhatsApp communications, synchronize CRM pipelines, trigger AI conversational agents, and build custom multi-channel workflows using standard REST protocols.
+        </p>
+        <div style="background:#11181C;border:1px solid #263238;border-radius:8px;padding:16px;margin:20px 0">
+          <div style="font-size:12px;color:#92A0A8;margin-bottom:4px;text-transform:uppercase;font-weight:700">Root Endpoint URL</div>
+          <code style="font-family:'JetBrains Mono',monospace;color:#D9F000;font-size:14px">https://api.nexoraai.com/v1</code>
+        </div>
+      </section>
+
+      <!-- Section 2: Authentication -->
+      <section class="api-section" id="auth">
+        <h2 style="font-size:22px;font-weight:800;margin-bottom:12px">Authentication</h2>
+        <p style="font-size:14.5px;color:#92A0A8;line-height:1.7">
+          All requests must include your organization's API Secret Key passed via the <code>Authorization</code> bearer header. You can generate and rotate API keys from the <a href="dashboard-api.html" style="color:#D9F000">API & Keys Dashboard</a>.
+        </p>
+        <div style="background:#0C1114;border:1px solid #263238;border-radius:8px;padding:14px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#35D879;margin:16px 0">
+          Authorization: Bearer nx_live_948f92b7194ec8942a10
+        </div>
+      </section>
+
+      <!-- Section 3: Send Text Message -->
+      <section class="api-section" id="msg-text">
+        <div class="endpoint-badge">
+          <span class="method-tag method-post">POST</span>
+          <span>/messages/text</span>
+        </div>
+        <h2 style="font-size:20px;font-weight:800;margin-bottom:8px">Send Text Message</h2>
+        <p style="font-size:14px;color:#92A0A8;line-height:1.6">
+          Dispatches a standard text WhatsApp message to a destination phone number via your connected session.
+        </p>
+
+        <h4 style="font-size:13px;color:#F5F7F8;margin-top:24px;text-transform:uppercase;letter-spacing:0.05em">Request Body</h4>
+        <table class="param-table">
+          <thead>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="param-name">session_id</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span style="color:#FF5B5B;font-weight:700">Yes</span></td>
+              <td>UUID of the active WhatsApp session.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">to</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span style="color:#FF5B5B;font-weight:700">Yes</span></td>
+              <td>Recipient phone number in E.164 format (e.g. <code>+8801700000000</code>).</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">message</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span style="color:#FF5B5B;font-weight:700">Yes</span></td>
+              <td>UTF-8 text content (up to 4096 characters).</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">ai_context</span></td>
+              <td><span class="param-type">boolean</span></td>
+              <td>No</td>
+              <td>If <code>true</code>, records message into conversation context for AI responders.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 4: Send Media Message -->
+      <section class="api-section" id="msg-media">
+        <div class="endpoint-badge">
+          <span class="method-tag method-post">POST</span>
+          <span>/messages/media</span>
+        </div>
+        <h2 style="font-size:20px;font-weight:800;margin-bottom:8px">Send Media Message</h2>
+        <p style="font-size:14px;color:#92A0A8;line-height:1.6">
+          Sends an image, video, audio voice note, or PDF document with an optional caption.
+        </p>
+
+        <h4 style="font-size:13px;color:#F5F7F8;margin-top:24px;text-transform:uppercase;letter-spacing:0.05em">Request Body</h4>
+        <table class="param-table">
+          <thead>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="param-name">session_id</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span style="color:#FF5B5B;font-weight:700">Yes</span></td>
+              <td>UUID of the sending session.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">to</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span style="color:#FF5B5B;font-weight:700">Yes</span></td>
+              <td>E.164 phone number.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">media_type</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span style="color:#FF5B5B;font-weight:700">Yes</span></td>
+              <td><code>image</code>, <code>video</code>, <code>audio</code>, or <code>document</code>.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">media_url</span></td>
+              <td><span class="param-type">string</span></td>
+              <td><span style="color:#FF5B5B;font-weight:700">Yes</span></td>
+              <td>Public HTTPS URL or Supabase Storage signed asset URL.</td>
+            </tr>
+            <tr>
+              <td><span class="param-name">caption</span></td>
+              <td><span class="param-type">string</span></td>
+              <td>No</td>
+              <td>Accompanying text caption.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 5: WhatsApp Sessions -->
+      <section class="api-section" id="sessions-list">
+        <div class="endpoint-badge">
+          <span class="method-tag method-get">GET</span>
+          <span>/sessions</span>
+        </div>
+        <h2 style="font-size:20px;font-weight:800;margin-bottom:8px">List WhatsApp Sessions</h2>
+        <p style="font-size:14px;color:#92A0A8;line-height:1.6">
+          Returns all active, connecting, and disconnected WhatsApp instances for the authenticated organization.
+        </p>
+      </section>
+
+      <!-- Section 6: Webhooks -->
+      <section class="api-section" id="webhooks">
+        <h2 style="font-size:22px;font-weight:800;margin-bottom:12px">Webhook Event Subscriptions</h2>
+        <p style="font-size:14.5px;color:#92A0A8;line-height:1.7">
+          Subscribe your HTTP endpoint to receive realtime updates when inbound WhatsApp messages arrive, delivery receipts change, or new leads are converted.
+        </p>
+        <table class="param-table">
+          <thead>
+            <tr><th>Event Name</th><th>Trigger Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>message.received</code></td><td>Incoming customer message from WhatsApp.</td></tr>
+            <tr><td><code>message.delivered</code></td><td>Recipient phone received outbound message.</td></tr>
+            <tr><td><code>message.read</code></td><td>Blue checkmark read receipt confirmed.</td></tr>
+            <tr><td><code>lead.created</code></td><td>AI agent or automation captured a verified lead.</td></tr>
+            <tr><td><code>session.disconnected</code></td><td>WhatsApp instance disconnected or QR expired.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 7: Errors -->
+      <section class="api-section" id="errors">
+        <h2 style="font-size:22px;font-weight:800;margin-bottom:12px">Error Codes</h2>
+        <p style="font-size:14.5px;color:#92A0A8;line-height:1.7">
+          NEXORAAI returns standard HTTP status codes. Errors are formatted in standard RFC-7807 JSON.
+        </p>
+        <table class="param-table">
+          <thead>
+            <tr><th>Code</th><th>Error Constant</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>401</code></td><td><code>UNAUTHORIZED</code></td><td>Invalid or revoked API Key.</td></tr>
+            <tr><td><code>404</code></td><td><code>SESSION_NOT_FOUND</code></td><td>Specified session does not exist.</td></tr>
+            <tr><td><code>422</code></td><td><code>INVALID_PHONE_NUMBER</code></td><td>Phone is not formatted in valid E.164.</td></tr>
+            <tr><td><code>429</code></td><td><code>RATE_LIMIT_EXCEEDED</code></td><td>Too many requests within 60s window.</td></tr>
+            <tr><td><code>503</code></td><td><code>WHATSAPP_GATEWAY_DOWN</code></td><td>Meta Cloud API or socket unreachable.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+    </main>
+
+    <!-- RIGHT CODE SAMPLES PANEL -->
+    <aside class="api-right">
+      <div style="font-size:12px;font-weight:700;color:#92A0A8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px">Interactive Code Examples</div>
+      
+      <div class="code-box-header">
+        <div class="lang-tabs">
+          <button class="lang-btn active" onclick="switchLang('curl', this)">cURL</button>
+          <button class="lang-btn" onclick="switchLang('javascript', this)">JavaScript</button>
+          <button class="lang-btn" onclick="switchLang('python', this)">Python</button>
+          <button class="lang-btn" onclick="switchLang('php', this)">PHP</button>
+        </div>
+        <button class="copy-btn" onclick="copySnippet()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          <span id="copyText">Copy</span>
+        </button>
+      </div>
+
+      <pre class="code-pre" id="codeSnippet"></pre>
+
+      <div style="font-size:12px;font-weight:700;color:#92A0A8;text-transform:uppercase;letter-spacing:0.05em;margin:24px 0 12px">Example JSON Response</div>
+      <div class="code-box-header">
+        <span style="font-size:11px;font-family:'JetBrains Mono',monospace;color:#35D879">200 OK</span>
+        <span style="font-size:11px;color:#92A0A8">application/json</span>
+      </div>
+      <pre class="code-pre" id="responseSnippet">{
+  "status": "success",
+  "data": {
+    "message_id": "msg_984f2b18aa",
+    "session_id": "sess_84719a",
+    "recipient": "+8801700000000",
+    "timestamp": "2026-10-04T12:30:00Z",
+    "delivery_status": "queued"
+  }
+}</pre>
+    </aside>
+
+  </div>
+
+  <script>
+    let currentEndpoint = 'postMsgText';
+    let currentLang = 'curl';
+
+    const snippets = {
+      postMsgText: {
+        curl: `curl -X POST https://api.nexoraai.com/v1/messages/text \\
+  -H "Authorization: Bearer nx_live_YOUR_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "session_id": "sess_84719a",
+    "to": "+8801700000000",
+    "message": "Hello! Your appointment is confirmed for 3:00 PM."
+  }'`,
+        javascript: `import axios from 'axios';
+
+const res = await axios.post('https://api.nexoraai.com/v1/messages/text', {
+  session_id: 'sess_84719a',
+  to: '+8801700000000',
+  message: 'Hello! Your appointment is confirmed for 3:00 PM.'
+}, {
+  headers: {
+    'Authorization': 'Bearer nx_live_YOUR_KEY',
+    'Content-Type': 'application/json'
+  }
+});
+
+console.log(res.data);`,
+        python: `import requests
+
+url = "https://api.nexoraai.com/v1/messages/text"
+headers = {
+    "Authorization": "Bearer nx_live_YOUR_KEY",
+    "Content-Type": "application/json"
+}
+payload = {
+    "session_id": "sess_84719a",
+    "to": "+8801700000000",
+    "message": "Hello! Your appointment is confirmed for 3:00 PM."
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())`,
+        php: `<?php
+$ch = curl_init("https://api.nexoraai.com/v1/messages/text");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Authorization: Bearer nx_live_YOUR_KEY",
+    "Content-Type: application/json"
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+    "session_id" => "sess_84719a",
+    "to" => "+8801700000000",
+    "message" => "Hello! Your appointment is confirmed for 3:00 PM."
+]));
+
+$response = curl_exec($ch);
+curl_close($ch);
+echo $response;
+?>`
+      },
+      postMsgMedia: {
+        curl: `curl -X POST https://api.nexoraai.com/v1/messages/media \\
+  -H "Authorization: Bearer nx_live_YOUR_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "session_id": "sess_84719a",
+    "to": "+8801700000000",
+    "media_type": "document",
+    "media_url": "https://storage.nexoraai.com/invoices/inv_2026.pdf",
+    "caption": "Your tax invoice for Order #8472"
+  }'`,
+        javascript: `import axios from 'axios';
+
+const res = await axios.post('https://api.nexoraai.com/v1/messages/media', {
+  session_id: 'sess_84719a',
+  to: '+8801700000000',
+  media_type: 'document',
+  media_url: 'https://storage.nexoraai.com/invoices/inv_2026.pdf',
+  caption: 'Your tax invoice for Order #8472'
+}, {
+  headers: { 'Authorization': 'Bearer nx_live_YOUR_KEY' }
+});`,
+        python: `import requests
+
+requests.post('https://api.nexoraai.com/v1/messages/media', json={
+    'session_id': 'sess_84719a',
+    'to': '+8801700000000',
+    'media_type': 'document',
+    'media_url': 'https://storage.nexoraai.com/invoices/inv_2026.pdf',
+    'caption': 'Your tax invoice for Order #8472'
+}, headers={'Authorization': 'Bearer nx_live_YOUR_KEY'})`,
+        php: `<?php
+// PHP cURL media message dispatch
+$payload = [
+  "session_id" => "sess_84719a",
+  "to" => "+8801700000000",
+  "media_type" => "document",
+  "media_url" => "https://storage.nexoraai.com/invoices/inv_2026.pdf"
+];
+?>`
+      },
+      getSessions: {
+        curl: `curl -X GET https://api.nexoraai.com/v1/sessions \\
+  -H "Authorization: Bearer nx_live_YOUR_KEY"`,
+        javascript: `const res = await fetch('https://api.nexoraai.com/v1/sessions', {
+  headers: { 'Authorization': 'Bearer nx_live_YOUR_KEY' }
+});
+const sessions = await res.json();`,
+        python: `import requests
+res = requests.get('https://api.nexoraai.com/v1/sessions',
+    headers={'Authorization': 'Bearer nx_live_YOUR_KEY'})
+print(res.json())`,
+        php: `<?php
+$res = file_get_contents('https://api.nexoraai.com/v1/sessions', false, stream_context_create([
+  'http' => ['header' => 'Authorization: Bearer nx_live_YOUR_KEY']
+]));`
+      }
+    };
+
+    function renderCode() {
+      const codeBox = document.getElementById('codeSnippet');
+      const sample = snippets[currentEndpoint] || snippets.postMsgText;
+      codeBox.textContent = sample[currentLang] || sample.curl;
+    }
+
+    function switchLang(lang, btn) {
+      currentLang = lang;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderCode();
+    }
+
+    function updateCode(endpointKey) {
+      if (snippets[endpointKey]) {
+        currentEndpoint = endpointKey;
+        renderCode();
+      }
+    }
+
+    function setActiveNav(link) {
+      document.querySelectorAll('.api-nav-link').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+    }
+
+    function copySnippet() {
+      const text = document.getElementById('codeSnippet').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const copyEl = document.getElementById('copyText');
+        copyEl.textContent = 'Copied!';
+        setTimeout(() => copyEl.textContent = 'Copy', 2000);
+      });
+    }
+
+    // Initialize default code
+    renderCode();
+  </script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Lead Research — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+</head>
+<body class="dark-mode" data-page="lead-research">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('lead-research', 'AI Lead Research & Enrichment');</script>
+
+<main class="dash-main">
+<div class="page-content">
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1 class="page-title">AI Lead Intelligence & Research</h1>
+      <p class="page-subtitle">Enrich domains, uncover B2B decision makers, verify WhatsApp numbers, and assess fit</p>
+    </div>
+  </div>
+
+  <!-- Search Input Bar -->
+  <div class="card" style="margin-bottom:24px;background:var(--bg-card);border:1px solid var(--border);padding:24px">
+    <div style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:8px">Automated Prospecting & Domain Enrichment</div>
+    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px">Enter a company domain (e.g. apexbd.com) or business name to extract organizational structure, verified executive contacts, and tech stack.</p>
+    
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div style="flex:1;min-width:300px;position:relative">
+        <input type="text" id="researchQuery" class="form-control" placeholder="Enter company domain or brand name (e.g. shohoz.com, pathao.com)" value="shophivebd.com" style="height:48px;font-size:15px;padding-left:16px" />
+      </div>
+      <button class="btn btn-primary" onclick="runResearch()" id="researchBtn" style="height:48px;padding:0 24px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span>Research Company</span>
+      </button>
+    </div>
+
+    <!-- Quick pills -->
+    <div style="display:flex;gap:8px;margin-top:12px;align-items:center;flex-wrap:wrap">
+      <span style="font-size:12px;color:var(--text-muted)">Try examples:</span>
+      <span class="badge badge-gray" style="cursor:pointer" onclick="setQuery('waltonbd.com')">waltonbd.com</span>
+      <span class="badge badge-gray" style="cursor:pointer" onclick="setQuery('chaldal.com')">chaldal.com</span>
+      <span class="badge badge-gray" style="cursor:pointer" onclick="setQuery('daraz.com.bd')">daraz.com.bd</span>
+    </div>
+  </div>
+
+  <!-- Loading State (hidden initially) -->
+  <div id="researchLoading" style="display:none;text-align:center;padding:48px 20px;background:var(--bg-card);border-radius:var(--radius-lg);border:1px solid var(--border);margin-bottom:24px">
+    <div class="spinner" style="width:40px;height:40px;border-width:3px;margin:0 auto 16px auto;border-color:var(--primary) transparent transparent transparent"></div>
+    <div style="font-weight:700;font-size:16px;color:var(--text-primary);margin-bottom:4px">AI Intelligence Engine Scanning...</div>
+    <div style="font-size:13px;color:var(--text-secondary)">Crawling domain DNS, verifying MX records, querying WhatsApp presence & decision-maker profiles...</div>
+  </div>
+
+  <!-- Results Container -->
+  <div id="researchResults">
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;margin-bottom:24px">
+      <!-- Company Overview Card -->
+      <div class="card" style="padding:24px">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+          <div style="width:54px;height:54px;border-radius:12px;background:#D9F000;color:#070B0D;font-weight:900;font-size:22px;display:flex;align-items:center;justify-content:center">SH</div>
+          <div>
+            <h3 style="font-size:18px;margin:0 0 2px 0">ShopHive Bangladesh</h3>
+            <a href="#" style="font-size:13px;color:var(--primary);text-decoration:none">https://shophivebd.com ↗</a>
+          </div>
+        </div>
+
+        <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:20px">
+          Leading multi-category direct-to-consumer e-commerce retailer in Dhaka with 45+ employees, handling 1,200+ daily orders across lifestyle and electronics.
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--border);padding-top:16px;font-size:13px">
+          <div style="display:flex;justify-content:space-between">
+            <span style="color:var(--text-muted)">Industry</span>
+            <span style="font-weight:600">E-Commerce & Retail</span>
+          </div>
+          <div style="display:flex;justify-content:space-between">
+            <span style="color:var(--text-muted)">Company Size</span>
+            <span style="font-weight:600">35 - 50 Employees</span>
+          </div>
+          <div style="display:flex;justify-content:space-between">
+            <span style="color:var(--text-muted)">Est. Annual Revenue</span>
+            <span style="font-weight:600;color:var(--primary)">$1.2M - $2.5M USD</span>
+          </div>
+          <div style="display:flex;justify-content:space-between">
+            <span style="color:var(--text-muted)">Headquarters</span>
+            <span style="font-weight:600">Banani, Dhaka, BD</span>
+          </div>
+          <div style="display:flex;justify-content:space-between">
+            <span style="color:var(--text-muted)">Tech Stack</span>
+            <span style="font-weight:600">Shopify Plus, Meta Ads, Klaviyo</span>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted)">ICP Match Fit</span>
+            <span style="font-size:14px;font-weight:800;color:var(--primary)">96% (High Fit)</span>
+          </div>
+          <div style="width:100%;height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden">
+            <div style="width:96%;height:100%;background:linear-gradient(90deg,#9BE600,#D9F000)"></div>
+          </div>
+          <div style="font-size:12px;color:var(--text-secondary);margin-top:8px">💡 High ROI target for automated abandoned cart & WhatsApp customer support bot.</div>
+        </div>
+      </div>
+
+      <!-- Decision Makers Table -->
+      <div class="card" style="padding:24px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div>
+            <h3 style="font-size:16px;margin:0 0 2px 0">Discovered Decision Makers</h3>
+            <span style="font-size:13px;color:var(--text-muted)">3 verified contacts with direct WhatsApp channels found</span>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="saveAllLeads()">Import All (3) to CRM</button>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <!-- Person 1 -->
+          <div style="padding:16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+            <div style="display:flex;align-items:center;gap:14px">
+              <div class="avatar avatar-md" style="background:#D9F000;color:#070B0D;font-weight:800">TM</div>
+              <div>
+                <div style="font-weight:700;font-size:15px;color:var(--text-primary)">Tanvir Mahmud</div>
+                <div style="font-size:13px;color:var(--primary);margin-bottom:2px">Founder & CEO</div>
+                <div style="font-size:12px;color:var(--text-muted);font-family:var(--font-mono)">+880 1711-987654 • tanvir@shophivebd.com</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="badge badge-green">WhatsApp Verified</span>
+              <button class="btn btn-ghost btn-sm" onclick="openWhatsAppDirect('+880 1711-987654')">💬 Message</button>
+              <button class="btn btn-primary btn-sm" onclick="addSingleLead('Tanvir Mahmud', 'ShopHive BD', '+880 1711-987654')">+ Save Lead</button>
+            </div>
+          </div>
+
+          <!-- Person 2 -->
+          <div style="padding:16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+            <div style="display:flex;align-items:center;gap:14px">
+              <div class="avatar avatar-md" style="background:#3B82F6;color:#fff;font-weight:800">SA</div>
+              <div>
+                <div style="font-weight:700;font-size:15px;color:var(--text-primary)">Sabrina Ahmed</div>
+                <div style="font-size:13px;color:#3B82F6;margin-bottom:2px">Head of Operations & Logistics</div>
+                <div style="font-size:12px;color:var(--text-muted);font-family:var(--font-mono)">+880 1822-654321 • sabrina@shophivebd.com</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="badge badge-green">WhatsApp Verified</span>
+              <button class="btn btn-ghost btn-sm" onclick="openWhatsAppDirect('+880 1822-654321')">💬 Message</button>
+              <button class="btn btn-primary btn-sm" onclick="addSingleLead('Sabrina Ahmed', 'ShopHive BD', '+880 1822-654321')">+ Save Lead</button>
+            </div>
+          </div>
+
+          <!-- Person 3 -->
+          <div style="padding:16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+            <div style="display:flex;align-items:center;gap:14px">
+              <div class="avatar avatar-md" style="background:#A855F7;color:#fff;font-weight:800">RK</div>
+              <div>
+                <div style="font-weight:700;font-size:15px;color:var(--text-primary)">Rifat Karim</div>
+                <div style="font-size:13px;color:#A855F7;margin-bottom:2px">Growth & Performance Marketing Lead</div>
+                <div style="font-size:12px;color:var(--text-muted);font-family:var(--font-mono)">+880 1933-112233 • rifat.k@shophivebd.com</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="badge badge-green">WhatsApp Verified</span>
+              <button class="btn btn-ghost btn-sm" onclick="openWhatsAppDirect('+880 1933-112233')">💬 Message</button>
+              <button class="btn btn-primary btn-sm" onclick="addSingleLead('Rifat Karim', 'ShopHive BD', '+880 1933-112233')">+ Save Lead</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;display:flex;gap:12px;align-items:center">
+          <button class="btn btn-ghost btn-sm" onclick="showAiPitchGenerator()">
+            ✨ Generate Personalized WhatsApp Pitch via AI
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+
+<!-- AI Pitch Modal -->
+<div class="modal-overlay" id="pitchModal" style="display:none">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-header">
+      <h3 class="modal-title">AI Personalized WhatsApp Pitch</h3>
+      <button class="modal-close" onclick="closeModal('pitchModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">Generated based on ShopHive's Shopify tech stack and 1,200+ daily orders volume:</p>
+      <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:16px;font-size:14px;color:var(--text-primary);line-height:1.6;font-family:var(--font-mono);white-space:pre-wrap" id="pitchContent">Hi Tanvir,
+
+Noticed ShopHive is doing tremendous volume on Shopify in BD! 🚀
+
+Quick question: Are you currently recovering abandoned carts and sending dispatch tracking via automated WhatsApp messages?
+
+Our clients in Dhaka typically see a 24-32% bump in recovered checkouts within 14 days by swapping SMS for interactive WhatsApp buttons.
+
+Would you be open to a 5-minute video walkthrough this Wednesday?
+
+Best,
+NEXORAAI Team</div>
+      <div class="modal-actions" style="margin-top:20px">
+        <button class="btn btn-secondary" onclick="copyPitch()">📋 Copy Pitch</button>
+        <button class="btn btn-primary" onclick="sendPitchDirect()">Send via WhatsApp</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function setQuery(domain) {
+  document.getElementById('researchQuery').value = domain;
+  runResearch();
+}
+
+function runResearch() {
+  const loading = document.getElementById('researchLoading');
+  const results = document.getElementById('researchResults');
+  results.style.display = 'none';
+  loading.style.display = 'block';
+
+  setTimeout(() => {
+    loading.style.display = 'none';
+    results.style.display = 'block';
+    showToast('AI Intelligence scan completed! 3 decision makers found.', 'success');
+  }, 900);
+}
+
+function addSingleLead(name, company, phone) {
+  showToast(`Saved ${name} (${company}) to Sales Pipeline!`, 'success');
+}
+
+function saveAllLeads() {
+  showToast('All 3 executive contacts imported to CRM Contacts & Pipeline!', 'success');
+}
+
+function openWhatsAppDirect(phone) {
+  window.location.href = `dashboard-inbox.html?phone=${encodeURIComponent(phone)}`;
+}
+
+function showAiPitchGenerator() {
+  document.getElementById('pitchModal').style.display = 'flex';
+}
+
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+function copyPitch() {
+  const text = document.getElementById('pitchContent').innerText;
+  navigator.clipboard.writeText(text);
+  showToast('Pitch copied to clipboard!', 'success');
+}
+
+function sendPitchDirect() {
+  closeModal('pitchModal');
+  window.location.href = `dashboard-inbox.html?phone=%2B8801711987654`;
+}
+</script>
+</body>
+</html>

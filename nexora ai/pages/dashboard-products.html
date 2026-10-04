@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Catalog — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+</head>
+<body class="dark-mode" data-page="products">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('products', 'WhatsApp Product Catalog');</script>
+
+<main class="dash-main">
+<div class="page-content">
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1 class="page-title">Products & Catalog</h1>
+      <p class="page-subtitle">Manage items available for automated WhatsApp shopping, checkout links, and Meta Commerce sync</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-secondary" onclick="syncMetaCatalog()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+        Sync Meta Catalog
+      </button>
+      <button class="btn btn-primary" onclick="openAddProductModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Add Product
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row stats-row-4" style="margin-bottom:24px">
+    <div class="stat-card-dash">
+      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D9F000" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path></svg></div>
+      <div><div class="stat-card-value">142</div><div class="stat-card-label">Active SKUs</div></div>
+    </div>
+    <div class="stat-card-dash">
+      <div class="stat-icon" style="background:var(--success-dim)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#35D879" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div><div class="stat-card-value" style="color:var(--success)">136</div><div class="stat-card-label">In Stock</div></div>
+    </div>
+    <div class="stat-card-dash">
+      <div class="stat-icon" style="background:rgba(217,240,0,0.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D9F000" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+      <div><div class="stat-card-value">৳8.4M</div><div class="stat-card-label">Catalog Value</div></div>
+    </div>
+    <div class="stat-card-dash">
+      <div class="stat-icon" style="background:rgba(59,130,246,0.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><path d="M20 12V22H4V12"></path></svg></div>
+      <div><div class="stat-card-value">520</div><div class="stat-card-label">WhatsApp Sales</div></div>
+    </div>
+  </div>
+
+  <!-- Products Table -->
+  <div class="table-container">
+    <div class="table-toolbar">
+      <div class="table-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="prodSearch" placeholder="Search by name, SKU or category..." oninput="filterProducts()" />
+      </div>
+      <div class="table-filters">
+        <select class="form-control form-control-sm" id="catFilter" onchange="filterProducts()" style="width:140px">
+          <option value="">All Categories</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Footwear">Footwear</option>
+          <option value="Apparel">Apparel</option>
+          <option value="Software">Software</option>
+        </select>
+        <select class="form-control form-control-sm" id="stockFilter" onchange="filterProducts()" style="width:140px">
+          <option value="">All Inventory</option>
+          <option value="in-stock">In Stock</option>
+          <option value="low-stock">Low Stock</option>
+        </select>
+      </div>
+    </div>
+
+    <table class="table" id="productsTable">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>SKU</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Category</th>
+          <th>WhatsApp Status</th>
+          <th style="text-align:right">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="productsBody">
+        <tr data-name="NEXORA WhatsApp Multi-Agent SaaS" data-cat="Software" data-stock="in-stock">
+          <td>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:40px;height:40px;border-radius:8px;background:rgba(217,240,0,0.15);display:flex;align-items:center;justify-content:center;font-size:18px">💻</div>
+              <div>
+                <div style="font-weight:600;color:var(--text-primary)">NEXORA Multi-Agent SaaS (Pro Tier)</div>
+                <div style="font-size:12px;color:var(--text-muted)">Annual subscription license for 5 agents</div>
+              </div>
+            </div>
+          </td>
+          <td style="font-family:var(--font-mono);font-size:13px">NEX-SUB-PRO</td>
+          <td style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">৳ 18,500 / yr</td>
+          <td><span class="badge badge-green">Unlimited</span></td>
+          <td><span class="badge badge-blue">Software</span></td>
+          <td><span class="badge badge-green">Synced to WhatsApp</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="sendProductLink('NEX-SUB-PRO')">🔗 Share</button>
+            <button class="btn btn-ghost btn-sm" onclick="deleteProduct(this)">🗑️</button>
+          </td>
+        </tr>
+
+        <tr data-name="Ergonomic Executive Office Chair" data-cat="Apparel" data-stock="in-stock">
+          <td>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:40px;height:40px;border-radius:8px;background:rgba(59,130,246,0.15);display:flex;align-items:center;justify-content:center;font-size:18px">🪑</div>
+              <div>
+                <div style="font-weight:600;color:var(--text-primary)">Ergonomic Executive Chair</div>
+                <div style="font-size:12px;color:var(--text-muted)">Breathable mesh with lumbar adjust</div>
+              </div>
+            </div>
+          </td>
+          <td style="font-family:var(--font-mono);font-size:13px">FUR-CHR-882</td>
+          <td style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">৳ 14,200</td>
+          <td><span class="badge badge-green">48 Units</span></td>
+          <td><span class="badge badge-purple">Furniture</span></td>
+          <td><span class="badge badge-green">Synced to WhatsApp</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="sendProductLink('FUR-CHR-882')">🔗 Share</button>
+            <button class="btn btn-ghost btn-sm" onclick="deleteProduct(this)">🗑️</button>
+          </td>
+        </tr>
+
+        <tr data-name="Leather Formal Derby Shoes" data-cat="Footwear" data-stock="low-stock">
+          <td>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:40px;height:40px;border-radius:8px;background:rgba(255,184,0,0.15);display:flex;align-items:center;justify-content:center;font-size:18px">👞</div>
+              <div>
+                <div style="font-weight:600;color:var(--text-primary)">Handcrafted Leather Derby Shoes</div>
+                <div style="font-size:12px;color:var(--text-muted)">Full-grain calfskin leather, Black</div>
+              </div>
+            </div>
+          </td>
+          <td style="font-family:var(--font-mono);font-size:13px">SH-DRB-42</td>
+          <td style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">৳ 6,800</td>
+          <td><span class="badge badge-warning">4 Units (Low)</span></td>
+          <td><span class="badge badge-accent">Footwear</span></td>
+          <td><span class="badge badge-green">Synced to WhatsApp</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="sendProductLink('SH-DRB-42')">🔗 Share</button>
+            <button class="btn btn-ghost btn-sm" onclick="deleteProduct(this)">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</main>
+
+<!-- Add Product Modal -->
+<div class="modal-overlay" id="productModal" style="display:none">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-header">
+      <h3 class="modal-title">Add Catalog Product</h3>
+      <button class="modal-close" onclick="closeModal('productModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form onsubmit="handleCreateProduct(event)">
+        <div class="form-group">
+          <label class="form-label">Product Name *</label>
+          <input type="text" id="pName" class="form-control" placeholder="e.g. Wireless Noise Canceling Headphones" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="flex:1">
+            <label class="form-label">SKU Code *</label>
+            <input type="text" id="pSku" class="form-control" placeholder="e.g. ELEC-HP-01" required />
+          </div>
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Price (BDT / ৳) *</label>
+            <input type="number" id="pPrice" class="form-control" placeholder="4500" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Category</label>
+            <select class="form-control" id="pCat">
+              <option value="Electronics">Electronics</option>
+              <option value="Footwear">Footwear</option>
+              <option value="Apparel">Apparel</option>
+              <option value="Software">Software</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Stock Quantity</label>
+            <input type="number" class="form-control" placeholder="50" />
+          </div>
+        </div>
+        <div class="modal-actions" style="margin-top:24px">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('productModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save to WhatsApp Catalog</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function openAddProductModal() {
+  document.getElementById('productModal').style.display = 'flex';
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+function handleCreateProduct(e) {
+  e.preventDefault();
+  const name = document.getElementById('pName').value;
+  const sku = document.getElementById('pSku').value;
+  const price = document.getElementById('pPrice').value;
+  const cat = document.getElementById('pCat').value;
+
+  const tr = document.createElement('tr');
+  tr.setAttribute('data-name', name);
+  tr.setAttribute('data-cat', cat);
+  tr.setAttribute('data-stock', 'in-stock');
+  tr.innerHTML = `
+    <td>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;border-radius:8px;background:rgba(217,240,0,0.15);display:flex;align-items:center;justify-content:center;font-size:18px">📦</div>
+        <div>
+          <div style="font-weight:600;color:var(--text-primary)">${name}</div>
+          <div style="font-size:12px;color:var(--text-muted)">Newly listed item</div>
+        </div>
+      </div>
+    </td>
+    <td style="font-family:var(--font-mono);font-size:13px">${sku}</td>
+    <td style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">৳ ${Number(price).toLocaleString()}</td>
+    <td><span class="badge badge-green">In Stock</span></td>
+    <td><span class="badge badge-blue">${cat}</span></td>
+    <td><span class="badge badge-green">Synced to WhatsApp</span></td>
+    <td style="text-align:right">
+      <button class="btn btn-ghost btn-sm" onclick="sendProductLink('${sku}')">🔗 Share</button>
+      <button class="btn btn-ghost btn-sm" onclick="deleteProduct(this)">🗑️</button>
+    </td>
+  `;
+  document.getElementById('productsBody').prepend(tr);
+  closeModal('productModal');
+  showToast(`Product "${name}" saved and synced to WhatsApp catalog!`, 'success');
+}
+
+function syncMetaCatalog() {
+  showToast('Connecting to Meta Commerce API... 142 items synced successfully!', 'success');
+}
+
+function sendProductLink(sku) {
+  showToast(`Direct WhatsApp product card link copied for ${sku}!`, 'success');
+}
+
+function deleteProduct(btn) {
+  if (confirm('Delete this product from catalog?')) {
+    btn.closest('tr').remove();
+    showToast('Product removed', 'info');
+  }
+}
+
+function filterProducts() {
+  const q = document.getElementById('prodSearch').value.toLowerCase();
+  const cat = document.getElementById('catFilter').value.toLowerCase();
+  const stock = document.getElementById('stockFilter').value.toLowerCase();
+
+  document.querySelectorAll('#productsBody tr').forEach(r => {
+    const text = r.innerText.toLowerCase();
+    const rCat = (r.getAttribute('data-cat') || '').toLowerCase();
+    const rStock = (r.getAttribute('data-stock') || '').toLowerCase();
+
+    const matchesQ = !q || text.includes(q);
+    const matchesCat = !cat || rCat === cat;
+    const matchesStock = !stock || rStock === stock;
+
+    r.style.display = (matchesQ && matchesCat && matchesStock) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>

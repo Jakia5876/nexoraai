@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automations & Flows — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <style>
+    .flow-canvas {
+      background: #090E11;
+      background-image: radial-gradient(rgba(217, 240, 0, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      min-height: 580px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    .flow-node {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      width: 320px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      position: relative;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+    .flow-node:hover {
+      border-color: var(--primary);
+    }
+    .flow-node-header {
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .flow-node-body {
+      padding: 14px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    .flow-connector {
+      width: 2px;
+      height: 28px;
+      background: var(--border);
+      position: relative;
+      margin-bottom: 8px;
+    }
+    .flow-connector::after {
+      content: '▼';
+      position: absolute;
+      bottom: -6px;
+      left: -5px;
+      font-size: 10px;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body class="dark-mode" data-page="automations">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('automations', 'Workflow Automations');</script>
+
+<main class="dash-main">
+<div class="page-content">
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1 class="page-title">Automations & Flow Builder</h1>
+      <p class="page-subtitle">Build intelligent conditional logic, webhook triggers, and autonomous AI agents for WhatsApp</p>
+    </div>
+    <div class="page-header-actions">
+      <div style="display:flex;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:2px">
+        <button class="btn btn-sm btn-primary" id="btnVisual" onclick="setFlowView('visual')">Canvas Builder</button>
+        <button class="btn btn-sm btn-ghost" id="btnList" onclick="setFlowView('list')">All Workflows (6)</button>
+      </div>
+      <button class="btn btn-primary" onclick="openNewFlowModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Create Flow
+      </button>
+    </div>
+  </div>
+
+  <!-- Visual Canvas Builder View -->
+  <div id="visualBuilderView">
+    <!-- Top toolbar for Canvas -->
+    <div style="display:flex;justify-content:space-between;align-items:center;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 16px;margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-weight:700;color:var(--text-primary);font-size:14px">Active Flow: Inbound Lead Qualifier & AI Router</span>
+        <span class="badge badge-green">Running</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="addNodePrompt()">+ Add Step Node</button>
+        <button class="btn btn-secondary btn-sm" onclick="testFlowSimulator()">🧪 Test Flow</button>
+        <button class="btn btn-primary btn-sm" onclick="saveWorkflow()">Save & Deploy</button>
+      </div>
+    </div>
+
+    <!-- Canvas Flow Area -->
+    <div class="flow-canvas" id="canvasNodes">
+      <!-- Node 1: Trigger -->
+      <div class="flow-node">
+        <div class="flow-node-header" style="background:rgba(59,130,246,0.1);color:#3B82F6">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span>⚡ Trigger: Incoming WhatsApp Message</span>
+          </div>
+          <span style="font-size:11px;color:var(--text-muted)">Step 1</span>
+        </div>
+        <div class="flow-node-body">
+          Matches any incoming message containing keywords: <span class="badge badge-gray">price</span>, <span class="badge badge-gray">service</span>, <span class="badge badge-gray">demo</span>, or new chats.
+        </div>
+      </div>
+
+      <div class="flow-connector"></div>
+
+      <!-- Node 2: Condition / Branch -->
+      <div class="flow-node">
+        <div class="flow-node-header" style="background:rgba(255,184,0,0.1);color:#FFB800">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span>🔀 Condition: Business Hours Check</span>
+          </div>
+          <span style="font-size:11px;color:var(--text-muted)">Step 2</span>
+        </div>
+        <div class="flow-node-body">
+          <div>If Time is between <strong>09:00 AM – 08:00 PM (Dhaka UTC+6)</strong>:</div>
+          <div style="margin-top:6px;font-size:12px;color:var(--success)">➔ Route to AI Sales Specialist</div>
+          <div style="font-size:12px;color:var(--text-muted)">➔ Else: Send After-Hours Auto-reply with Catalog</div>
+        </div>
+      </div>
+
+      <div class="flow-connector"></div>
+
+      <!-- Node 3: AI Agent Action -->
+      <div class="flow-node">
+        <div class="flow-node-header" style="background:rgba(217,240,0,0.15);color:var(--primary)">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span>🤖 AI Action: Autonomous Knowledge Reply</span>
+          </div>
+          <span style="font-size:11px;color:var(--text-muted)">Step 3</span>
+        </div>
+        <div class="flow-node-body">
+          Model: <strong>GPT-4o (Temp 0.3)</strong><br>
+          Knowledge Base: <span class="badge badge-blue">NEXORAAI Product Specs</span><br>
+          <div style="margin-top:6px;font-size:12px">Extracts user requirements, suggests tier, answers pricing queries, and prompts for contact info.</div>
+        </div>
+      </div>
+
+      <div class="flow-connector"></div>
+
+      <!-- Node 4: CRM Action -->
+      <div class="flow-node">
+        <div class="flow-node-header" style="background:rgba(53,216,121,0.1);color:var(--success)">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span>📊 CRM Action: Create Lead & Tag</span>
+          </div>
+          <span style="font-size:11px;color:var(--text-muted)">Step 4</span>
+        </div>
+        <div class="flow-node-body">
+          Assigns Tag <span class="badge badge-accent">Qualified Inbound</span>. Moves deal to <strong>Pipeline: Contacted</strong>. Notifies sales rep on Telegram & Email.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- List View (Hidden by default) -->
+  <div id="listViewWorkflows" style="display:none" class="table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Workflow Name</th>
+          <th>Trigger Event</th>
+          <th>Total Runs</th>
+          <th>Success Rate</th>
+          <th>Status</th>
+          <th style="text-align:right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div style="font-weight:600;color:var(--text-primary)">Inbound Lead Qualifier & AI Router</div>
+            <div style="font-size:12px;color:var(--text-muted)">Updated 2 days ago</div>
+          </td>
+          <td><span class="badge badge-blue">New Message Received</span></td>
+          <td style="font-family:var(--font-mono)">14,820</td>
+          <td><span style="color:var(--success);font-weight:700">99.8%</span></td>
+          <td><span class="badge badge-green">Active</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="setFlowView('visual')">Edit Canvas</button>
+            <button class="btn btn-ghost btn-sm" onclick="showToast('Workflow paused', 'info')">Pause</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div style="font-weight:600;color:var(--text-primary)">Shopify Cart Recovery WhatsApp Ping</div>
+            <div style="font-size:12px;color:var(--text-muted)">Webhook Triggered</div>
+          </td>
+          <td><span class="badge badge-purple">Webhook: checkouts/create</span></td>
+          <td style="font-family:var(--font-mono)">3,410</td>
+          <td><span style="color:var(--success);font-weight:700">99.1%</span></td>
+          <td><span class="badge badge-green">Active</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="setFlowView('visual')">Edit Canvas</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div style="font-weight:600;color:var(--text-primary)">After-Hours Auto Responder</div>
+            <div style="font-size:12px;color:var(--text-muted)">Schedule Triggered</div>
+          </td>
+          <td><span class="badge badge-yellow">Schedule: 08:00 PM - 09:00 AM</span></td>
+          <td style="font-family:var(--font-mono)">8,120</td>
+          <td><span style="color:var(--success);font-weight:700">100%</span></td>
+          <td><span class="badge badge-green">Active</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="setFlowView('visual')">Edit Canvas</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</main>
+
+<!-- Test Flow Simulator Modal -->
+<div class="modal-overlay" id="simModal" style="display:none">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <h3 class="modal-title">🧪 Workflow Simulation Tester</h3>
+      <button class="modal-close" onclick="closeModal('simModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">Test how your workflow responds to an inbound WhatsApp phrase:</p>
+      <input type="text" id="simInput" class="form-control" value="Hello! What is your pricing for WhatsApp API?" style="margin-bottom:12px" />
+      <button class="btn btn-primary btn-sm" onclick="runSimExecution()">Simulate Execution</button>
+
+      <div id="simLog" style="margin-top:16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;font-family:var(--font-mono);font-size:12px;line-height:1.6;display:none">
+        <span style="color:#3B82F6">[12:45:01] ⚡ Trigger activated: Inbound msg</span><br>
+        <span style="color:#FFB800">[12:45:01] 🔀 Condition matched: Dhaka Business Hours (TRUE)</span><br>
+        <span style="color:var(--primary)">[12:45:02] 🤖 AI Agent generated response in 420ms</span><br>
+        <span style="color:var(--success)">[12:45:03] 📊 Contact updated & Lead score set to 88</span><br>
+        <span style="color:var(--success)">✅ Flow executed flawlessly in 1.1s</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function setFlowView(view) {
+  if (view === 'visual') {
+    document.getElementById('visualBuilderView').style.display = 'block';
+    document.getElementById('listViewWorkflows').style.display = 'none';
+    document.getElementById('btnVisual').className = 'btn btn-sm btn-primary';
+    document.getElementById('btnList').className = 'btn btn-sm btn-ghost';
+  } else {
+    document.getElementById('visualBuilderView').style.display = 'none';
+    document.getElementById('listViewWorkflows').style.display = 'block';
+    document.getElementById('btnVisual').className = 'btn btn-sm btn-ghost';
+    document.getElementById('btnList').className = 'btn btn-sm btn-primary';
+  }
+}
+
+function testFlowSimulator() {
+  document.getElementById('simModal').style.display = 'flex';
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+function runSimExecution() {
+  const log = document.getElementById('simLog');
+  log.style.display = 'block';
+  showToast('Simulation completed with 100% success!', 'success');
+}
+function saveWorkflow() {
+  showToast('Workflow saved and deployed to live WhatsApp listener!', 'success');
+}
+function addNodePrompt() {
+  showToast('Select action node: Send WhatsApp, AI Agent, Webhook, or Delay', 'info');
+}
+function openNewFlowModal() {
+  showToast('Starting new visual automation workflow...', 'info');
+}
+</script>
+</body>
+</html>
