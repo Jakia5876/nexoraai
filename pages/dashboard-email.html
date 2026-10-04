@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bulk Email Blaster — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <style>
+    .email-preview-container {
+      background: #0B0F12;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+    .email-preview-topbar {
+      background: #141B20;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .email-dot {
+      width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+    }
+    .email-window-body {
+      background: #ffffff;
+      color: #1a1a1a;
+      padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      min-height: 380px;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+    .preview-mode-mobile {
+      max-width: 380px;
+      margin: 0 auto;
+      border: 8px solid #2A363F;
+      border-radius: 28px;
+    }
+  </style>
+</head>
+<body class="dark-mode" data-page="email">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('email', 'Bulk Email Blaster');</script>
+
+<main class="dash-main">
+<div class="page-content">
+
+  <!-- Multi-Channel Navigation Tabs -->
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px">
+    <a href="dashboard-broadcasts.html" class="btn btn-ghost btn-sm" style="gap:6px">
+      <span>💬</span> WhatsApp Bulk SMS
+    </a>
+    <a href="dashboard-email.html" class="btn btn-primary btn-sm" style="gap:6px">
+      <span>✉️</span> Bulk Email Blaster
+      <span class="badge badge-green" style="font-size:9px;padding:1px 5px">ACTIVE</span>
+    </a>
+    <a href="dashboard-campaigns.html" class="btn btn-ghost btn-sm" style="gap:6px">
+      <span>📑</span> Campaign Templates
+    </a>
+  </div>
+
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1 class="page-title">Bulk Email Campaign Blaster</h1>
+      <p class="page-subtitle">Send high-deliverability marketing blasts and transactional email broadcasts via SMTP, Resend, SendGrid, and AWS SES.</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-secondary" onclick="openSmtpSettings()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4"></path></svg>
+        SMTP Configuration
+      </button>
+      <button class="btn btn-secondary" onclick="switchMainTab('history')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+        Blast Logs & Stats
+      </button>
+    </div>
+  </div>
+
+  <!-- Deliverability & SMTP Status Hero Banner -->
+  <div style="background:rgba(217,240,0,0.05);border:1px solid rgba(217,240,0,0.22);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="width:42px;height:42px;border-radius:10px;background:rgba(217,240,0,0.15);display:flex;align-items:center;justify-content:center;color:var(--primary);font-size:22px">
+        🚀
+      </div>
+      <div>
+        <div style="font-weight:700;font-size:14.5px;color:var(--text-primary);display:flex;align-items:center;gap:8px">
+          High-Reputation SMTP Cluster Active
+          <span class="badge badge-green" style="font-size:10px">SPF / DKIM / DMARC PASS</span>
+        </div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-top:2px">
+          Sending through <strong style="color:#fff">smtp.resend.com:587</strong> with 99.6% inbox deliverability and TLS 1.3 encryption.
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px">
+      <div style="text-align:right">
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:700">Monthly Quota</div>
+        <div style="font-family:var(--font-mono);font-size:13px;color:var(--primary);font-weight:600">128,450 / 250,000 sent</div>
+      </div>
+      <div class="badge badge-accent" style="padding:6px 12px;font-size:12px">Tier: Unlimited Blast</div>
+    </div>
+  </div>
+
+  <!-- Section 1: Composer & Preview -->
+  <div id="sectionCompose">
+    <div style="display:grid;grid-template-columns:1.8fr 1.2fr;gap:24px">
+
+      <!-- Left Column: Email Composer Form -->
+      <div class="card" style="padding:24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+          <h3 style="font-size:16px;margin:0">Compose Bulk Email Blast</h3>
+          <div style="display:flex;gap:6px">
+            <button type="button" class="btn btn-ghost btn-sm" onclick="applyTemplate('launch')">🚀 Launch</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="applyTemplate('discount')">🏷️ Promo</button>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="applyTemplate('newsletter')">📰 Digest</button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Sender Name *</label>
+            <input type="text" class="form-control" id="senderName" value="Jakia Dantal | NEXORAAI" oninput="updateEmailPreview()" />
+          </div>
+          <div class="form-group" style="flex:1">
+            <label class="form-label">From Email (Authorized) *</label>
+            <select class="form-control" id="senderEmail" onchange="updateEmailPreview()">
+              <option value="jakiadantal@gmail.com">jakiadantal@gmail.com (Root Admin Verified)</option>
+              <option value="notifications@nexoraai.com">notifications@nexoraai.com (System Domain)</option>
+              <option value="newsletter@nexoraai.com">newsletter@nexoraai.com (Marketing Stream)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Recipient Mode Selector -->
+        <div class="form-group">
+          <label class="form-label">Recipients Audience *</label>
+          <div style="display:flex;gap:10px;margin-bottom:12px">
+            <button type="button" class="btn btn-primary btn-sm" id="btnEmailSeg" onclick="switchEmailRecipientMode('segment')">
+              👥 CRM Contact Segment
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btnEmailCsv" onclick="switchEmailRecipientMode('csv')">
+              📋 Paste Emails / CSV Upload
+            </button>
+          </div>
+
+          <div id="emailSegmentBox">
+            <select class="form-control" id="emailAudienceSelect" onchange="updateEmailRecipientCount()">
+              <option value="3840">All Verified Customers & Leads (3,840 emails)</option>
+              <option value="1150">High-Value Enterprise VIP Accounts (1,150 emails)</option>
+              <option value="4920">Newsletter & Blog Subscribers (4,920 emails)</option>
+              <option value="890">Cart Abandoners with High Intent (890 emails)</option>
+              <option value="12">Internal Executive Team (12 emails)</option>
+            </select>
+          </div>
+
+          <div id="emailCsvBox" style="display:none">
+            <textarea id="emailCustomList" class="form-control" rows="3" placeholder="Paste recipient email addresses separated by comma or new lines...&#10;e.g.&#10;tanvir@shophivebd.com&#10;farhana@apexbd.com&#10;rahim@gmail.com" oninput="countCustomEmails()" style="font-family:var(--font-mono);font-size:12.5px"></textarea>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
+              <span id="emailCountLabel" style="font-size:12px;color:var(--primary);font-weight:600">0 emails detected</span>
+              <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('emailFileInput').click()">📁 Upload CSV / TXT</button>
+              <input type="file" id="emailFileInput" accept=".csv,.txt" style="display:none" onchange="handleEmailCsvUpload(this)" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Subject Line & Preheader -->
+        <div class="form-group">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <label class="form-label" style="margin:0">Email Subject Line *</label>
+            <div style="display:flex;gap:4px">
+              <button type="button" class="btn btn-ghost btn-sm" style="font-size:11px;padding:2px 6px" onclick="insertSubjectTag('{{first_name}}')">+ First Name</button>
+              <button type="button" class="btn btn-ghost btn-sm" style="font-size:11px;padding:2px 6px" onclick="insertSubjectTag('🔥 20% OFF')">🔥 Discount</button>
+            </div>
+          </div>
+          <input type="text" class="form-control" id="emailSubject" value="Special Announcement: Accelerate your business with NEXORAAI 🚀" oninput="updateEmailPreview()" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Preheader Snippet (Inbox preview line)</label>
+          <input type="text" class="form-control" id="emailPreheader" value="Unlock multi-channel WhatsApp and automated AI workflows today." oninput="updateEmailPreview()" />
+        </div>
+
+        <!-- Body Content -->
+        <div class="form-group">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <label class="form-label" style="margin:0">Email Body (HTML / Rich Text) *</label>
+            <div style="display:flex;gap:4px;flex-wrap:wrap">
+              <button type="button" class="btn btn-ghost btn-sm" style="font-size:11px;padding:2px 6px" onclick="insertBodyTag('{{first_name}}')">+ Name</button>
+              <button type="button" class="btn btn-ghost btn-sm" style="font-size:11px;padding:2px 6px" onclick="insertBodyTag('{{company}}')">+ Company</button>
+              <button type="button" class="btn btn-ghost btn-sm" style="font-size:11px;padding:2px 6px" onclick="insertBodyTag('{{coupon_code}}')">+ Coupon</button>
+              <button type="button" class="btn btn-ghost btn-sm" style="font-size:11px;padding:2px 6px" onclick="insertBodyTag('{{unsubscribe_url}}')">+ Unsubscribe</button>
+            </div>
+          </div>
+          <textarea id="emailBodyInput" class="form-control" rows="8" oninput="updateEmailPreview()" style="font-family:var(--font-mono);font-size:12.5px;line-height:1.5"><h2 style="color:#070B0D;margin-top:0">Hello {{first_name}},</h2>
+<p style="color:#4A5568;line-height:1.6;font-size:15px">
+We are thrilled to welcome you to the all-new <strong>NEXORAAI Multi-Channel Suite</strong>. Empower your team with unified WhatsApp automation, intelligent AI sales agents, and automated CRM pipelines.
+</p>
+<div style="background:#F7FAFC;border-left:4px solid #D9F000;padding:16px;border-radius:6px;margin:20px 0">
+  <strong style="color:#070B0D">Your Exclusive Welcome Perk:</strong><br>
+  Use promo code <span style="background:#E2E8F0;padding:2px 6px;border-radius:4px;font-family:monospace;font-weight:bold">{{coupon_code}}</span> for 20% off your plan upgrade.
+</div>
+<p style="text-align:center;margin:28px 0">
+  <a href="https://nexoraai.com/dashboard" style="background:#070B0D;color:#D9F000;padding:12px 28px;text-decoration:none;border-radius:8px;font-weight:700;display:inline-block">Open My Dashboard →</a>
+</p>
+<p style="color:#718096;font-size:13px;line-height:1.5">
+If you have questions, reply directly to this email or reach us on WhatsApp.<br>
+Best regards,<br>
+<strong>Jakia Dantal & The NEXORAAI Team</strong>
+</p></textarea>
+        </div>
+
+        <!-- Throttling & Anti-Spam Options -->
+        <div class="form-row">
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Dispatch Throttling</label>
+            <select class="form-control" id="emailSpeed">
+              <option value="safe">Safe Deliverability (100 emails/min)</option>
+              <option value="standard">Standard Blast (500 emails/min)</option>
+              <option value="turbo">High Speed Turbo (2,000 emails/min)</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Schedule Blast</label>
+            <select class="form-control">
+              <option>Send Immediately</option>
+              <option>In 1 Hour</option>
+              <option>Tomorrow at 9:00 AM</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:18px;margin-bottom:20px;background:rgba(255,255,255,0.03);padding:10px 14px;border-radius:8px">
+          <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--text-secondary);cursor:pointer">
+            <input type="checkbox" checked /> Track Opens (Pixel)
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--text-secondary);cursor:pointer">
+            <input type="checkbox" checked /> Track Link Clicks
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--text-secondary);cursor:pointer">
+            <input type="checkbox" checked /> RFC-8058 Unsubscribe
+          </label>
+        </div>
+
+        <div style="display:flex;gap:12px;align-items:center">
+          <button class="btn btn-primary" onclick="startEmailBlastProcess()" id="startEmailBlastBtn" style="padding:12px 24px">
+            🚀 Launch Bulk Email Blast
+          </button>
+          <button class="btn btn-secondary" onclick="sendTestEmail()">
+            ✉️ Send Test to Admin Inbox
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Live Email Preview & Progress -->
+      <div style="display:flex;flex-direction:column;gap:20px">
+
+        <!-- Live Email Client Window -->
+        <div class="email-preview-container" id="emailPreviewBox">
+          <div class="email-preview-topbar">
+            <div style="display:flex;gap:6px;align-items:center">
+              <span class="email-dot" style="background:#FF5F56"></span>
+              <span class="email-dot" style="background:#FFBD2E"></span>
+              <span class="email-dot" style="background:#27C93F"></span>
+              <span style="font-size:11px;color:var(--text-muted);margin-left:8px;font-family:var(--font-mono)">Mail Client Preview</span>
+            </div>
+            <div style="display:flex;gap:6px">
+              <button class="btn btn-ghost btn-sm" id="btnViewDesktop" onclick="setEmailViewMode('desktop')" style="padding:2px 8px;font-size:11px">🖥️ Desktop</button>
+              <button class="btn btn-ghost btn-sm" id="btnViewMobile" onclick="setEmailViewMode('mobile')" style="padding:2px 8px;font-size:11px">📱 Mobile</button>
+            </div>
+          </div>
+
+          <!-- Email Headers Simulation -->
+          <div style="background:#182026;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:12.5px">
+            <div style="color:var(--text-muted);display:flex;gap:8px;margin-bottom:4px">
+              <span style="width:50px">From:</span>
+              <strong style="color:#F5F7F8" id="prevFrom">Jakia Dantal &lt;jakiadantal@gmail.com&gt;</strong>
+            </div>
+            <div style="color:var(--text-muted);display:flex;gap:8px;margin-bottom:4px">
+              <span style="width:50px">To:</span>
+              <span style="color:#D9F000" id="prevTo">rahim@shophivebd.com (Recipient)</span>
+            </div>
+            <div style="color:var(--text-muted);display:flex;gap:8px">
+              <span style="width:50px">Subject:</span>
+              <span style="color:#fff;font-weight:600" id="prevSubject">Special Announcement: Accelerate your business with NEXORAAI 🚀</span>
+            </div>
+          </div>
+
+          <!-- Email Rendered Body -->
+          <div class="email-window-body" id="prevBody">
+            <!-- Dynamic Content Injected Here -->
+          </div>
+
+          <!-- Unsubscribe footer mock -->
+          <div style="background:#f1f5f9;color:#64748b;padding:12px;font-size:11px;text-align:center;border-top:1px solid #e2e8f0">
+            NEXORAAI Inc. • 124 Commercial Avenue, Dhaka 1212<br>
+            You received this email because you are a registered user. <a href="#" style="color:#0284c7">Unsubscribe</a>
+          </div>
+        </div>
+
+        <!-- Real-time Progress Card (Visible during send) -->
+        <div class="card" id="emailProgressCard" style="padding:20px;display:none;border:1px solid rgba(217,240,0,0.3)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <div style="font-weight:700;font-size:14px;color:var(--text-primary);display:flex;align-items:center;gap:8px">
+              <span class="spinner" style="width:14px;height:14px;border:2px solid var(--primary);border-top-color:transparent;border-radius:50%;display:inline-block;animation:spin 0.8s linear infinite"></span>
+              Dispatching Bulk Email Blast...
+            </div>
+            <span class="badge badge-accent" id="emailProgressPct">0%</span>
+          </div>
+          <div style="width:100%;height:10px;background:rgba(255,255,255,0.08);border-radius:5px;overflow:hidden;margin-bottom:12px">
+            <div id="emailProgressBar" style="width:0%;height:100%;background:linear-gradient(90deg,#9BE600,#D9F000);transition:width 0.25s ease"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-secondary);font-family:var(--font-mono);margin-bottom:10px">
+            <span id="emailSentCounter">Sent: 0 / 3,840</span>
+            <span id="emailSpeedLabel">Rate: ~240 emails/sec</span>
+          </div>
+          <!-- Live Event Log Stream -->
+          <div id="emailStreamLog" style="background:#070B0D;border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-family:var(--font-mono);font-size:11px;color:#9BE600;max-height:80px;overflow-y:auto">
+            [14:45:00] SMTP Relay connected (smtp.resend.com)...
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Blast Logs & Analytics Table -->
+  <div id="sectionHistory" style="display:none;margin-top:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h3 style="font-size:16px;margin:0">Email Blast Campaign History</h3>
+      <button class="btn btn-secondary btn-sm" onclick="switchMainTab('compose')">← Back to Composer</button>
+    </div>
+
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Campaign Name</th>
+            <th>Audience</th>
+            <th>Dispatched</th>
+            <th>Deliverability</th>
+            <th>Open Rate</th>
+            <th>Click Rate</th>
+            <th>Status</th>
+            <th style="text-align:right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div style="font-weight:600;color:var(--text-primary)">Q3 Enterprise Product Roadmap</div>
+              <div style="font-size:12px;color:var(--text-muted)">From: jakiadantal@gmail.com</div>
+            </td>
+            <td><span class="badge badge-purple">Enterprise VIPs</span></td>
+            <td style="font-family:var(--font-mono)">1,150</td>
+            <td><span class="badge badge-green">99.8% (1,148)</span></td>
+            <td><strong style="color:#D9F000">54.2%</strong></td>
+            <td><strong>26.8%</strong></td>
+            <td><span class="badge badge-green">Completed</span></td>
+            <td style="text-align:right">
+              <button class="btn btn-ghost btn-sm" onclick="showToast('Loading full campaign analytics...', 'info')">View Report</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="font-weight:600;color:var(--text-primary)">September Monthly Platform Changelog</div>
+              <div style="font-size:12px;color:var(--text-muted)">From: notifications@nexoraai.com</div>
+            </td>
+            <td><span class="badge badge-accent">All Users</span></td>
+            <td style="font-family:var(--font-mono)">4,920</td>
+            <td><span class="badge badge-green">99.4% (4,890)</span></td>
+            <td><strong style="color:#D9F000">41.8%</strong></td>
+            <td><strong>18.4%</strong></td>
+            <td><span class="badge badge-green">Completed</span></td>
+            <td style="text-align:right">
+              <button class="btn btn-ghost btn-sm" onclick="showToast('Loading full campaign analytics...', 'info')">View Report</button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="font-weight:600;color:var(--text-primary)">Flash Sale Promo Blast - 30% Off</div>
+              <div style="font-size:12px;color:var(--text-muted)">From: jakiadantal@gmail.com</div>
+            </td>
+            <td><span class="badge badge-blue">Cart Abandoners</span></td>
+            <td style="font-family:var(--font-mono)">890</td>
+            <td><span class="badge badge-green">99.1% (882)</span></td>
+            <td><strong style="color:#D9F000">62.4%</strong></td>
+            <td><strong>34.1%</strong></td>
+            <td><span class="badge badge-green">Completed</span></td>
+            <td style="text-align:right">
+              <button class="btn btn-ghost btn-sm" onclick="showToast('Loading full campaign analytics...', 'info')">View Report</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<!-- SMTP Settings Modal -->
+<div class="modal-overlay" id="smtpModal" style="display:none;z-index:99999;align-items:center;justify-content:center">
+  <div class="modal" style="max-width:540px;background:#0C1114;border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:0 24px 60px rgba(0,0,0,0.8)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+      <h3 style="font-size:17px;margin:0;color:var(--text-primary)">⚙️ SMTP Relay Configuration</h3>
+      <button class="btn-icon" onclick="closeSmtpSettings()">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">SMTP Provider Preset</label>
+      <select class="form-control" onchange="presetSmtp(this.value)">
+        <option value="resend">Resend (smtp.resend.com)</option>
+        <option value="sendgrid">SendGrid (smtp.sendgrid.net)</option>
+        <option value="ses">Amazon SES (email-smtp.us-east-1.amazonaws.com)</option>
+        <option value="gmail">Google Workspace / Gmail (smtp.gmail.com)</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <div class="form-group" style="flex:2">
+        <label class="form-label">SMTP Host</label>
+        <input type="text" class="form-control" id="smtpHost" value="smtp.resend.com" />
+      </div>
+      <div class="form-group" style="flex:1">
+        <label class="form-label">Port</label>
+        <input type="number" class="form-control" id="smtpPort" value="587" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">SMTP Username / API Key</label>
+      <input type="text" class="form-control" value="resend" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">SMTP Password / Secret</label>
+      <input type="password" class="form-control" value="re_live_849204918230" />
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+      <button class="btn btn-secondary" onclick="closeSmtpSettings()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveSmtpConfig()">Save & Test Connection</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let activeEmailRecipientMode = 'segment';
+let customEmails = [];
+
+const EMAIL_TEMPLATES = {
+  launch: {
+    subject: "Special Announcement: Accelerate your business with NEXORAAI 🚀",
+    preheader: "Unlock multi-channel WhatsApp and automated AI workflows today.",
+    body: `<h2 style="color:#070B0D;margin-top:0">Hello {{first_name}},</h2>
+<p style="color:#4A5568;line-height:1.6;font-size:15px">
+We are thrilled to welcome you to the all-new <strong>NEXORAAI Multi-Channel Suite</strong>. Empower your team with unified WhatsApp automation, intelligent AI sales agents, and automated CRM pipelines.
+</p>
+<div style="background:#F7FAFC;border-left:4px solid #D9F000;padding:16px;border-radius:6px;margin:20px 0">
+  <strong style="color:#070B0D">Your Exclusive Welcome Perk:</strong><br>
+  Use promo code <span style="background:#E2E8F0;padding:2px 6px;border-radius:4px;font-family:monospace;font-weight:bold">{{coupon_code}}</span> for 20% off your plan upgrade.
+</div>
+<p style="text-align:center;margin:28px 0">
+  <a href="https://nexoraai.com/dashboard" style="background:#070B0D;color:#D9F000;padding:12px 28px;text-decoration:none;border-radius:8px;font-weight:700;display:inline-block">Open My Dashboard →</a>
+</p>
+<p style="color:#718096;font-size:13px;line-height:1.5">
+If you have questions, reply directly to this email or reach us on WhatsApp.<br>
+Best regards,<br>
+<strong>Jakia Dantal & The NEXORAAI Team</strong>
+</p>`
+  },
+  discount: {
+    subject: "🔥 Exclusive 30% Flash Sale: Upgrade your account today!",
+    preheader: "Save 30% on Professional & Enterprise tiers before midnight.",
+    body: `<div style="text-align:center;padding:10px 0">
+  <span style="background:#FF5B5B;color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;text-transform:uppercase">Limited Time Offer</span>
+  <h2 style="color:#070B0D;font-size:24px;margin:12px 0">Save 30% On All NEXORAAI Plans</h2>
+  <p style="color:#4A5568;font-size:15px;max-width:440px;margin:0 auto 20px">Hello {{first_name}}, scale your customer chats with unlimited WhatsApp broadcasts and multi-agent AI for {{company}}.</p>
+  <a href="https://nexoraai.com/pricing" style="background:#D9F000;color:#070B0D;padding:14px 32px;font-weight:800;text-decoration:none;border-radius:8px;display:inline-block">Claim 30% Discount Code: NEXORA30</a>
+</div>`
+  },
+  newsletter: {
+    subject: "📰 NEXORAAI Monthly Digest: n8n Automations, AI Agents & Meta API Updates",
+    preheader: "Here is everything new shipped in the NEXORAAI ecosystem this month.",
+    body: `<h2 style="color:#070B0D;margin-top:0">October Platform Changelog</h2>
+<p style="color:#4A5568;font-size:14.5px;line-height:1.6">Dear {{first_name}}, here are the latest platform capabilities enabled for {{company}}:</p>
+<ul style="color:#4A5568;line-height:1.8;font-size:14px;padding-left:20px">
+  <li><strong>Bulk Email Blaster:</strong> Send high-volume marketing blasts directly with multi-region SMTP relays.</li>
+  <li><strong>WhatsApp Bulk SMS:</strong> New anti-ban warmup engine with randomized delay and Spintax support.</li>
+  <li><strong>n8n Automation Engine:</strong> Pre-built canvas nodes for Shopify, WooCommerce, and Google Sheets.</li>
+</ul>
+<p style="margin-top:20px"><a href="https://nexoraai.com/pages/blog.html" style="color:#0284c7;font-weight:600">Read full release notes on our blog →</a></p>`
+  }
+};
+
+function applyTemplate(key) {
+  const tpl = EMAIL_TEMPLATES[key];
+  if (!tpl) return;
+  document.getElementById('emailSubject').value = tpl.subject;
+  document.getElementById('emailPreheader').value = tpl.preheader;
+  document.getElementById('emailBodyInput').value = tpl.body;
+  updateEmailPreview();
+  showToast(`Loaded "${key.toUpperCase()}" template`, 'info');
+}
+
+function switchEmailRecipientMode(mode) {
+  activeEmailRecipientMode = mode;
+  const btnSeg = document.getElementById('btnEmailSeg');
+  const btnCsv = document.getElementById('btnEmailCsv');
+  const segDiv = document.getElementById('emailSegmentBox');
+  const csvDiv = document.getElementById('emailCsvBox');
+
+  if (mode === 'segment') {
+    btnSeg.className = 'btn btn-primary btn-sm';
+    btnCsv.className = 'btn btn-secondary btn-sm';
+    segDiv.style.display = 'block';
+    csvDiv.style.display = 'none';
+  } else {
+    btnSeg.className = 'btn btn-secondary btn-sm';
+    btnCsv.className = 'btn btn-primary btn-sm';
+    segDiv.style.display = 'none';
+    csvDiv.style.display = 'block';
+  }
+}
+
+function countCustomEmails() {
+  const val = document.getElementById('emailCustomList').value.trim();
+  if (!val) {
+    customEmails = [];
+    document.getElementById('emailCountLabel').innerText = '0 emails detected';
+    return;
+  }
+  const found = val.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g) || [];
+  customEmails = [...new Set(found)];
+  document.getElementById('emailCountLabel').innerText = `${customEmails.length} unique emails detected`;
+}
+
+function handleEmailCsvUpload(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const content = e.target.result;
+      const found = content.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g) || [];
+      const unique = [...new Set(found)];
+      document.getElementById('emailCustomList').value = unique.join('\n');
+      countCustomEmails();
+      showToast(`Imported ${unique.length} email addresses from ${file.name}`, 'success');
+    };
+    reader.readAsText(file);
+  }
+}
+
+function insertSubjectTag(tag) {
+  const input = document.getElementById('emailSubject');
+  input.value += ' ' + tag;
+  updateEmailPreview();
+}
+
+function insertBodyTag(tag) {
+  const textarea = document.getElementById('emailBodyInput');
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const text = textarea.value;
+  textarea.value = text.substring(0, start) + tag + text.substring(end);
+  textarea.focus();
+  updateEmailPreview();
+}
+
+function updateEmailPreview() {
+  const senderName = document.getElementById('senderName').value;
+  const senderEmail = document.getElementById('senderEmail').value;
+  const subject = document.getElementById('emailSubject').value;
+  const body = document.getElementById('emailBodyInput').value;
+
+  const prevFrom = document.getElementById('prevFrom');
+  const prevSubject = document.getElementById('prevSubject');
+  const prevBody = document.getElementById('prevBody');
+
+  if (prevFrom) prevFrom.innerText = `${senderName} <${senderEmail}>`;
+  if (prevSubject) prevSubject.innerText = subject;
+
+  let rendered = body
+    .replace(/{{first_name}}/g, 'Rahim')
+    .replace(/{{company}}/g, 'ShopHive Bangladesh')
+    .replace(/{{coupon_code}}/g, 'NEXORA20')
+    .replace(/{{email}}/g, 'rahim@shophivebd.com')
+    .replace(/{{unsubscribe_url}}/g, '#');
+
+  if (prevBody) prevBody.innerHTML = rendered;
+}
+
+function setEmailViewMode(mode) {
+  const box = document.getElementById('emailPreviewBox');
+  const btnD = document.getElementById('btnViewDesktop');
+  const btnM = document.getElementById('btnViewMobile');
+
+  if (mode === 'mobile') {
+    box.classList.add('preview-mode-mobile');
+    btnM.classList.add('btn-primary');
+    btnM.classList.remove('btn-ghost');
+    btnD.classList.remove('btn-primary');
+    btnD.classList.add('btn-ghost');
+  } else {
+    box.classList.remove('preview-mode-mobile');
+    btnD.classList.add('btn-primary');
+    btnD.classList.remove('btn-ghost');
+    btnM.classList.remove('btn-primary');
+    btnM.classList.add('btn-ghost');
+  }
+}
+
+function sendTestEmail() {
+  showToast('Sending test email to admin (jakiadantal@gmail.com)...', 'info');
+  setTimeout(() => {
+    showToast('Test email delivered successfully! Check inbox for preview.', 'success');
+  }, 1200);
+}
+
+function startEmailBlastProcess() {
+  const card = document.getElementById('emailProgressCard');
+  const bar = document.getElementById('emailProgressBar');
+  const pct = document.getElementById('emailProgressPct');
+  const counter = document.getElementById('emailSentCounter');
+  const logStream = document.getElementById('emailStreamLog');
+  const btn = document.getElementById('startEmailBlastBtn');
+
+  let total = 3840;
+  if (activeEmailRecipientMode === 'segment') {
+    total = parseInt(document.getElementById('emailAudienceSelect').value, 10) || 3840;
+  } else {
+    total = customEmails.length || 500;
+  }
+
+  card.style.display = 'block';
+  btn.disabled = true;
+  btn.innerText = 'Dispatching Blast...';
+
+  let current = 0;
+  const step = Math.max(1, Math.round(total / 24));
+  const startTime = Date.now();
+
+  const interval = setInterval(() => {
+    current += step;
+    if (current >= total) {
+      current = total;
+      clearInterval(interval);
+      btn.disabled = false;
+      btn.innerText = '🚀 Launch Bulk Email Blast';
+      showToast(`Bulk email campaign delivered successfully! (${total.toLocaleString()} emails sent)`, 'success');
+      logStream.innerHTML += `<div>[${new Date().toLocaleTimeString()}] ✅ Blast complete. Deliverability: 99.8% (0 bounces).</div>`;
+      logStream.scrollTop = logStream.scrollHeight;
+    }
+    const percent = Math.round((current / total) * 100);
+    bar.style.width = percent + '%';
+    pct.innerText = percent + '%';
+    counter.innerText = `Sent: ${current.toLocaleString()} / ${total.toLocaleString()}`;
+
+    if (current % (step * 4) === 0) {
+      logStream.innerHTML += `<div>[${new Date().toLocaleTimeString()}] Dispatched chunk (${current}/${total})... HTTP 200 OK</div>`;
+      logStream.scrollTop = logStream.scrollHeight;
+    }
+  }, 180);
+}
+
+function switchMainTab(tab) {
+  document.getElementById('sectionCompose').style.display = tab === 'compose' ? 'block' : 'none';
+  document.getElementById('sectionHistory').style.display = tab === 'history' ? 'block' : 'none';
+}
+
+function openSmtpSettings() {
+  document.getElementById('smtpModal').style.display = 'flex';
+}
+function closeSmtpSettings() {
+  document.getElementById('smtpModal').style.display = 'none';
+}
+function saveSmtpConfig() {
+  closeSmtpSettings();
+  showToast('SMTP Relay authentication verified! (Ping 34ms)', 'success');
+}
+function presetSmtp(val) {
+  const host = document.getElementById('smtpHost');
+  const port = document.getElementById('smtpPort');
+  if (val === 'resend') { host.value = 'smtp.resend.com'; port.value = '587'; }
+  else if (val === 'sendgrid') { host.value = 'smtp.sendgrid.net'; port.value = '587'; }
+  else if (val === 'ses') { host.value = 'email-smtp.us-east-1.amazonaws.com'; port.value = '587'; }
+  else if (val === 'gmail') { host.value = 'smtp.gmail.com'; port.value = '465'; }
+}
+
+// Initial render
+updateEmailPreview();
+</script>
+<style>
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</body>
+</html>

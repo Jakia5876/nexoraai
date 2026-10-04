@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Broadcasts — NEXORAAI</title>
+  <title>WhatsApp Bulk SMS — NEXORAAI</title>
   <meta name="robots" content="noindex" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/design-system.css" />
   <link rel="stylesheet" href="../assets/css/dashboard.css" />
 </head>
@@ -12,14 +12,28 @@
 <div class="toast-container" id="toastContainer"></div>
 <script src="../assets/js/app.js"></script>
 <script src="../assets/js/dashboard.js"></script>
-<script>createDashboardShell('broadcasts', 'WhatsApp Broadcasts');</script>
+<script>createDashboardShell('broadcasts', 'WhatsApp Bulk SMS');</script>
 
 <main class="dash-main">
 <div class="page-content">
+  <!-- Multi-Channel Navigation Tabs -->
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px">
+    <a href="dashboard-broadcasts.html" class="btn btn-primary btn-sm" style="gap:6px">
+      <span>💬</span> WhatsApp Bulk SMS
+    </a>
+    <a href="dashboard-email.html" class="btn btn-ghost btn-sm" style="gap:6px">
+      <span>✉️</span> Bulk Email Blaster
+      <span class="badge badge-green" style="font-size:9px;padding:1px 5px">NEW</span>
+    </a>
+    <a href="dashboard-campaigns.html" class="btn btn-ghost btn-sm" style="gap:6px">
+      <span>📑</span> Campaign Templates
+    </a>
+  </div>
+
   <div class="page-header">
     <div class="page-header-left">
-      <h1 class="page-title">Broadcast Dispatcher</h1>
-      <p class="page-subtitle">Send personalized bulk WhatsApp messages with built-in anti-ban warmup and randomized delays</p>
+      <h1 class="page-title">WhatsApp Bulk SMS Dispatcher</h1>
+      <p class="page-subtitle">Send personalized bulk WhatsApp SMS campaigns to thousands of numbers with anti-ban human emulation, CSV lists, and real-time socket delivery.</p>
     </div>
     <div class="page-header-actions">
       <button class="btn btn-secondary" onclick="viewBroadcastLogs()">
@@ -34,46 +48,72 @@
     <div style="display:flex;align-items:center;gap:12px">
       <span style="font-size:24px">🛡️</span>
       <div>
-        <div style="font-weight:700;font-size:14px;color:var(--primary)">Smart Anti-Ban & Human Emulation Active</div>
-        <div style="font-size:13px;color:var(--text-secondary)">Dynamic jitter delay (4-9s randomized interval) and automatic opt-out suppression prevents account flagging.</div>
+        <div style="font-weight:700;font-size:14px;color:var(--primary)">Smart Anti-Ban & Human Emulation Engine Active</div>
+        <div style="font-size:13px;color:var(--text-secondary)">Dynamic jitter delay (4-9s randomized interval), simulated typing status, and automatic opt-out suppression prevent WhatsApp number flagging.</div>
       </div>
     </div>
-    <span class="badge badge-green">Health Score: 98% (Optimal)</span>
+    <span class="badge badge-green">Health Score: 98% (Optimal Safe)</span>
   </div>
 
   <div style="display:grid;grid-template-columns:1.8fr 1.2fr;gap:24px">
     <!-- Broadcast Form -->
     <div class="card" style="padding:24px">
-      <h3 style="font-size:16px;margin:0 0 20px 0">Compose New Broadcast</h3>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <h3 style="font-size:16px;margin:0">Compose Bulk WhatsApp Campaign</h3>
+        <span class="badge badge-accent">Meta Cloud API & QR Gateway</span>
+      </div>
 
       <div class="form-group">
         <label class="form-label">Send From WhatsApp Channel *</label>
         <select class="form-control" id="senderPhone">
-          <option value="+880 1712-345678">+880 1712-345678 (Primary Business - Connected)</option>
-          <option value="+880 1823-998877">+880 1823-998877 (VIP Support Line - Connected)</option>
+          <option value="+880 1712-345678">+880 1712-345678 (Primary Business - Connected Meta Cloud API)</option>
+          <option value="+880 1823-998877">+880 1823-998877 (VIP Marketing Line - Connected Baileys Socket)</option>
         </select>
       </div>
 
+      <!-- Recipient Mode Selector -->
       <div class="form-group">
-        <label class="form-label">Recipients Audience *</label>
-        <div style="display:flex;gap:10px">
-          <select class="form-control" id="audienceSelect" onchange="updateRecipientCount()">
-            <option value="1240">Customers with Active Carts (1,240)</option>
-            <option value="485">VIP & High-Value Segment (485)</option>
-            <option value="3940">All Verified WhatsApp Users (3,940)</option>
-            <option value="180">Test Group / Internal Team (18)</option>
-          </select>
-          <button class="btn btn-secondary" onclick="window.location.href='dashboard-contacts.html'" style="white-space:nowrap">Manage Lists</button>
+        <label class="form-label">Recipient Input Mode *</label>
+        <div style="display:flex;gap:10px;margin-bottom:12px">
+          <button type="button" class="btn btn-primary btn-sm" id="btnModeSegment" onclick="switchRecipientMode('segment')">
+            👥 CRM Saved Segment
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" id="btnModeCustom" onclick="switchRecipientMode('custom')">
+            📋 Paste Numbers / CSV Upload
+          </button>
+        </div>
+
+        <div id="segmentInputContainer">
+          <div style="display:flex;gap:10px">
+            <select class="form-control" id="audienceSelect" onchange="updateRecipientCount()">
+              <option value="1240">Customers with Active Carts (1,240 verified numbers)</option>
+              <option value="485">VIP & High-Value Segment (485 verified numbers)</option>
+              <option value="3940">All Verified WhatsApp Users (3,940 numbers)</option>
+              <option value="18">Internal Team / Testing Group (18 numbers)</option>
+            </select>
+            <button class="btn btn-secondary" onclick="window.location.href='dashboard-contacts.html'" style="white-space:nowrap">Manage Lists</button>
+          </div>
+        </div>
+
+        <div id="customInputContainer" style="display:none">
+          <textarea id="customNumbersInput" class="form-control" rows="3" placeholder="Paste phone numbers with country code separated by comma or new line...&#10;e.g.&#10;+8801712345678&#10;+8801823998877&#10;+8801911223344" oninput="countCustomNumbers()" style="font-family:var(--font-mono);font-size:12.5px"></textarea>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
+            <span id="customCountLabel" style="font-size:12px;color:var(--primary);font-weight:600">0 numbers detected</span>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('csvFileInput').click()">📁 Upload CSV File</button>
+            <input type="file" id="csvFileInput" accept=".csv,.txt" style="display:none" onchange="handleCsvUpload(this)" />
+          </div>
         </div>
       </div>
 
       <div class="form-group">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <label class="form-label" style="margin:0">Broadcast Message *</label>
-          <div style="display:flex;gap:6px">
-            <button type="button" class="btn btn-ghost btn-sm" onclick="insertTag('{{first_name}}')">+ First Name</button>
-            <button type="button" class="btn btn-ghost btn-sm" onclick="insertTag('{{company}}')">+ Company</button>
-            <button type="button" class="btn btn-ghost btn-sm" onclick="insertTag('{{coupon_code}}')">+ Coupon</button>
+          <label class="form-label" style="margin:0">WhatsApp SMS Content *</label>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">
+            <button type="button" class="btn btn-ghost btn-sm" style="font-size:11px;padding:3px 7px" onclick="insertTag('{{first_name}}')">+ Name</button>
+            <button type="button" class="btn btn-ghost btn-sm" style="font-size:11px;padding:3px 7px" onclick="insertTag('{{company}}')">+ Company</button>
+            <button type="button" class="btn btn-ghost btn-sm" style="font-size:11px;padding:3px 7px" onclick="insertTag('{{phone}}')">+ Phone</button>
+            <button type="button" class="btn btn-ghost btn-sm" style="font-size:11px;padding:3px 7px" onclick="insertTag('{{coupon_code}}')">+ Coupon</button>
+            <button type="button" class="btn btn-ghost btn-sm" style="font-size:11px;padding:3px 7px;color:var(--primary)" onclick="insertSpintax()">+ Spintax</button>
           </div>
         </div>
         <textarea id="broadcastMsg" class="form-control" rows="6" oninput="updateLivePreview()" placeholder="Type your WhatsApp message here...">Assalamu Alaikum {{first_name}},
@@ -162,6 +202,68 @@ Reply to this message if you have any questions, or click below to schedule a qu
 </main>
 
 <script>
+let activeRecipientMode = 'segment';
+let customNumbers = [];
+
+function switchRecipientMode(mode) {
+  activeRecipientMode = mode;
+  const btnSeg = document.getElementById('btnModeSegment');
+  const btnCust = document.getElementById('btnModeCustom');
+  const segDiv = document.getElementById('segmentInputContainer');
+  const custDiv = document.getElementById('customInputContainer');
+
+  if (mode === 'segment') {
+    btnSeg.className = 'btn btn-primary btn-sm';
+    btnCust.className = 'btn btn-secondary btn-sm';
+    segDiv.style.display = 'block';
+    custDiv.style.display = 'none';
+  } else {
+    btnSeg.className = 'btn btn-secondary btn-sm';
+    btnCust.className = 'btn btn-primary btn-sm';
+    segDiv.style.display = 'none';
+    custDiv.style.display = 'block';
+  }
+}
+
+function countCustomNumbers() {
+  const val = document.getElementById('customNumbersInput').value.trim();
+  if (!val) {
+    customNumbers = [];
+    document.getElementById('customCountLabel').innerText = '0 numbers detected';
+    return;
+  }
+  const lines = val.split(/[\n,;]+/).map(s => s.trim()).filter(s => s.length >= 7);
+  customNumbers = [...new Set(lines)];
+  document.getElementById('customCountLabel').innerText = `${customNumbers.length} unique phone numbers detected`;
+}
+
+function handleCsvUpload(input) {
+  if (input.files && input.files[0]) {
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const content = e.target.result;
+      const found = content.match(/\+?[0-9]{8,15}/g) || [];
+      const unique = [...new Set(found)];
+      document.getElementById('customNumbersInput').value = unique.join('\n');
+      countCustomNumbers();
+      showToast(`Imported ${unique.length} phone numbers from ${file.name}`, 'success');
+    };
+    reader.readAsText(file);
+  }
+}
+
+function insertSpintax() {
+  const textarea = document.getElementById('broadcastMsg');
+  const spintax = '{Assalamu Alaikum|Hello|Greetings|Dear customer} ';
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const text = textarea.value;
+  textarea.value = text.substring(0, start) + spintax + text.substring(end);
+  textarea.focus();
+  updateLivePreview();
+}
+
 function insertTag(tag) {
   const textarea = document.getElementById('broadcastMsg');
   const start = textarea.selectionStart;
@@ -175,8 +277,13 @@ function insertTag(tag) {
 function updateLivePreview() {
   const text = document.getElementById('broadcastMsg').value;
   let formatted = text
+    .replace(/\{([^}]+)\}/g, (match, p1) => {
+      const choices = p1.split('|');
+      return choices[0] || match;
+    })
     .replace(/{{first_name}}/g, 'Rahim')
     .replace(/{{company}}/g, 'Apex Footwear')
+    .replace(/{{phone}}/g, '+880 1712-345678')
     .replace(/{{coupon_code}}/g, 'NEXORA20');
   document.getElementById('previewBubble').innerText = formatted;
 }
@@ -200,30 +307,37 @@ function startBroadcastProcess() {
   const counter = document.getElementById('sentCounter');
   const btn = document.getElementById('startBroadcastBtn');
 
+  let total = 1240;
+  if (activeRecipientMode === 'segment') {
+    total = parseInt(document.getElementById('audienceSelect').value, 10) || 1240;
+  } else {
+    total = customNumbers.length || 250;
+  }
+
   card.style.display = 'block';
   btn.disabled = true;
   btn.innerText = 'Broadcasting...';
 
   let current = 0;
-  const total = 1240;
+  const step = Math.max(1, Math.round(total / 20));
   const interval = setInterval(() => {
-    current += 62;
+    current += step;
     if (current >= total) {
       current = total;
       clearInterval(interval);
       btn.disabled = false;
       btn.innerText = '🚀 Dispatch Broadcast Now';
-      showToast('Broadcast completed! 1,240 WhatsApp messages dispatched.', 'success');
+      showToast(`WhatsApp Bulk SMS dispatched successfully! (${total} messages sent)`, 'success');
     }
     const pct = Math.round((current / total) * 100);
     bar.style.width = pct + '%';
     percent.innerText = pct + '%';
     counter.innerText = `Sent: ${current} / ${total}`;
-  }, 250);
+  }, 200);
 }
 
 function viewBroadcastLogs() {
-  showToast('Opening detailed broadcast audit log...', 'info');
+  showToast('Opening detailed WhatsApp Bulk SMS audit log...', 'info');
 }
 </script>
 </body>
