@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campaigns & Templates — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <style>
+    .wa-preview-box {
+      background: #0B141A;
+      background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 16px 16px;
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+    .wa-bubble {
+      background: #005C4B;
+      color: #E9EDEF;
+      border-radius: 8px 8px 8px 0px;
+      padding: 12px 14px;
+      max-width: 320px;
+      font-size: 13.5px;
+      line-height: 1.45;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    .wa-bubble .wa-header-img {
+      width: 100%;
+      height: 140px;
+      border-radius: 6px;
+      object-fit: cover;
+      margin-bottom: 8px;
+      background: #1F2C34;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+    .wa-bubble .wa-footer {
+      font-size: 11px;
+      color: rgba(233,237,239,0.6);
+      margin-top: 6px;
+    }
+    .wa-bubble .wa-time {
+      font-size: 10.5px;
+      color: rgba(233,237,239,0.5);
+      text-align: right;
+      margin-top: 4px;
+    }
+    .wa-btn {
+      background: #202C33;
+      color: #00A884;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      width: 100%;
+      margin-top: 6px;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+  </style>
+</head>
+<body class="dark-mode" data-page="campaigns">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('campaigns', 'Campaigns & Templates');</script>
+
+<main class="dash-main">
+<div class="page-content">
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1 class="page-title">Marketing Campaigns</h1>
+      <p class="page-subtitle">Design WhatsApp-approved promotional & utility templates, run scheduled blasts and track CTR</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-secondary" onclick="openTemplateModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+        New Template
+      </button>
+      <button class="btn btn-primary" onclick="openCampaignModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg>
+        Launch Campaign
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabs: Campaigns vs Template Library -->
+  <div class="tabs" style="margin-bottom:24px">
+    <button class="tab-btn active" id="tabCampaigns" onclick="switchCampaignTab('campaigns')">Active Campaigns (4)</button>
+    <button class="tab-btn" id="tabTemplates" onclick="switchCampaignTab('templates')">Meta Approved Templates (8)</button>
+  </div>
+
+  <!-- Section 1: Campaigns View -->
+  <div id="campaignsSection">
+    <div class="stats-row stats-row-4" style="margin-bottom:24px">
+      <div class="stat-card-dash">
+        <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D9F000" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
+        <div><div class="stat-card-value">48,920</div><div class="stat-card-label">Messages Dispatched</div></div>
+      </div>
+      <div class="stat-card-dash">
+        <div class="stat-icon" style="background:var(--success-dim)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#35D879" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div><div class="stat-card-value" style="color:var(--success)">98.2%</div><div class="stat-card-label">Delivery Rate</div></div>
+      </div>
+      <div class="stat-card-dash">
+        <div class="stat-icon" style="background:rgba(217,240,0,0.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D9F000" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+        <div><div class="stat-card-value">71.4%</div><div class="stat-card-label">Read Rate</div></div>
+      </div>
+      <div class="stat-card-dash">
+        <div class="stat-icon" style="background:rgba(59,130,246,0.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+        <div><div class="stat-card-value" style="color:#3B82F6">28.6%</div><div class="stat-card-label">Button CTR</div></div>
+      </div>
+    </div>
+
+    <!-- Campaigns Table -->
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Campaign Name</th>
+            <th>Template Used</th>
+            <th>Audience</th>
+            <th>Delivered / Read</th>
+            <th>CTR / Clicks</th>
+            <th>Status</th>
+            <th style="text-align:right">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="campaignListBody">
+          <tr>
+            <td>
+              <div style="font-weight:600;color:var(--text-primary)">Eid Mega Flash Sale 2026</div>
+              <div style="font-size:12px;color:var(--text-muted)">Started Today at 09:00 AM</div>
+            </td>
+            <td><span class="badge badge-accent">eid_flash_sale_v2</span></td>
+            <td>4,500 VIP Contacts</td>
+            <td>
+              <div style="font-weight:600;font-size:13px">4,419 / 3,210</div>
+              <div style="font-size:11px;color:var(--text-muted)">98.2% deliv • 72.6% read</div>
+            </td>
+            <td>
+              <div style="font-weight:600;font-size:13px;color:var(--primary)">1,280 clicks (39.8%)</div>
+              <div style="font-size:11px;color:var(--text-muted)">184 purchases</div>
+            </td>
+            <td><span class="badge badge-green">Sending (85%)</span></td>
+            <td style="text-align:right">
+              <button class="btn btn-ghost btn-sm" onclick="pauseCampaign(this)">⏸️ Pause</button>
+              <button class="btn btn-ghost btn-sm" onclick="showToast('Viewing Campaign Analytics report', 'info')">📊 Analytics</button>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div style="font-weight:600;color:var(--text-primary)">Abandoned Cart Recovery Flow</div>
+              <div style="font-size:12px;color:var(--text-muted)">Always Active Automation</div>
+            </td>
+            <td><span class="badge badge-blue">cart_reminder_coupon</span></td>
+            <td>Triggered on Cart Drop</td>
+            <td>
+              <div style="font-weight:600;font-size:13px">1,240 / 1,020</div>
+              <div style="font-size:11px;color:var(--text-muted)">99.1% deliv • 82.2% read</div>
+            </td>
+            <td>
+              <div style="font-weight:600;font-size:13px;color:var(--primary)">340 recovered ($14.2k)</div>
+              <div style="font-size:11px;color:var(--text-muted)">33.3% recovery rate</div>
+            </td>
+            <td><span class="badge badge-green">Active (Live)</span></td>
+            <td style="text-align:right">
+              <button class="btn btn-ghost btn-sm">⚙️ Edit</button>
+              <button class="btn btn-ghost btn-sm" onclick="showToast('Viewing Analytics', 'info')">📊</button>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div style="font-weight:600;color:var(--text-primary)">VIP Exclusive Product Launch</div>
+              <div style="font-size:12px;color:var(--text-muted)">Scheduled for Tomorrow, 04:00 PM</div>
+            </td>
+            <td><span class="badge badge-purple">vip_early_access</span></td>
+            <td>850 High Value Leads</td>
+            <td>
+              <div style="font-size:13px;color:var(--text-muted)">-</div>
+            </td>
+            <td>
+              <div style="font-size:13px;color:var(--text-muted)">-</div>
+            </td>
+            <td><span class="badge badge-yellow">Scheduled</span></td>
+            <td style="text-align:right">
+              <button class="btn btn-ghost btn-sm">Edit</button>
+              <button class="btn btn-ghost btn-sm" onclick="cancelCampaign(this)">Cancel</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 2: Templates Library (Hidden initially) -->
+  <div id="templatesSection" style="display:none">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px">
+      <!-- Template Card 1 -->
+      <div class="card" style="padding:20px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+          <div>
+            <div style="font-weight:700;font-size:15px;color:var(--text-primary)">eid_flash_sale_v2</div>
+            <div style="font-size:12px;color:var(--text-muted)">Category: MARKETING • en_US</div>
+          </div>
+          <span class="badge badge-green">Meta Approved</span>
+        </div>
+        
+        <!-- WA Bubble Preview -->
+        <div class="wa-preview-box" style="margin-bottom:14px">
+          <div class="wa-bubble">
+            <div class="wa-header-img">🖼️ [Image: Eid Banner 2026]</div>
+            <div>Eid Mubarak {{1}}! ✨<br><br>Enjoy an exclusive <strong>25% OFF</strong> on all new arrivals this week only. Use code <strong>EID25</strong> at checkout.</div>
+            <div class="wa-footer">Reply STOP to unsubscribe</div>
+            <div class="wa-time">10:42 AM</div>
+            <button class="wa-btn">🛍️ Shop Now with 25% Off</button>
+            <button class="wa-btn">💬 Chat with Stylist</button>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:var(--text-muted)">Vars: {{1}} = First Name</span>
+          <button class="btn btn-ghost btn-sm" onclick="showToast('Template cloned to editor', 'info')">Duplicate</button>
+        </div>
+      </div>
+
+      <!-- Template Card 2 -->
+      <div class="card" style="padding:20px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+          <div>
+            <div style="font-weight:700;font-size:15px;color:var(--text-primary)">cart_reminder_coupon</div>
+            <div style="font-size:12px;color:var(--text-muted)">Category: UTILITY • en_US</div>
+          </div>
+          <span class="badge badge-green">Meta Approved</span>
+        </div>
+        
+        <div class="wa-preview-box" style="margin-bottom:14px">
+          <div class="wa-bubble">
+            <div>Hi {{1}}, you left items in your cart! 🛒<br><br>Complete your order now and get <strong>Free Express Delivery</strong> within Dhaka.</div>
+            <div class="wa-footer">Valid for 24 hours</div>
+            <div class="wa-time">02:15 PM</div>
+            <button class="wa-btn">🛒 Complete My Order</button>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:var(--text-muted)">Vars: {{1}} = Customer Name</span>
+          <button class="btn btn-ghost btn-sm">Duplicate</button>
+        </div>
+      </div>
+
+      <!-- Template Card 3 -->
+      <div class="card" style="padding:20px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+          <div>
+            <div style="font-weight:700;font-size:15px;color:var(--text-primary)">delivery_otp_auth</div>
+            <div style="font-size:12px;color:var(--text-muted)">Category: AUTHENTICATION • en_US</div>
+          </div>
+          <span class="badge badge-green">Meta Approved</span>
+        </div>
+        
+        <div class="wa-preview-box" style="margin-bottom:14px">
+          <div class="wa-bubble">
+            <div>{{1}} is your NEXORAAI security verification code. For your security, do not share this code with anyone.</div>
+            <div class="wa-footer">Expires in 10 minutes</div>
+            <div class="wa-time">11:00 AM</div>
+            <button class="wa-btn">📋 Copy Code {{1}}</button>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:var(--text-muted)">Vars: {{1}} = 6-digit OTP</span>
+          <button class="btn btn-ghost btn-sm">Duplicate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+
+<!-- Create Campaign Modal -->
+<div class="modal-overlay" id="campaignModal" style="display:none">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-header">
+      <h3 class="modal-title">Launch WhatsApp Campaign</h3>
+      <button class="modal-close" onclick="closeModal('campaignModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form onsubmit="handleLaunchCampaign(event)">
+        <div class="form-group">
+          <label class="form-label">Campaign Name *</label>
+          <input type="text" id="campName" class="form-control" placeholder="e.g. Ramadan Weekend Special" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Select Approved Template *</label>
+          <select class="form-control" id="campTemplate">
+            <option value="eid_flash_sale_v2">eid_flash_sale_v2 (Marketing - 25% Off Promo)</option>
+            <option value="cart_reminder_coupon">cart_reminder_coupon (Utility - Cart Recovery)</option>
+            <option value="vip_early_access">vip_early_access (Marketing - VIP Access)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Target Audience *</label>
+          <select class="form-control" id="campAudience">
+            <option value="4,820 Contacts (All Customers)">All Contacts (4,820)</option>
+            <option value="VIP Customers (485)">VIP & High Value (485)</option>
+            <option value="Dhaka Region (2,100)">Dhaka Region (2,100)</option>
+            <option value="Abandoned Cart (140)">Abandoned Carts (140)</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Send Schedule</label>
+            <select class="form-control" id="campSchedule">
+              <option value="now">Send Immediately</option>
+              <option value="scheduled">Schedule for Later</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Speed Limit / Throttling</label>
+            <select class="form-control">
+              <option>Recommended (30 msg/sec)</option>
+              <option>Safe Low (10 msg/sec)</option>
+              <option>Maximum (100 msg/sec)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-actions" style="margin-top:24px">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('campaignModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Dispatch Campaign 🚀</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Create Template Modal -->
+<div class="modal-overlay" id="templateModal" style="display:none">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-header">
+      <h3 class="modal-title">Create WhatsApp Message Template</h3>
+      <button class="modal-close" onclick="closeModal('templateModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form onsubmit="handleCreateTemplate(event)">
+        <div class="form-group">
+          <label class="form-label">Template Name (lowercase, no spaces) *</label>
+          <input type="text" id="tplName" class="form-control" placeholder="e.g. spring_collection_launch" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Category *</label>
+            <select class="form-control">
+              <option>MARKETING</option>
+              <option>UTILITY</option>
+              <option>AUTHENTICATION</option>
+            </select>
+          </div>
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Language</label>
+            <select class="form-control">
+              <option>English (en_US)</option>
+              <option>Bengali (bn_BD)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Body Text (use {{1}}, {{2}} for variables) *</label>
+          <textarea class="form-control" rows="4" placeholder="Hello {{1}}, your order {{2}} has been confirmed!" required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Footer Note (Optional)</label>
+          <input type="text" class="form-control" placeholder="Reply STOP to unsubscribe" />
+        </div>
+        <div class="modal-actions" style="margin-top:24px">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('templateModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit to Meta for Review</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchCampaignTab(tab) {
+  if (tab === 'campaigns') {
+    document.getElementById('campaignsSection').style.display = 'block';
+    document.getElementById('templatesSection').style.display = 'none';
+    document.getElementById('tabCampaigns').className = 'tab-btn active';
+    document.getElementById('tabTemplates').className = 'tab-btn';
+  } else {
+    document.getElementById('campaignsSection').style.display = 'none';
+    document.getElementById('templatesSection').style.display = 'block';
+    document.getElementById('tabCampaigns').className = 'tab-btn';
+    document.getElementById('tabTemplates').className = 'tab-btn active';
+  }
+}
+
+function openCampaignModal() {
+  document.getElementById('campaignModal').style.display = 'flex';
+}
+function openTemplateModal() {
+  document.getElementById('templateModal').style.display = 'flex';
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+function handleLaunchCampaign(e) {
+  e.preventDefault();
+  const name = document.getElementById('campName').value;
+  const template = document.getElementById('campTemplate').value;
+  const audience = document.getElementById('campAudience').value;
+
+  const tbody = document.getElementById('campaignListBody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>
+      <div style="font-weight:600;color:var(--text-primary)">${name}</div>
+      <div style="font-size:12px;color:var(--text-muted)">Started Just Now</div>
+    </td>
+    <td><span class="badge badge-accent">${template}</span></td>
+    <td>${audience}</td>
+    <td>
+      <div style="font-weight:600;font-size:13px">Starting dispatch...</div>
+      <div style="font-size:11px;color:var(--text-muted)">0% sent</div>
+    </td>
+    <td>
+      <div style="font-size:13px;color:var(--text-muted)">Pending</div>
+    </td>
+    <td><span class="badge badge-green">Sending</span></td>
+    <td style="text-align:right">
+      <button class="btn btn-ghost btn-sm" onclick="pauseCampaign(this)">⏸️ Pause</button>
+    </td>
+  `;
+  tbody.prepend(tr);
+  closeModal('campaignModal');
+  showToast(`Campaign "${name}" queued and broadcasting!`, 'success');
+}
+
+function handleCreateTemplate(e) {
+  e.preventDefault();
+  closeModal('templateModal');
+  showToast('Template submitted to WhatsApp Meta Review! Approval typically takes 5-15 minutes.', 'success');
+}
+
+function pauseCampaign(btn) {
+  if (btn.innerText.includes('Pause')) {
+    btn.innerText = '▶️ Resume';
+    showToast('Campaign paused', 'info');
+  } else {
+    btn.innerText = '⏸️ Pause';
+    showToast('Campaign resumed', 'success');
+  }
+}
+
+function cancelCampaign(btn) {
+  if (confirm('Cancel this scheduled campaign?')) {
+    btn.closest('tr').remove();
+    showToast('Campaign cancelled', 'info');
+  }
+}
+</script>
+</body>
+</html>

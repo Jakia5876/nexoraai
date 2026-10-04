@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orders & Checkout — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+</head>
+<body class="dark-mode" data-page="orders">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('orders', 'WhatsApp Orders & Transactions');</script>
+
+<main class="dash-main">
+<div class="page-content">
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1 class="page-title">Orders & Transactions</h1>
+      <p class="page-subtitle">Track orders placed natively via WhatsApp chat flows and automated checkout links</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-secondary" onclick="exportOrders()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        Export Orders
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row stats-row-4" style="margin-bottom:24px">
+    <div class="stat-card-dash">
+      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D9F000" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path></svg></div>
+      <div><div class="stat-card-value">520</div><div class="stat-card-label">Total WhatsApp Orders</div></div>
+    </div>
+    <div class="stat-card-dash">
+      <div class="stat-icon" style="background:var(--success-dim)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#35D879" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+      <div><div class="stat-card-value" style="color:var(--success)">৳ 2,410,500</div><div class="stat-card-label">Revenue Generated</div></div>
+    </div>
+    <div class="stat-card-dash">
+      <div class="stat-icon" style="background:rgba(59,130,246,0.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div><div class="stat-card-value">492</div><div class="stat-card-label">Delivered & Fulfilled</div></div>
+    </div>
+    <div class="stat-card-dash">
+      <div class="stat-icon" style="background:rgba(255,184,0,0.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+      <div><div class="stat-card-value" style="color:#FFB800">18</div><div class="stat-card-label">In Transit / Pending</div></div>
+    </div>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="table-container">
+    <div class="table-toolbar">
+      <div class="table-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="orderSearch" placeholder="Search by Order ID, customer name or phone..." oninput="filterOrders()" />
+      </div>
+      <div class="table-filters">
+        <select class="form-control form-control-sm" id="payFilter" onchange="filterOrders()" style="width:140px">
+          <option value="">All Payments</option>
+          <option value="Paid">Paid</option>
+          <option value="COD">Cash on Delivery</option>
+          <option value="Pending">Pending</option>
+        </select>
+        <select class="form-control form-control-sm" id="delFilter" onchange="filterOrders()" style="width:140px">
+          <option value="">All Deliveries</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Dispatched">Dispatched</option>
+          <option value="Processing">Processing</option>
+        </select>
+      </div>
+    </div>
+
+    <table class="table" id="ordersTable">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Items Ordered</th>
+          <th>Total</th>
+          <th>Payment</th>
+          <th>Fulfillment</th>
+          <th style="text-align:right">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="ordersBody">
+        <tr data-id="#WA-9482" data-name="Farhana Akter" data-pay="Paid" data-del="Dispatched">
+          <td style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">#WA-9482</td>
+          <td>
+            <div style="font-weight:600;color:var(--text-primary)">Farhana Akter</div>
+            <div style="font-size:12px;color:var(--text-muted);font-family:var(--font-mono)">+880 1545-678901</div>
+          </td>
+          <td>
+            <div style="font-size:13px;color:var(--text-primary)">1x Ergonomic Executive Chair</div>
+            <div style="font-size:11px;color:var(--text-muted)">SKU: FUR-CHR-882</div>
+          </td>
+          <td style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">৳ 14,200</td>
+          <td><span class="badge badge-green">bKash (Paid)</span></td>
+          <td><span class="badge badge-blue">Dispatched (Pathao)</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="sendTrackingWa('+8801545678901', '#WA-9482')">📱 Ping Status</button>
+            <button class="btn btn-ghost btn-sm" onclick="viewReceipt('#WA-9482', 'Farhana Akter', '৳ 14,200', 'bKash')">🧾 Receipt</button>
+          </td>
+        </tr>
+
+        <tr data-id="#WA-9481" data-name="Tanvir Ahmed" data-pay="Paid" data-del="Delivered">
+          <td style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">#WA-9481</td>
+          <td>
+            <div style="font-weight:600;color:var(--text-primary)">Tanvir Ahmed</div>
+            <div style="font-size:12px;color:var(--text-muted);font-family:var(--font-mono)">+880 1934-567890</div>
+          </td>
+          <td>
+            <div style="font-size:13px;color:var(--text-primary)">1x NEXORA Pro Annual License</div>
+            <div style="font-size:11px;color:var(--text-muted)">Instant Digital Delivery</div>
+          </td>
+          <td style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">৳ 18,500</td>
+          <td><span class="badge badge-green">Card (Stripe Paid)</span></td>
+          <td><span class="badge badge-green">Delivered</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="sendTrackingWa('+8801934567890', '#WA-9481')">📱 Ping</button>
+            <button class="btn btn-ghost btn-sm" onclick="viewReceipt('#WA-9481', 'Tanvir Ahmed', '৳ 18,500', 'Stripe')">🧾 Receipt</button>
+          </td>
+        </tr>
+
+        <tr data-id="#WA-9480" data-name="Rahim Uddin" data-pay="COD" data-del="Processing">
+          <td style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">#WA-9480</td>
+          <td>
+            <div style="font-weight:600;color:var(--text-primary)">Rahim Uddin</div>
+            <div style="font-size:12px;color:var(--text-muted);font-family:var(--font-mono)">+880 1712-345678</div>
+          </td>
+          <td>
+            <div style="font-size:13px;color:var(--text-primary)">2x Handcrafted Leather Shoes</div>
+            <div style="font-size:11px;color:var(--text-muted)">Size 42 & 43</div>
+          </td>
+          <td style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">৳ 13,600</td>
+          <td><span class="badge badge-yellow">Cash on Delivery</span></td>
+          <td><span class="badge badge-purple">Processing Packing</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="sendTrackingWa('+8801712345678', '#WA-9480')">📱 Ping</button>
+            <button class="btn btn-ghost btn-sm" onclick="viewReceipt('#WA-9480', 'Rahim Uddin', '৳ 13,600', 'Cash on Delivery')">🧾 Receipt</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</main>
+
+<!-- Receipt Modal -->
+<div class="modal-overlay" id="receiptModal" style="display:none">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <h3 class="modal-title">Official Order Invoice</h3>
+      <button class="modal-close" onclick="closeModal('receiptModal')">&times;</button>
+    </div>
+    <div class="modal-body" id="receiptContent">
+      <!-- Injected -->
+    </div>
+  </div>
+</div>
+
+<script>
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+function sendTrackingWa(phone, orderId) {
+  showToast(`Automated WhatsApp dispatch notification sent to ${phone} for ${orderId}!`, 'success');
+}
+
+function viewReceipt(id, name, total, method) {
+  document.getElementById('receiptContent').innerHTML = `
+    <div style="text-align:center;padding-bottom:16px;border-bottom:1px dashed var(--border)">
+      <div style="font-size:20px;font-weight:900;color:var(--primary)">NEXORAAI COMMERCE</div>
+      <div style="font-size:12px;color:var(--text-muted)">Order Confirmation & Tax Invoice</div>
+    </div>
+    <div style="margin:16px 0;display:flex;justify-content:space-between;font-size:13px">
+      <span style="color:var(--text-muted)">Invoice: <strong>${id}</strong></span>
+      <span style="color:var(--text-muted)">Date: Today</span>
+    </div>
+    <div style="margin-bottom:16px;font-size:13px;color:var(--text-secondary)">
+      Billed to: <strong style="color:var(--text-primary)">${name}</strong><br>
+      Payment Mode: <strong>${method}</strong>
+    </div>
+    <div style="padding:12px;background:var(--bg-surface);border-radius:var(--radius-md);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-weight:600">Total Charged:</span>
+      <span style="font-size:18px;font-weight:800;color:var(--primary)">${total}</span>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px">
+      <button class="btn btn-secondary btn-sm" onclick="window.print()">🖨️ Print Receipt</button>
+      <button class="btn btn-primary btn-sm" onclick="closeModal('receiptModal')">Done</button>
+    </div>
+  `;
+  document.getElementById('receiptModal').style.display = 'flex';
+}
+
+function exportOrders() {
+  showToast('Exporting orders to CSV...', 'info');
+  setTimeout(() => showToast('Orders export completed! orders_2026.csv downloaded.', 'success'), 1000);
+}
+
+function filterOrders() {
+  const q = document.getElementById('orderSearch').value.toLowerCase();
+  const pay = document.getElementById('payFilter').value.toLowerCase();
+  const del = document.getElementById('delFilter').value.toLowerCase();
+
+  document.querySelectorAll('#ordersBody tr').forEach(r => {
+    const text = r.innerText.toLowerCase();
+    const rPay = (r.getAttribute('data-pay') || '').toLowerCase();
+    const rDel = (r.getAttribute('data-del') || '').toLowerCase();
+
+    const matchesQ = !q || text.includes(q);
+    const matchesPay = !pay || rPay.includes(pay);
+    const matchesDel = !del || rDel.includes(del);
+
+    r.style.display = (matchesQ && matchesPay && matchesDel) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>n8n Workflow Integration — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+</head>
+<body class="dark-mode" data-page="n8n">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('integrations', 'n8n Workflow Automation');</script>
+
+<main class="dash-main">
+<div class="page-content">
+  <div class="page-header">
+    <div class="page-header-left">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+        <a href="dashboard-integrations.html" style="font-size:13px;color:var(--text-muted);text-decoration:none">← All Integrations</a>
+        <span class="badge badge-accent">First-Class Integration</span>
+      </div>
+      <h1 class="page-title">n8n Workflow Automation Hub</h1>
+      <p class="page-subtitle">Trigger self-hosted n8n workflows with incoming WhatsApp messages and reply programmatically</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-secondary" onclick="downloadN8nTemplate()">
+        📥 Download n8n Template (.json)
+      </button>
+      <button class="btn btn-primary" onclick="testN8nConnection()">
+        ⚡ Test Webhook Ping
+      </button>
+    </div>
+  </div>
+
+  <!-- Architecture Flow Banner -->
+  <div class="card" style="padding:24px;margin-bottom:24px;background:var(--bg-card);border:1px solid var(--border)">
+    <div style="font-weight:700;font-size:15px;color:var(--text-primary);margin-bottom:12px">Bi-Directional Event Architecture</div>
+    
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:20px;background:var(--bg-surface);border-radius:var(--radius-lg);border:1px solid var(--border);text-align:center">
+      <div style="flex:1;min-width:140px">
+        <div style="font-size:24px">📱</div>
+        <div style="font-weight:700;font-size:13px;margin-top:4px">NEXORAAI</div>
+        <div style="font-size:11px;color:var(--text-muted)">WhatsApp Msg Received</div>
+      </div>
+      <div style="color:var(--primary);font-size:18px">➔</div>
+      <div style="flex:1;min-width:140px">
+        <div style="font-size:24px">⚡</div>
+        <div style="font-weight:700;font-size:13px;margin-top:4px">n8n Webhook Node</div>
+        <div style="font-size:11px;color:var(--text-muted)">POST /webhook/nexora</div>
+      </div>
+      <div style="color:var(--primary);font-size:18px">➔</div>
+      <div style="flex:1;min-width:140px">
+        <div style="font-size:24px">🧠</div>
+        <div style="font-weight:700;font-size:13px;margin-top:4px">Business Logic</div>
+        <div style="font-size:11px;color:var(--text-muted)">DB / ERP / Custom AI</div>
+      </div>
+      <div style="color:var(--primary);font-size:18px">➔</div>
+      <div style="flex:1;min-width:140px">
+        <div style="font-size:24px">💬</div>
+        <div style="font-weight:700;font-size:13px;margin-top:4px">WhatsApp Dispatch</div>
+        <div style="font-size:11px;color:var(--text-muted)">POST /v1/messages/send</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Grid -->
+  <div style="display:grid;grid-template-columns:1.5fr 1.5fr;gap:24px">
+    <!-- Webhook URL & Config -->
+    <div class="card" style="padding:24px">
+      <h3 style="font-size:16px;margin:0 0 16px 0">n8n Listener Endpoint</h3>
+      
+      <div class="form-group">
+        <label class="form-label">n8n Webhook URL *</label>
+        <input type="url" id="n8nUrl" class="form-control" placeholder="https://n8n.mycompany.com/webhook/nexora-inbound" value="https://n8n.workflow-hub.io/webhook/nexora-inbound" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Webhook Secret Signature (HMAC SHA-256)</label>
+        <input type="text" class="form-control" value="whsec_n8n_8492019482019482" readonly />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Events to Stream into n8n</label>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+            <input type="checkbox" checked /> <span><strong>message.received</strong> — Forward all incoming WhatsApp messages</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+            <input type="checkbox" checked /> <span><strong>lead.qualified</strong> — When AI detects buyer intent</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer">
+            <input type="checkbox" checked /> <span><strong>order.created</strong> — When cart checkout completes</span>
+          </label>
+        </div>
+      </div>
+
+      <div style="margin-top:20px">
+        <button class="btn btn-primary" onclick="showToast('n8n integration settings saved!', 'success')">Save Configuration</button>
+      </div>
+    </div>
+
+    <!-- n8n Node HTTP Payload Example -->
+    <div class="card" style="padding:24px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="font-size:16px;margin:0">HTTP Request Node Configuration</h3>
+        <button class="btn btn-ghost btn-sm" onclick="copyN8nPayload()">📋 Copy</button>
+      </div>
+      <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">In your n8n workflow, use an <strong>HTTP Request</strong> node to send the reply back to WhatsApp:</p>
+
+      <pre style="background:#070B0D;border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;color:#D9F000;font-family:var(--font-mono);font-size:12px;line-height:1.6;overflow-x:auto" id="n8nJson">{
+  "method": "POST",
+  "url": "https://api.nexoraai.com/v1/messages/send",
+  "authentication": "genericCredentialType",
+  "genericAuthType": "httpHeaderAuth",
+  "headers": {
+    "Authorization": "Bearer nex_live_YOUR_API_KEY",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "to": "={{ $json.sender }}",
+    "type": "text",
+    "message": "={{ $json.ai_generated_reply }}"
+  }
+}</pre>
+    </div>
+  </div>
+</div>
+</main>
+
+<script>
+function testN8nConnection() {
+  const url = document.getElementById('n8nUrl').value;
+  showToast(`Dispatching sample payload to ${url}...`, 'info');
+  setTimeout(() => showToast('n8n Webhook responded with HTTP 200 OK in 164ms! Connection verified.', 'success'), 800);
+}
+
+function copyN8nPayload() {
+  navigator.clipboard.writeText(document.getElementById('n8nJson').innerText);
+  showToast('n8n node configuration copied to clipboard!', 'success');
+}
+
+function downloadN8nTemplate() {
+  const content = document.getElementById('n8nJson').innerText;
+  const blob = new Blob([content], {type: "application/json"});
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "nexora_n8n_workflow_template.json";
+  link.click();
+  showToast('Downloaded nexora_n8n_workflow_template.json', 'success');
+}
+</script>
+</body>
+</html>
