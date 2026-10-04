@@ -45,7 +45,8 @@
     </div>
     <span class="sidebar-group-label">Infrastructure</span>
     <div class="sidebar-group">
-      <a href="javascript:void(0)" onclick="setAdminTab('whatsapp')" class="sidebar-item" id="admTab-whatsapp"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg><span class="sidebar-item-label">WhatsApp & Email Monitor</span></a>
+      <a href="javascript:void(0)" onclick="setAdminTab('whatsapp')" class="sidebar-item" id="admTab-whatsapp"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg><span class="sidebar-item-label">WhatsApp Monitor</span></a>
+      <a href="javascript:void(0)" onclick="setAdminTab('email')" class="sidebar-item" id="admTab-email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg><span class="sidebar-item-label">Email Monitor</span></a>
       <a href="javascript:void(0)" onclick="setAdminTab('payments')" class="sidebar-item" id="admTab-payments"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><span class="sidebar-item-label">Transactions</span></a>
       <a href="javascript:void(0)" onclick="setAdminTab('audit')" class="sidebar-item" id="admTab-audit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg><span class="sidebar-item-label">Audit Logs</span></a>
     </div>
@@ -73,14 +74,17 @@
   </div>
   <div class="topbar-right" style="display:flex;align-items:center;gap:12px">
     <span class="badge badge-green">Production Cluster: Healthy</span>
-    <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);padding:4px 10px;border-radius:20px;border:1px solid rgba(255,255,255,0.1)">
+    <div style="display:flex;align-items:center;gap:8px;background:var(--bg-secondary);padding:4px 12px;border-radius:20px;border:1px solid var(--border)">
       <div class="avatar avatar-sm" style="background:#FF5B5B;color:#fff;font-weight:800">J</div>
       <div style="font-size:12px;text-align:left;line-height:1.2">
-        <div style="font-weight:700;color:#fff">Jakia Dantal</div>
-        <div style="font-size:10px;color:#D9F000">jakiadantal@gmail.com (Super Admin)</div>
+        <div style="font-weight:700;color:var(--text-primary)">Jakia Dantal</div>
+        <div style="font-size:10px;color:var(--danger);font-weight:600">jakiadantal@gmail.com (Super Admin)</div>
       </div>
     </div>
-    <button class="btn btn-ghost btn-sm" onclick="logoutAdmin()" style="font-size:12px;padding:4px 10px">Sign Out</button>
+    <button type="button" class="btn btn-secondary btn-sm" id="adminSignOutBtn" onclick="logoutAdmin()" style="font-size:12px;padding:6px 14px;cursor:pointer;color:var(--danger);border-color:rgba(220,38,38,0.3)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+      Sign Out
+    </button>
   </div>
 </header>
 
@@ -257,21 +261,45 @@
     </div>
   </div>
 
-  <!-- ==================== 4. WHATSAPP & BULK EMAIL MONITOR ==================== -->
+  <!-- ==================== 4. WHATSAPP GATEWAY MONITOR ==================== -->
   <div id="panel-whatsapp" style="display:none">
     <div class="page-header">
       <div class="page-header-left">
-        <h1 class="page-title">Global WhatsApp & Bulk Email Monitor</h1>
-        <p class="page-subtitle">Real-time status across Meta Cloud API, Baileys QR gateway socket instances, and high-throughput SMTP email relays</p>
+        <h1 class="page-title">WhatsApp Gateway & Sockets Monitor</h1>
+        <p class="page-subtitle">Real-time socket connection health across Meta Cloud API and Baileys QR gateway node instances</p>
       </div>
       <div class="page-header-actions">
         <button class="btn btn-secondary" onclick="showToast('Flushing gateway sockets & reconnecting health probes...', 'info')">
-          🔄 Re-probe All Nodes
+          🔄 Re-probe WhatsApp Sockets
         </button>
       </div>
     </div>
 
-    <h3 style="font-size:15px;color:var(--text-primary);margin:0 0 12px 0">📱 WhatsApp Gateway Sockets</h3>
+    <!-- WhatsApp Health Metrics -->
+    <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;margin-bottom:24px">
+      <div class="card" style="padding:16px">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Connected Nodes</div>
+        <div style="font-size:22px;font-weight:800;color:var(--primary)">2 / 2 Active</div>
+        <div style="font-size:11px;color:var(--success);margin-top:2px">● All sockets healthy</div>
+      </div>
+      <div class="card" style="padding:16px">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Throughput (1h)</div>
+        <div style="font-size:22px;font-weight:800;color:var(--text-primary)">22,690 msgs</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Avg 6.3 msgs/sec</div>
+      </div>
+      <div class="card" style="padding:16px">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Meta Cloud Latency</div>
+        <div style="font-size:22px;font-weight:800;color:var(--text-primary)">42 ms</div>
+        <div style="font-size:11px;color:var(--success);margin-top:2px">Optimal ping rate</div>
+      </div>
+      <div class="card" style="padding:16px">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Socket Uptime</div>
+        <div style="font-size:22px;font-weight:800;color:var(--primary)">99.98%</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Zero disconnects (30d)</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:15px;color:var(--text-primary);margin:0 0 12px 0">📱 Active WhatsApp Gateway Sockets</h3>
     <div class="table-container" style="margin-bottom:28px">
       <table class="table">
         <thead>
@@ -314,8 +342,50 @@
         </tbody>
       </table>
     </div>
+  </div>
 
-    <h3 style="font-size:15px;color:var(--text-primary);margin:0 0 12px 0">✉️ Bulk Email SMTP Relays & Deliverability</h3>
+  <!-- ==================== 4B. BULK EMAIL & SMTP MONITOR ==================== -->
+  <div id="panel-email" style="display:none">
+    <div class="page-header">
+      <div class="page-header-left">
+        <h1 class="page-title">Bulk Email & SMTP Relays Monitor</h1>
+        <p class="page-subtitle">Real-time status across multi-tenant SMTP relays, SPF/DKIM authentication, reputation scores, and hourly blast throughput</p>
+      </div>
+      <div class="page-header-actions">
+        <button class="btn btn-secondary" onclick="showToast('Re-verifying SPF/DKIM DNS records...', 'info')">
+          🔄 Verify DNS Records
+        </button>
+        <button class="btn btn-primary" onclick="showToast('SMTP health test dispatched: all relays responding in <120ms', 'success')">
+          ⚡ Test Relay Ping
+        </button>
+      </div>
+    </div>
+
+    <!-- Email Health Metrics -->
+    <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;margin-bottom:24px">
+      <div class="card" style="padding:16px">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Inbox Placement</div>
+        <div style="font-size:22px;font-weight:800;color:var(--primary)">99.8%</div>
+        <div style="font-size:11px;color:var(--success);margin-top:2px">● High Sender Reputation</div>
+      </div>
+      <div class="card" style="padding:16px">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Relay Capacity</div>
+        <div style="font-size:22px;font-weight:800;color:var(--text-primary)">61,400 / hr</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Active cluster bandwidth</div>
+      </div>
+      <div class="card" style="padding:16px">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">SPF / DKIM / DMARC</div>
+        <div style="font-size:22px;font-weight:800;color:var(--success)">100% PASS</div>
+        <div style="font-size:11px;color:var(--success);margin-top:2px">Strict TLS 1.3 enforced</div>
+      </div>
+      <div class="card" style="padding:16px">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Bounce Rate</div>
+        <div style="font-size:22px;font-weight:800;color:var(--text-primary)">0.04%</div>
+        <div style="font-size:11px;color:var(--success);margin-top:2px">Below industry baseline</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:15px;color:var(--text-primary);margin:0 0 12px 0">✉️ High-Throughput SMTP Relay Clusters</h3>
     <div class="table-container">
       <table class="table">
         <thead>
@@ -336,7 +406,7 @@
             </td>
             <td style="font-family:var(--font-mono);font-size:12.5px">smtp.resend.com:587</td>
             <td><span class="badge badge-green">SPF + DKIM Verified</span></td>
-            <td><strong style="color:#D9F000">99.8% Inbox</strong></td>
+            <td><strong style="color:var(--primary)">99.8% Inbox</strong></td>
             <td style="font-family:var(--font-mono)">42,500 / hr</td>
             <td style="text-align:right"><span class="badge badge-green">Operational</span></td>
           </tr>
@@ -347,7 +417,7 @@
             </td>
             <td style="font-family:var(--font-mono);font-size:12.5px">email-smtp.us-east-1:587</td>
             <td><span class="badge badge-green">TLS 1.3 Strict</span></td>
-            <td><strong style="color:#D9F000">99.9% Inbox</strong></td>
+            <td><strong style="color:var(--primary)">99.9% Inbox</strong></td>
             <td style="font-family:var(--font-mono)">18,900 / hr</td>
             <td style="text-align:right"><span class="badge badge-green">Operational</span></td>
           </tr>
@@ -507,7 +577,7 @@
 <script src="../assets/js/app.js"></script>
 <script>
 function setAdminTab(tab) {
-  const tabs = ['overview', 'users', 'orgs', 'plans', 'whatsapp', 'payments', 'audit', 'settings'];
+  const tabs = ['overview', 'users', 'orgs', 'plans', 'whatsapp', 'email', 'payments', 'audit', 'settings'];
   tabs.forEach(t => {
     const el = document.getElementById('panel-' + t);
     const btn = document.getElementById('admTab-' + t);
@@ -520,12 +590,24 @@ function setAdminTab(tab) {
 }
 
 function logoutAdmin() {
-  localStorage.removeItem('nexora_user');
-  showToast('Signing out Super Admin...', 'info');
-  setTimeout(() => {
-    window.location.href = 'login.html';
-  }, 600);
+  try {
+    localStorage.removeItem('nexora_user');
+    sessionStorage.clear();
+  } catch (e) {
+    console.error('Session clearance error:', e);
+  }
+  window.location.href = 'login.html';
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('adminSignOutBtn');
+  if (btn) {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      logoutAdmin();
+    });
+  }
+});
 </script>
 </body>
 </html>

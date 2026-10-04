@@ -184,6 +184,16 @@ const Toast = (() => {
   return { show, success, error, warning, info };
 })();
 
+// Global showToast helper function for cross-page compatibility
+window.showToast = function(message, type = 'info') {
+  if (typeof Toast !== 'undefined') {
+    if (type === 'success' && Toast.success) return Toast.success('Success', message);
+    if (type === 'error' && Toast.error) return Toast.error('Error', message);
+    if (type === 'warning' && Toast.warning) return Toast.warning('Warning', message);
+    if (Toast.info) return Toast.info('Notification', message);
+  }
+};
+
 // ============================================
 // MODAL SYSTEM
 // ============================================

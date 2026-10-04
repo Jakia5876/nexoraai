@@ -690,19 +690,11 @@
 
     // Dashboard-specific JS
     function handleLogout() {
-      confirm({
-        title: 'Sign Out',
-        message: 'Are you sure you want to sign out of NEXORAAI?',
-        confirmText: 'Sign Out',
-        cancelText: 'Stay',
-        type: 'danger'
-      }).then(confirmed => {
-        if (confirmed) {
-          localStorage.removeItem('nexora_user');
-          Toast.info('Signing out...', 'Redirecting to login page');
-          setTimeout(() => window.location.href = 'login.html', 1000);
-        }
-      });
+      try {
+        localStorage.removeItem('nexora_user');
+        sessionStorage.clear();
+      } catch (e) {}
+      window.location.href = 'login.html';
     }
 
     function showMobileFABMenu() {
