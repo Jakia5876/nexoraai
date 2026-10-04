@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Status — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/homepage.css" />
+</head>
+<body class="dark-mode">
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../index.html" class="logo">
+          <div class="logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#D9F000" fill-opacity="0.15"/><path d="M8 24L14 8H16L10 24H8Z" fill="#D9F000"/><path d="M16 8L22 24H20L14 8H16Z" fill="#D9F000" fill-opacity="0.6"/><circle cx="22" cy="10" r="3" fill="#9BE600"/><circle cx="22" cy="10" r="1.5" fill="#D9F000"/></svg></div>
+          <span class="logo-text">NEXORA<span class="logo-accent">AI</span></span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding:120px 0 80px">
+    <div class="container" style="max-width:800px">
+      <!-- Status Banner -->
+      <div style="background:rgba(53,216,121,0.1);border:1px solid rgba(53,216,121,0.3);border-radius:var(--radius-lg);padding:24px;text-align:center;margin-bottom:36px">
+        <div style="font-size:32px;margin-bottom:8px">🟢</div>
+        <h1 style="font-size:24px;font-weight:800;color:var(--success);margin:0 0 4px">All Systems Operational</h1>
+        <p style="font-size:13px;color:var(--text-secondary);margin:0">All cluster nodes, WhatsApp sockets, and AI model routers are responding normally.</p>
+      </div>
+
+      <!-- Services List -->
+      <div class="card" style="padding:24px">
+        <h3 style="font-size:16px;margin:0 0 16px 0">Platform Component Health</h3>
+        
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--border)">
+            <div>
+              <div style="font-weight:600;font-size:14px">Meta WhatsApp Cloud API Gateway</div>
+              <div style="font-size:12px;color:var(--text-muted)">Avg Latency: 142ms</div>
+            </div>
+            <span class="badge badge-green">Operational</span>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--border)">
+            <div>
+              <div style="font-weight:600;font-size:14px">QR WebSocket Engine (Baileys Node)</div>
+              <div style="font-size:12px;color:var(--text-muted)">Uptime 99.98%</div>
+            </div>
+            <span class="badge badge-green">Operational</span>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--border)">
+            <div>
+              <div style="font-weight:600;font-size:14px">AI Inference Cluster (GPT-4o & Claude 3.5)</div>
+              <div style="font-size:12px;color:var(--text-muted)">Avg Token Latency: 22ms/tok</div>
+            </div>
+            <span class="badge badge-green">Operational</span>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:600;font-size:14px">Outbound Webhooks Delivery Queue</div>
+              <div style="font-size:12px;color:var(--text-muted)">Queue depth: 0 msgs pending</div>
+            </div>
+            <span class="badge badge-green">Operational</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

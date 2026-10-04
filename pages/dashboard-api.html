@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API & Developer Keys — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+</head>
+<body class="dark-mode" data-page="api">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('api', 'API & Developer Hub');</script>
+
+<main class="dash-main">
+<div class="page-content">
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1 class="page-title">Developer API & Access Tokens</h1>
+      <p class="page-subtitle">Programmatically send WhatsApp messages, sync CRM contacts, and trigger AI automations via REST</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-secondary" onclick="window.location.href='documentation.html'">
+        📖 Read Full Docs
+      </button>
+      <button class="btn btn-primary" onclick="openNewKeyModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Generate API Key
+      </button>
+    </div>
+  </div>
+
+  <!-- API Keys Management Box -->
+  <div class="card" style="padding:24px;margin-bottom:24px">
+    <h3 style="font-size:16px;margin:0 0 16px 0">Active Secret Keys</h3>
+    
+    <div style="display:flex;flex-direction:column;gap:12px" id="keysList">
+      <div style="padding:16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-weight:700;color:var(--text-primary)">Production Backend Key</span>
+            <span class="badge badge-green">Active</span>
+          </div>
+          <div style="font-family:var(--font-mono);font-size:13px;color:var(--text-secondary);margin-top:4px">
+            nex_live_9482bf7a8e2394017e8c••••••••••••••••
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px">Created Jan 14, 2026 • Last used 2 minutes ago</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-secondary btn-sm" onclick="copyApiKey('nex_live_9482bf7a8e2394017e8c11aa5544')">📋 Copy Key</button>
+          <button class="btn btn-ghost btn-sm" style="color:var(--danger)" onclick="revokeKey(this)">Revoke</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Code Generator & Tester -->
+  <div style="display:grid;grid-template-columns:1.2fr 1.8fr;gap:24px">
+    <!-- Endpoints Selector -->
+    <div class="card" style="padding:24px">
+      <h3 style="font-size:16px;margin:0 0 16px 0">API Endpoints</h3>
+      
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="card" style="padding:12px;cursor:pointer;border-color:var(--primary)" onclick="selectEndpoint('sendMsg')">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="badge badge-green" style="font-weight:700">POST</span>
+            <span style="font-family:var(--font-mono);font-size:13px;font-weight:600">/v1/messages/send</span>
+          </div>
+          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">Send direct text or media message to any phone</div>
+        </div>
+
+        <div class="card" style="padding:12px;cursor:pointer" onclick="selectEndpoint('templateMsg')">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="badge badge-green" style="font-weight:700">POST</span>
+            <span style="font-family:var(--font-mono);font-size:13px;font-weight:600">/v1/messages/template</span>
+          </div>
+          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">Send Meta pre-approved WhatsApp template</div>
+        </div>
+
+        <div class="card" style="padding:12px;cursor:pointer" onclick="selectEndpoint('createLead')">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="badge badge-green" style="font-weight:700">POST</span>
+            <span style="font-family:var(--font-mono);font-size:13px;font-weight:600">/v1/crm/leads</span>
+          </div>
+          <div style="font-size:12px;color:var(--text-secondary);margin-top:4px">Inject external web lead into CRM pipeline</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Snippet Display -->
+    <div class="card" style="padding:24px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div class="tabs" style="margin:0">
+          <button class="tab-btn active" id="tabCurl" onclick="setLang('curl')">cURL</button>
+          <button class="tab-btn" id="tabNode" onclick="setLang('node')">Node.js</button>
+          <button class="tab-btn" id="tabPython" onclick="setLang('python')">Python</button>
+          <button class="tab-btn" id="tabPhp" onclick="setLang('php')">PHP</button>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="copySnippet()">📋 Copy Code</button>
+      </div>
+
+      <pre style="background:#070B0D;border:1px solid var(--border);border-radius:var(--radius-md);padding:16px;color:#D9F000;font-family:var(--font-mono);font-size:13px;overflow-x:auto;line-height:1.6" id="codeBlock">curl -X POST https://api.nexoraai.com/v1/messages/send \
+  -H "Authorization: Bearer nex_live_YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": "+8801712345678",
+    "type": "text",
+    "message": "Your order #9482 has been confirmed!",
+    "ai_autopilot": false
+  }'</pre>
+
+      <div style="margin-top:16px;display:flex;justify-content:flex-end">
+        <button class="btn btn-primary" onclick="executeApiTest()">▶️ Send Live Test Request</button>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+
+<!-- New Key Modal -->
+<div class="modal-overlay" id="keyModal" style="display:none">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <h3 class="modal-title">Generate New API Key</h3>
+      <button class="modal-close" onclick="closeModal('keyModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Key Name / Description</label>
+        <input type="text" id="keyLabel" class="form-control" placeholder="e.g. Shopify Store Webhook" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Environment</label>
+        <select class="form-control">
+          <option>Production (Live)</option>
+          <option>Sandbox / Testing</option>
+        </select>
+      </div>
+      <div class="modal-actions" style="margin-top:20px">
+        <button class="btn btn-secondary" onclick="closeModal('keyModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="createKey()">Generate</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentLang = 'curl';
+let currentEndpoint = 'sendMsg';
+
+function openNewKeyModal() {
+  document.getElementById('keyModal').style.display = 'flex';
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+function createKey() {
+  closeModal('keyModal');
+  showToast('New API key generated: nex_live_' + Math.random().toString(36).substring(2, 15), 'success');
+}
+
+function copyApiKey(key) {
+  navigator.clipboard.writeText(key);
+  showToast('API key copied to clipboard!', 'success');
+}
+
+function revokeKey(btn) {
+  if (confirm('Revoke this API Key? Any integrated service using it will immediately stop working.')) {
+    btn.closest('div').parentElement.remove();
+    showToast('API key revoked', 'warning');
+  }
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.tabs .tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab' + lang.charAt(0).toUpperCase() + lang.slice(1)).classList.add('active');
+  updateCodeDisplay();
+}
+
+function selectEndpoint(ep) {
+  currentEndpoint = ep;
+  updateCodeDisplay();
+}
+
+function updateCodeDisplay() {
+  const block = document.getElementById('codeBlock');
+  if (currentLang === 'curl') {
+    block.innerText = `curl -X POST https://api.nexoraai.com/v1/messages/send \\
+  -H "Authorization: Bearer nex_live_YOUR_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "to": "+8801712345678",
+    "type": "text",
+    "message": "Your order #9482 has been confirmed!",
+    "ai_autopilot": false
+  }'`;
+  } else if (currentLang === 'node') {
+    block.innerText = `const axios = require('axios');
+
+const res = await axios.post('https://api.nexoraai.com/v1/messages/send', {
+  to: '+8801712345678',
+  type: 'text',
+  message: 'Your order #9482 has been confirmed!',
+  ai_autopilot: false
+}, {
+  headers: { 'Authorization': 'Bearer nex_live_YOUR_KEY' }
+});
+
+console.log(res.data);`;
+  } else if (currentLang === 'python') {
+    block.innerText = `import requests
+
+url = "https://api.nexoraai.com/v1/messages/send"
+headers = {"Authorization": "Bearer nex_live_YOUR_KEY"}
+payload = {
+    "to": "+8801712345678",
+    "type": "text",
+    "message": "Your order #9482 has been confirmed!",
+    "ai_autopilot": False
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())`;
+  } else {
+    block.innerText = `<?php
+$curl = curl_init();
+curl_setopt_array($curl, [
+  CURLOPT_URL => "https://api.nexoraai.com/v1/messages/send",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => json_encode([
+    "to" => "+8801712345678",
+    "type" => "text",
+    "message" => "Your order #9482 has been confirmed!"
+  ]),
+  CURLOPT_HTTPHEADER => [
+    "Authorization: Bearer nex_live_YOUR_KEY",
+    "Content-Type: application/json"
+  ],
+]);
+$response = curl_exec($curl);
+echo $response;`;
+  }
+}
+
+function copySnippet() {
+  navigator.clipboard.writeText(document.getElementById('codeBlock').innerText);
+  showToast('Code snippet copied to clipboard!', 'success');
+}
+
+function executeApiTest() {
+  showToast('Dispatching test HTTP POST /v1/messages/send...', 'info');
+  setTimeout(() => {
+    showToast('HTTP 200 OK — {"status":"delivered","message_id":"msg_9941"}', 'success');
+  }, 700);
+}
+</script>
+</body>
+</html>

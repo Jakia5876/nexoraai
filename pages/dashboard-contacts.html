@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacts — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+</head>
+<body class="dark-mode" data-page="contacts">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('contacts', 'Contacts & Audiences');</script>
+
+<main class="dash-main">
+<div class="page-content">
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1 class="page-title">Contacts Directory</h1>
+      <p class="page-subtitle">Centralized audience database with AI tags, WhatsApp engagement score, and segmentation</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-secondary" onclick="openImportModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        Import CSV
+      </button>
+      <button class="btn btn-secondary" onclick="exportContacts()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        Export
+      </button>
+      <button class="btn btn-primary" onclick="openAddContactModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        New Contact
+      </button>
+    </div>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="stats-row stats-row-4" style="margin-bottom:24px">
+    <div class="stat-card-dash">
+      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D9F000" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
+      <div><div class="stat-card-value">4,820</div><div class="stat-card-label">Total Contacts</div></div>
+    </div>
+    <div class="stat-card-dash">
+      <div class="stat-icon" style="background:var(--success-dim)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#35D879" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+      <div><div class="stat-card-value" style="color:var(--success)">3,942</div><div class="stat-card-label">WhatsApp Verified</div></div>
+    </div>
+    <div class="stat-card-dash">
+      <div class="stat-icon" style="background:rgba(217,240,0,0.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D9F000" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+      <div><div class="stat-card-value">1,208</div><div class="stat-card-label">Active This Week</div></div>
+    </div>
+    <div class="stat-card-dash">
+      <div class="stat-icon" style="background:rgba(255,184,0,0.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFB800" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+      <div><div class="stat-card-value" style="color:#FFB800">485</div><div class="stat-card-label">VIP / High Value</div></div>
+    </div>
+  </div>
+
+  <!-- Contacts Table Box -->
+  <div class="table-container">
+    <div class="table-toolbar">
+      <div class="table-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="contactSearch" placeholder="Search by name, phone, email or tag..." oninput="filterContacts()" />
+      </div>
+      <div class="table-filters">
+        <select class="form-control form-control-sm" id="tagFilter" onchange="filterContacts()" style="width:140px">
+          <option value="">All Tags</option>
+          <option value="VIP">VIP</option>
+          <option value="Enterprise">Enterprise</option>
+          <option value="Hot Lead">Hot Lead</option>
+          <option value="Customer">Customer</option>
+          <option value="Abandoned Cart">Abandoned Cart</option>
+        </select>
+        <select class="form-control form-control-sm" id="statusFilter" onchange="filterContacts()" style="width:140px">
+          <option value="">All Statuses</option>
+          <option value="Subscribed">Subscribed</option>
+          <option value="Opt-out">Opt-out</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" onclick="bulkBroadcastPrompt()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg>
+          Broadcast Selected
+        </button>
+      </div>
+    </div>
+
+    <table class="table" id="contactsTable">
+      <thead>
+        <tr>
+          <th style="width:40px"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)" /></th>
+          <th>Contact</th>
+          <th>Phone / WhatsApp</th>
+          <th>Tags</th>
+          <th>Lead Score</th>
+          <th>Last Activity</th>
+          <th>Status</th>
+          <th style="text-align:right">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="contactsBody">
+        <tr data-name="Rahim Uddin" data-phone="+8801712345678" data-tag="VIP" data-status="Subscribed">
+          <td><input type="checkbox" class="row-checkbox" /></td>
+          <td>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="avatar avatar-sm" style="background:#D9F000;color:#070B0D;font-weight:700">RU</div>
+              <div>
+                <div style="font-weight:600;color:var(--text-primary)">Rahim Uddin</div>
+                <div style="font-size:12px;color:var(--text-muted)">rahim@apexbd.com • Apex Footwear</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="color:var(--success)">●</span>
+              <span style="font-family:var(--font-mono);font-size:13px">+880 1712-345678</span>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;gap:4px;flex-wrap:wrap">
+              <span class="badge badge-accent">VIP</span>
+              <span class="badge badge-blue">Enterprise</span>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:60px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden">
+                <div style="width:92%;height:100%;background:var(--primary)"></div>
+              </div>
+              <span style="font-weight:700;font-size:12px;color:var(--primary)">92</span>
+            </div>
+          </td>
+          <td style="font-size:13px;color:var(--text-secondary)">Today, 11:42 AM</td>
+          <td><span class="badge badge-green">Subscribed</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="messageContact('+8801712345678')" title="Chat on WhatsApp">💬</button>
+            <button class="btn btn-ghost btn-sm" onclick="viewContactDetails('Rahim Uddin', '+880 1712-345678', 'rahim@apexbd.com', 'Apex Footwear', 'VIP, Enterprise', 92)">👁️</button>
+            <button class="btn btn-ghost btn-sm" onclick="deleteContact(this)">🗑️</button>
+          </td>
+        </tr>
+
+        <tr data-name="Nusrat Jahan" data-phone="+8801823456789" data-tag="Hot Lead" data-status="Subscribed">
+          <td><input type="checkbox" class="row-checkbox" /></td>
+          <td>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="avatar avatar-sm" style="background:#9BE600;color:#070B0D;font-weight:700">NJ</div>
+              <div>
+                <div style="font-weight:600;color:var(--text-primary)">Nusrat Jahan</div>
+                <div style="font-size:12px;color:var(--text-muted)">nusrat@dhakafashion.com</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="color:var(--success)">●</span>
+              <span style="font-family:var(--font-mono);font-size:13px">+880 1823-456789</span>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;gap:4px">
+              <span class="badge badge-warning">Hot Lead</span>
+              <span class="badge badge-purple">Retail</span>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:60px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden">
+                <div style="width:78%;height:100%;background:#FFB800"></div>
+              </div>
+              <span style="font-weight:700;font-size:12px;color:#FFB800">78</span>
+            </div>
+          </td>
+          <td style="font-size:13px;color:var(--text-secondary)">Yesterday</td>
+          <td><span class="badge badge-green">Subscribed</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="messageContact('+8801823456789')">💬</button>
+            <button class="btn btn-ghost btn-sm" onclick="viewContactDetails('Nusrat Jahan', '+880 1823-456789', 'nusrat@dhakafashion.com', 'Dhaka Fashion Hub', 'Hot Lead, Retail', 78)">👁️</button>
+            <button class="btn btn-ghost btn-sm" onclick="deleteContact(this)">🗑️</button>
+          </td>
+        </tr>
+
+        <tr data-name="Tanvir Ahmed" data-phone="+8801934567890" data-tag="Customer" data-status="Subscribed">
+          <td><input type="checkbox" class="row-checkbox" /></td>
+          <td>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="avatar avatar-sm" style="background:#3B82F6;color:#fff;font-weight:700">TA</div>
+              <div>
+                <div style="font-weight:600;color:var(--text-primary)">Tanvir Ahmed</div>
+                <div style="font-size:12px;color:var(--text-muted)">tanvir@cloudsoft.io • CloudSoft</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="color:var(--success)">●</span>
+              <span style="font-family:var(--font-mono);font-size:13px">+880 1934-567890</span>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;gap:4px">
+              <span class="badge badge-blue">Customer</span>
+              <span class="badge badge-green">Paid Tier</span>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:60px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden">
+                <div style="width:85%;height:100%;background:var(--success)"></div>
+              </div>
+              <span style="font-weight:700;font-size:12px;color:var(--success)">85</span>
+            </div>
+          </td>
+          <td style="font-size:13px;color:var(--text-secondary)">3 days ago</td>
+          <td><span class="badge badge-green">Subscribed</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="messageContact('+8801934567890')">💬</button>
+            <button class="btn btn-ghost btn-sm" onclick="viewContactDetails('Tanvir Ahmed', '+880 1934-567890', 'tanvir@cloudsoft.io', 'CloudSoft', 'Customer, Paid Tier', 85)">👁️</button>
+            <button class="btn btn-ghost btn-sm" onclick="deleteContact(this)">🗑️</button>
+          </td>
+        </tr>
+
+        <tr data-name="Farhana Akter" data-phone="+8801545678901" data-tag="Abandoned Cart" data-status="Subscribed">
+          <td><input type="checkbox" class="row-checkbox" /></td>
+          <td>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="avatar avatar-sm" style="background:#A855F7;color:#fff;font-weight:700">FA</div>
+              <div>
+                <div style="font-weight:600;color:var(--text-primary)">Farhana Akter</div>
+                <div style="font-size:12px;color:var(--text-muted)">farhana@gmail.com</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="color:var(--success)">●</span>
+              <span style="font-family:var(--font-mono);font-size:13px">+880 1545-678901</span>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;gap:4px">
+              <span class="badge badge-red">Abandoned Cart</span>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:60px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden">
+                <div style="width:45%;height:100%;background:#FF5B5B"></div>
+              </div>
+              <span style="font-weight:700;font-size:12px;color:#FF5B5B">45</span>
+            </div>
+          </td>
+          <td style="font-size:13px;color:var(--text-secondary)">5 hours ago</td>
+          <td><span class="badge badge-green">Subscribed</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="messageContact('+8801545678901')">💬</button>
+            <button class="btn btn-ghost btn-sm" onclick="viewContactDetails('Farhana Akter', '+880 1545-678901', 'farhana@gmail.com', 'Individual', 'Abandoned Cart', 45)">👁️</button>
+            <button class="btn btn-ghost btn-sm" onclick="deleteContact(this)">🗑️</button>
+          </td>
+        </tr>
+
+        <tr data-name="Mahmud Hasan" data-phone="+8801656789012" data-tag="Enterprise" data-status="Opt-out">
+          <td><input type="checkbox" class="row-checkbox" /></td>
+          <td>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div class="avatar avatar-sm" style="background:#64748B;color:#fff;font-weight:700">MH</div>
+              <div>
+                <div style="font-weight:600;color:var(--text-primary)">Mahmud Hasan</div>
+                <div style="font-size:12px;color:var(--text-muted)">m.hasan@bengaltech.com</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span style="color:var(--danger)">●</span>
+              <span style="font-family:var(--font-mono);font-size:13px">+880 1656-789012</span>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;gap:4px">
+              <span class="badge badge-blue">Enterprise</span>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:60px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden">
+                <div style="width:30%;height:100%;background:var(--text-muted)"></div>
+              </div>
+              <span style="font-weight:700;font-size:12px;color:var(--text-muted)">30</span>
+            </div>
+          </td>
+          <td style="font-size:13px;color:var(--text-secondary)">2 weeks ago</td>
+          <td><span class="badge badge-gray">Opt-out</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="messageContact('+8801656789012')">💬</button>
+            <button class="btn btn-ghost btn-sm" onclick="viewContactDetails('Mahmud Hasan', '+880 1656-789012', 'm.hasan@bengaltech.com', 'Bengal Tech', 'Enterprise', 30)">👁️</button>
+            <button class="btn btn-ghost btn-sm" onclick="deleteContact(this)">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="table-pagination">
+      <div style="font-size:13px;color:var(--text-muted)">Showing 1 to 5 of 4,820 contacts</div>
+      <div class="pagination-buttons">
+        <button class="btn btn-ghost btn-sm" disabled>Previous</button>
+        <button class="btn btn-primary btn-sm">1</button>
+        <button class="btn btn-ghost btn-sm">2</button>
+        <button class="btn btn-ghost btn-sm">3</button>
+        <button class="btn btn-ghost btn-sm">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+
+<!-- Add Contact Modal -->
+<div class="modal-overlay" id="addContactModal" style="display:none">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <h3 class="modal-title">Create New Contact</h3>
+      <button class="modal-close" onclick="closeModal('addContactModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="addContactForm" onsubmit="handleCreateContact(event)">
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input type="text" id="newName" class="form-control" placeholder="e.g. Shakib Al Hasan" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="flex:1">
+            <label class="form-label">WhatsApp Number *</label>
+            <input type="tel" id="newPhone" class="form-control" placeholder="+8801700000000" required />
+          </div>
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="newEmail" class="form-control" placeholder="user@company.com" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Company / Organization</label>
+            <input type="text" id="newCompany" class="form-control" placeholder="e.g. Acme Corp" />
+          </div>
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Tags (comma separated)</label>
+            <input type="text" id="newTags" class="form-control" placeholder="VIP, Enterprise, Warm" />
+          </div>
+        </div>
+        <div class="modal-actions" style="margin-top:24px">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('addContactModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Contact</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Import CSV Modal -->
+<div class="modal-overlay" id="importModal" style="display:none">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <h3 class="modal-title">Import Contacts from CSV</h3>
+      <button class="modal-close" onclick="closeModal('importModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px">Upload a CSV or XLSX file containing contact columns: Name, Phone (E.164 format with country code), Email, Tags.</p>
+      
+      <div style="border:2px dashed var(--border);border-radius:var(--radius-lg);padding:32px 20px;text-align:center;cursor:pointer;background:rgba(217,240,0,0.02)" onclick="document.getElementById('csvFileInput').click()">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#D9F000" stroke-width="1.5" style="margin-bottom:12px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        <div style="font-weight:600;font-size:14px;color:var(--text-primary);margin-bottom:4px">Click to upload or drag & drop CSV file</div>
+        <div style="font-size:12px;color:var(--text-muted)">Max file size: 10MB (up to 50,000 contacts per file)</div>
+        <input type="file" id="csvFileInput" accept=".csv,.xlsx" style="display:none" onchange="simulateCsvUpload(this)" />
+      </div>
+
+      <div style="margin-top:20px;padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:13px;color:var(--text-secondary)">Need a template? Download sample format:</span>
+        <button class="btn btn-ghost btn-sm" onclick="downloadSampleCsv()">📥 Download .csv</button>
+      </div>
+      <div class="modal-actions" style="margin-top:24px">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('importModal')">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="executeImport()">Start Import</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contact Detail Drawer / Modal -->
+<div class="modal-overlay" id="contactDetailModal" style="display:none">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-header">
+      <h3 class="modal-title">Contact Profile</h3>
+      <button class="modal-close" onclick="closeModal('contactDetailModal')">&times;</button>
+    </div>
+    <div class="modal-body" id="contactDetailBody">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+</div>
+
+<script>
+function openAddContactModal() {
+  document.getElementById('addContactModal').style.display = 'flex';
+}
+function openImportModal() {
+  document.getElementById('importModal').style.display = 'flex';
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+function handleCreateContact(e) {
+  e.preventDefault();
+  const name = document.getElementById('newName').value;
+  const phone = document.getElementById('newPhone').value;
+  const email = document.getElementById('newEmail').value;
+  const tags = document.getElementById('newTags').value || 'New';
+  
+  const tbody = document.getElementById('contactsBody');
+  const tr = document.createElement('tr');
+  tr.setAttribute('data-name', name);
+  tr.setAttribute('data-phone', phone);
+  tr.setAttribute('data-tag', tags);
+  tr.setAttribute('data-status', 'Subscribed');
+  tr.innerHTML = `
+    <td><input type="checkbox" class="row-checkbox" /></td>
+    <td>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="avatar avatar-sm" style="background:#D9F000;color:#070B0D;font-weight:700">${name.substring(0,2).toUpperCase()}</div>
+        <div>
+          <div style="font-weight:600;color:var(--text-primary)">${name}</div>
+          <div style="font-size:12px;color:var(--text-muted)">${email || 'No email provided'}</div>
+        </div>
+      </div>
+    </td>
+    <td>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="color:var(--success)">●</span>
+        <span style="font-family:var(--font-mono);font-size:13px">${phone}</span>
+      </div>
+    </td>
+    <td><span class="badge badge-accent">${tags}</span></td>
+    <td>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:60px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden">
+          <div style="width:60%;height:100%;background:var(--primary)"></div>
+        </div>
+        <span style="font-weight:700;font-size:12px;color:var(--primary)">60</span>
+      </div>
+    </td>
+    <td style="font-size:13px;color:var(--text-secondary)">Just now</td>
+    <td><span class="badge badge-green">Subscribed</span></td>
+    <td style="text-align:right">
+      <button class="btn btn-ghost btn-sm" onclick="messageContact('${phone}')">💬</button>
+      <button class="btn btn-ghost btn-sm" onclick="deleteContact(this)">🗑️</button>
+    </td>
+  `;
+  tbody.insertBefore(tr, tbody.firstChild);
+  closeModal('addContactModal');
+  showToast(`Contact "${name}" created successfully!`, 'success');
+  document.getElementById('addContactForm').reset();
+}
+
+function filterContacts() {
+  const query = document.getElementById('contactSearch').value.toLowerCase();
+  const tag = document.getElementById('tagFilter').value.toLowerCase();
+  const status = document.getElementById('statusFilter').value.toLowerCase();
+  const rows = document.querySelectorAll('#contactsBody tr');
+
+  rows.forEach(r => {
+    const text = (r.innerText || '').toLowerCase();
+    const rTag = (r.getAttribute('data-tag') || '').toLowerCase();
+    const rStatus = (r.getAttribute('data-status') || '').toLowerCase();
+
+    const matchesQuery = !query || text.includes(query);
+    const matchesTag = !tag || rTag.includes(tag);
+    const matchesStatus = !status || rStatus.includes(status);
+
+    r.style.display = (matchesQuery && matchesTag && matchesStatus) ? '' : 'none';
+  });
+}
+
+function toggleSelectAll(master) {
+  document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = master.checked);
+}
+
+function messageContact(phone) {
+  window.location.href = `dashboard-inbox.html?phone=${encodeURIComponent(phone)}`;
+}
+
+function viewContactDetails(name, phone, email, company, tags, score) {
+  const body = document.getElementById('contactDetailBody');
+  body.innerHTML = `
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)">
+      <div class="avatar avatar-lg" style="background:#D9F000;color:#070B0D;font-weight:800;font-size:20px">${name.substring(0,2).toUpperCase()}</div>
+      <div>
+        <h4 style="font-size:18px;margin:0 0 4px 0">${name}</h4>
+        <div style="font-size:13px;color:var(--text-secondary)">${company}</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+      <div class="card" style="padding:12px">
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase">WhatsApp</div>
+        <div style="font-size:14px;font-weight:600;font-family:var(--font-mono);margin-top:4px">${phone}</div>
+      </div>
+      <div class="card" style="padding:12px">
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase">Email</div>
+        <div style="font-size:14px;font-weight:600;margin-top:4px">${email}</div>
+      </div>
+      <div class="card" style="padding:12px">
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase">Lead Score</div>
+        <div style="font-size:18px;font-weight:800;color:var(--primary);margin-top:4px">${score}/100</div>
+      </div>
+      <div class="card" style="padding:12px">
+        <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase">Tags</div>
+        <div style="font-size:13px;color:var(--text-primary);margin-top:4px">${tags}</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-secondary" onclick="closeModal('contactDetailModal')">Close</button>
+      <button class="btn btn-primary" onclick="messageContact('${phone}')">Open WhatsApp Chat</button>
+    </div>
+  `;
+  document.getElementById('contactDetailModal').style.display = 'flex';
+}
+
+function deleteContact(btn) {
+  if (confirm('Are you sure you want to delete this contact?')) {
+    btn.closest('tr').remove();
+    showToast('Contact removed', 'info');
+  }
+}
+
+function exportContacts() {
+  showToast('Exporting contacts to CSV...', 'info');
+  setTimeout(() => showToast('Export completed! contacts_export.csv downloaded', 'success'), 1200);
+}
+
+function simulateCsvUpload(input) {
+  if (input.files && input.files[0]) {
+    showToast(`File "${input.files[0].name}" selected (1,420 records found)`, 'info');
+  }
+}
+
+function executeImport() {
+  closeModal('importModal');
+  showToast('Importing contacts... 1,420 contacts added successfully!', 'success');
+}
+
+function downloadSampleCsv() {
+  const csvContent = "data:text/csv;charset=utf-8,Name,Phone,Email,Company,Tags\nJohn Doe,+14155552671,john@acme.com,Acme Inc,VIP\nSarah Khan,+8801700000000,sarah@dhakacorp.com,Dhaka Corp,Enterprise";
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "nexora_sample_contacts.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function bulkBroadcastPrompt() {
+  const selected = document.querySelectorAll('.row-checkbox:checked').length;
+  if (selected === 0) {
+    showToast('Please select at least one contact checkbox', 'warning');
+    return;
+  }
+  window.location.href = `dashboard-broadcasts.html?recipients=${selected}`;
+}
+</script>
+</body>
+</html>

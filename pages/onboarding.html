@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome Onboarding — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <style>
+    .onboarding-wrap {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      background: radial-gradient(circle at 50% 10%, rgba(217, 240, 0, 0.08), #070B0D 60%);
+    }
+    .progress-bar-wrap {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      max-width: 580px;
+      margin-bottom: 28px;
+    }
+    .progress-step {
+      flex: 1;
+      height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+    .progress-step.completed {
+      background: var(--primary);
+    }
+    .wizard-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      width: 100%;
+      max-width: 580px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body class="dark-mode">
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="onboarding-wrap">
+  <!-- Brand Header -->
+  <div style="margin-bottom:24px;text-align:center">
+    <div style="font-size:24px;font-weight:900;color:var(--text-primary)">
+      NEXORA<span style="color:var(--primary)">AI</span>
+    </div>
+    <div style="font-size:13px;color:var(--text-muted);margin-top:4px">Workspace Setup Wizard (Step <span id="stepCounter">1</span> of 6)</div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-wrap">
+    <div class="progress-step completed" id="bar-1"></div>
+    <div class="progress-step" id="bar-2"></div>
+    <div class="progress-step" id="bar-3"></div>
+    <div class="progress-step" id="bar-4"></div>
+    <div class="progress-step" id="bar-5"></div>
+    <div class="progress-step" id="bar-6"></div>
+  </div>
+
+  <div class="wizard-card">
+    <!-- Step 1: Workspace -->
+    <div id="step-1">
+      <h2 style="font-size:22px;font-weight:800;margin:0 0 8px">Create Your Workspace</h2>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:24px">Every business has an isolated workspace to secure customer data and CRM contacts.</p>
+      
+      <div class="form-group">
+        <label class="form-label">Business / Workspace Name *</label>
+        <input type="text" id="wsName" class="form-control" placeholder="e.g. Apex Footwear Ltd." value="My Business" />
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="flex:1">
+          <label class="form-label">Industry</label>
+          <select class="form-control">
+            <option>E-Commerce & Retail</option>
+            <option>Real Estate & Construction</option>
+            <option>Healthcare & Clinics</option>
+            <option>Software & Tech Agency</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1">
+          <label class="form-label">Timezone</label>
+          <select class="form-control">
+            <option>Asia/Dhaka (GMT+6)</option>
+            <option>Asia/Kolkata (GMT+5:30)</option>
+            <option>America/New_York (GMT-5)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:28px">
+        <button class="btn btn-primary" onclick="goToStep(2)">Continue to Business Details ➔</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Business Details -->
+    <div id="step-2" style="display:none">
+      <h2 style="font-size:22px;font-weight:800;margin:0 0 8px">Business Contact Details</h2>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:24px">Used for invoice receipts and WhatsApp message footers.</p>
+      
+      <div class="form-group">
+        <label class="form-label">Website URL</label>
+        <input type="url" class="form-control" placeholder="https://mybusiness.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Support WhatsApp Number *</label>
+        <input type="tel" class="form-control" placeholder="+880 1712-345678" />
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:28px">
+        <button class="btn btn-ghost" onclick="goToStep(1)">← Back</button>
+        <button class="btn btn-primary" onclick="goToStep(3)">Continue to WhatsApp ➔</button>
+      </div>
+    </div>
+
+    <!-- Step 3: WhatsApp Connection -->
+    <div id="step-3" style="display:none">
+      <h2 style="font-size:22px;font-weight:800;margin:0 0 8px">Connect WhatsApp Number</h2>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px">Choose how you want to connect your WhatsApp number.</p>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+        <div style="padding:16px;background:rgba(217,240,0,0.06);border:2px solid var(--primary);border-radius:var(--radius-md);cursor:pointer;text-align:center">
+          <div style="font-size:28px">📱</div>
+          <div style="font-weight:700;font-size:14px;margin-top:6px">QR Code Gateway</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px">Instant 60s link via phone</div>
+        </div>
+        <div style="padding:16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);cursor:pointer;text-align:center" onclick="showToast('Selected Meta Official Cloud API', 'info')">
+          <div style="font-size:28px">☁️</div>
+          <div style="font-weight:700;font-size:14px;margin-top:6px">Meta Cloud API</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px">Official Green Badge API</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:28px">
+        <button class="btn btn-ghost" onclick="goToStep(2)">← Back</button>
+        <button class="btn btn-primary" onclick="goToStep(4)">Continue to AI Bot ➔</button>
+      </div>
+    </div>
+
+    <!-- Step 4: AI Config -->
+    <div id="step-4" style="display:none">
+      <h2 style="font-size:22px;font-weight:800;margin:0 0 8px">Configure Your AI Agent</h2>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px">Give your WhatsApp assistant a personality and purpose.</p>
+      
+      <div class="form-group">
+        <label class="form-label">Assistant Name</label>
+        <input type="text" class="form-control" value="Nexora Sales Specialist" />
+      </div>
+      <div class="form-row">
+        <div class="form-group" style="flex:1">
+          <label class="form-label">Tone</label>
+          <select class="form-control">
+            <option>Friendly & Helpful</option>
+            <option>Formal & Professional</option>
+            <option>Persuasive & Sales-Oriented</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:1">
+          <label class="form-label">Primary Language</label>
+          <select class="form-control">
+            <option>English & Bengali (Bilingual)</option>
+            <option>English Only</option>
+            <option>Bengali Only (বাংলা)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:28px">
+        <button class="btn btn-ghost" onclick="goToStep(3)">← Back</button>
+        <button class="btn btn-primary" onclick="goToStep(5)">Continue to Automation ➔</button>
+      </div>
+    </div>
+
+    <!-- Step 5: Automation -->
+    <div id="step-5" style="display:none">
+      <h2 style="font-size:22px;font-weight:800;margin:0 0 8px">Select Starter Automation</h2>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px">Choose a pre-built template to activate on day one:</p>
+      
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+        <label style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);cursor:pointer">
+          <input type="radio" name="auto_starter" checked />
+          <div>
+            <div style="font-weight:600;font-size:14px">Inbound Lead Qualifier & AI Router</div>
+            <div style="font-size:12px;color:var(--text-muted)">Auto-replies and moves hot prospects to CRM Pipeline.</div>
+          </div>
+        </label>
+        <label style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);cursor:pointer">
+          <input type="radio" name="auto_starter" />
+          <div>
+            <div style="font-weight:600;font-size:14px">24/7 After-Hours Auto-Responder</div>
+            <div style="font-size:12px;color:var(--text-muted)">Pings customers with your catalog outside 9 AM - 8 PM.</div>
+          </div>
+        </label>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:28px">
+        <button class="btn btn-ghost" onclick="goToStep(4)">← Back</button>
+        <button class="btn btn-primary" onclick="goToStep(6)">Continue to Team ➔</button>
+      </div>
+    </div>
+
+    <!-- Step 6: Team Invite -->
+    <div id="step-6" style="display:none">
+      <h2 style="font-size:22px;font-weight:800;margin:0 0 8px">Invite Your Sales & Support Team</h2>
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:20px">Add teammates who will reply in the Unified WhatsApp Inbox.</p>
+      
+      <div class="form-group">
+        <label class="form-label">Teammate Email Address</label>
+        <input type="email" class="form-control" placeholder="colleague@company.com" />
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:28px">
+        <button class="btn btn-ghost" onclick="goToStep(5)">← Back</button>
+        <button class="btn btn-primary" onclick="finishOnboarding()">Complete Setup & Launch Dashboard 🚀</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/app.js"></script>
+<script>
+function goToStep(s) {
+  for (let i = 1; i <= 6; i++) {
+    document.getElementById('step-' + i).style.display = (i === s) ? 'block' : 'none';
+    const bar = document.getElementById('bar-' + i);
+    if (i <= s) bar.classList.add('completed');
+    else bar.classList.remove('completed');
+  }
+  document.getElementById('stepCounter').innerText = s;
+}
+
+function finishOnboarding() {
+  showToast('Workspace created! Initializing your WhatsApp SaaS environment...', 'success');
+  setTimeout(() => window.location.href = 'dashboard.html', 1000);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Documentation & Guides — NEXORAAI</title>
+  <meta name="description" content="Official NEXORAAI Developer Documentation. Complete API references, webhook schemas, and quickstart guides for WhatsApp automation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/homepage.css" />
+  <style>
+    .docs-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 40px;
+      padding: 40px 0 80px;
+    }
+    @media (max-width: 900px) {
+      .docs-layout { grid-template-columns: 1fr; }
+    }
+    .docs-nav-group {
+      margin-bottom: 24px;
+    }
+    .docs-nav-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .docs-nav-link {
+      display: block;
+      padding: 6px 12px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .docs-nav-link:hover, .docs-nav-link.active {
+      background: rgba(217,240,0,0.1);
+      color: var(--primary);
+    }
+    .code-box {
+      background: #070B0D;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #D9F000;
+      line-height: 1.6;
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+  </style>
+</head>
+<body class="dark-mode">
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../index.html" class="logo">
+          <div class="logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#D9F000" fill-opacity="0.15"/><path d="M8 24L14 8H16L10 24H8Z" fill="#D9F000"/><path d="M16 8L22 24H20L14 8H16Z" fill="#D9F000" fill-opacity="0.6"/><circle cx="22" cy="10" r="3" fill="#9BE600"/><circle cx="22" cy="10" r="1.5" fill="#D9F000"/></svg></div>
+          <span class="logo-text">NEXORA<span class="logo-accent">AI</span></span>
+        </a>
+        <nav class="site-nav">
+          <ul>
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
+            <li><a href="features.html" class="nav-link">Features</a></li>
+            <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+            <li><a href="documentation.html" class="nav-link active">Docs</a></li>
+            <li><a href="help.html" class="nav-link">Help</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="login.html" class="btn btn-ghost">Login</a>
+          <a href="register.html" class="btn btn-primary">Start Free Trial</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="docs-layout">
+      <!-- Sidebar Navigation -->
+      <aside>
+        <div class="docs-nav-group">
+          <div class="docs-nav-title">Getting Started</div>
+          <a href="#quickstart" class="docs-nav-link active">Quickstart Guide</a>
+          <a href="#auth" class="docs-nav-link">Authentication & API Keys</a>
+          <a href="#rate-limits" class="docs-nav-link">Rate Limits & SLAs</a>
+        </div>
+        <div class="docs-nav-group">
+          <div class="docs-nav-title">Messages API</div>
+          <a href="#send-text" class="docs-nav-link">Send Text Message</a>
+          <a href="#send-media" class="docs-nav-link">Send Media / Document</a>
+          <a href="#send-template" class="docs-nav-link">Send Meta Template</a>
+        </div>
+        <div class="docs-nav-group">
+          <div class="docs-nav-title">Webhooks & Events</div>
+          <a href="#webhooks-overview" class="docs-nav-link">Webhook Overview</a>
+          <a href="#incoming-event" class="docs-nav-link">message.received Event</a>
+          <a href="#delivery-event" class="docs-nav-link">message.delivered Event</a>
+        </div>
+        <div class="docs-nav-group">
+          <div class="docs-nav-title">CRM & Leads</div>
+          <a href="#contacts-api" class="docs-nav-link">Manage Contacts</a>
+          <a href="#pipeline-api" class="docs-nav-link">Create Deal / Lead</a>
+        </div>
+      </aside>
+
+      <!-- Main Docs Content -->
+      <main>
+        <!-- Quickstart -->
+        <section id="quickstart" style="margin-bottom:60px">
+          <span class="badge badge-accent" style="margin-bottom:12px">GETTING STARTED</span>
+          <h1 style="font-size:36px;font-weight:900;margin:0 0 16px">NEXORAAI Developer Quickstart</h1>
+          <p style="font-size:15px;color:var(--text-secondary);line-height:1.6">
+            The NEXORAAI REST API enables you to programmatically send WhatsApp messages, configure AI chatbot behaviors, query CRM contacts, and stream real-time webhook events into your own servers.
+          </p>
+
+          <h3 id="auth" style="font-size:20px;margin:32px 0 12px">Authentication</h3>
+          <p style="font-size:14px;color:var(--text-secondary)">
+            All API requests must include your Bearer token in the <code style="font-family:var(--font-mono);color:var(--primary)">Authorization</code> HTTP header. Retrieve your key from the <a href="dashboard-api.html" style="color:var(--primary)">API & Keys Dashboard</a>.
+          </p>
+          <div class="code-box">Authorization: Bearer nex_live_9482bf7a8e2394017e8c11aa5544</div>
+        </section>
+
+        <!-- Send Text -->
+        <section id="send-text" style="margin-bottom:60px;border-top:1px solid var(--border);padding-top:40px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <span class="badge badge-green" style="font-weight:700">POST</span>
+            <span style="font-family:var(--font-mono);font-size:16px;font-weight:700">/v1/messages/send</span>
+          </div>
+          <p style="font-size:14px;color:var(--text-secondary);line-height:1.6">
+            Send an instant WhatsApp message to a recipient in E.164 phone format (e.g. +8801712345678).
+          </p>
+
+          <h4 style="font-size:14px;color:var(--text-primary);margin-top:20px">Request Payload (JSON)</h4>
+          <div class="code-box">{
+  "to": "+8801712345678",
+  "type": "text",
+  "message": "Your order #WA-9482 has been shipped via Pathao Courier!",
+  "ai_autopilot": false
+}</div>
+
+          <h4 style="font-size:14px;color:var(--text-primary);margin-top:20px">Response (200 OK)</h4>
+          <div class="code-box">{
+  "status": "success",
+  "message_id": "msg_8492019482",
+  "recipient": "+8801712345678",
+  "dispatched_at": "2026-10-04T12:50:00Z"
+}</div>
+        </section>
+
+        <!-- Webhook Event -->
+        <section id="incoming-event" style="margin-bottom:60px;border-top:1px solid var(--border);padding-top:40px">
+          <span class="badge badge-blue" style="margin-bottom:12px">WEBHOOK SPECIFICATION</span>
+          <h2 style="font-size:24px;font-weight:800;margin:0 0 16px">Event: message.received</h2>
+          <p style="font-size:14px;color:var(--text-secondary);line-height:1.6">
+            Dispatched in real-time when an incoming message is received on any connected WhatsApp number.
+          </p>
+
+          <div class="code-box">{
+  "event": "message.received",
+  "timestamp": 1759579200,
+  "data": {
+    "sender": "+8801712345678",
+    "name": "Rahim Uddin",
+    "channel_phone": "+8801700000000",
+    "message_id": "wamid_HBgLMzg4MDE...",
+    "type": "text",
+    "text": "Hello, do you have the executive mesh chair in black?",
+    "ai_responded": true,
+    "ai_response": "Yes, we have 48 units in stock! Price is ৳14,200."
+  }
+}</div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer" style="padding:60px 0;background:var(--bg-card);border-top:1px solid var(--border)">
+    <div class="container" style="text-align:center;font-size:13px;color:var(--text-muted)">
+      <div style="font-size:18px;font-weight:800;color:var(--text-primary);margin-bottom:8px">NEXORA<span style="color:var(--primary)">AI</span></div>
+      <p>© 2026 NEXORAAI. WhatsApp API + AI Automation + Smart Lead Management. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

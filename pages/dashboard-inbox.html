@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unified Inbox — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <style>
+    body { overflow: hidden; }
+    .dash-main { overflow: hidden; }
+    .inbox-wrapper {
+      height: calc(100vh - var(--header-height));
+      display: grid;
+      grid-template-columns: 320px 1fr 280px;
+      overflow: hidden;
+    }
+    @media (max-width: 1200px) {
+      .inbox-wrapper { grid-template-columns: 300px 1fr; }
+      .inbox-info-panel { display: none; }
+    }
+    @media (max-width: 900px) {
+      .inbox-wrapper { grid-template-columns: 1fr; }
+      .inbox-conv-list { display: none; }
+    }
+  </style>
+</head>
+<body class="dark-mode" data-page="inbox">
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Sidebar (same as dashboard.html but with inbox active) -->
+  <aside class="dash-sidebar" id="dashSidebar">
+    <div class="sidebar-header">
+      <a href="../index.html" class="logo">
+        <div class="logo-icon"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#D9F000" fill-opacity="0.15"/><path d="M8 24L14 8H16L10 24H8Z" fill="#D9F000"/><path d="M16 8L22 24H20L14 8H16Z" fill="#D9F000" fill-opacity="0.6"/><circle cx="22" cy="10" r="3" fill="#9BE600"/><circle cx="22" cy="10" r="1.5" fill="#D9F000"/></svg></div>
+        <span class="logo-text">NEXORA<span class="logo-accent">AI</span></span>
+      </a>
+    </div>
+    <div class="workspace-selector"><div class="workspace-icon">N</div><div class="workspace-info"><div class="workspace-name">My Business</div><div class="workspace-plan">Professional Plan</div></div></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-group">
+        <a href="dashboard.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg><span class="sidebar-item-label">Overview</span></a>
+        <a href="dashboard-inbox.html" class="sidebar-item active"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span class="sidebar-item-label">Inbox</span><span class="sidebar-item-badge badge-red">12</span></a>
+      </div>
+      <span class="sidebar-group-label">WhatsApp</span>
+      <div class="sidebar-group"><a href="dashboard-whatsapp.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg><span class="sidebar-item-label">Sessions</span></a></div>
+      <span class="sidebar-group-label">CRM</span>
+      <div class="sidebar-group">
+        <a href="dashboard-contacts.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg><span class="sidebar-item-label">Contacts</span></a>
+        <a href="dashboard-leads.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line></svg><span class="sidebar-item-label">Leads</span></a>
+        <a href="dashboard-lead-research.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><span class="sidebar-item-label">Lead Research</span></a>
+      </div>
+      <span class="sidebar-group-label">Marketing</span>
+      <div class="sidebar-group">
+        <a href="dashboard-campaigns.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg><span class="sidebar-item-label">Campaigns</span></a>
+        <a href="dashboard-broadcasts.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg><span class="sidebar-item-label">Broadcasts</span></a>
+      </div>
+      <span class="sidebar-group-label">AI & Automation</span>
+      <div class="sidebar-group">
+        <a href="dashboard-automations.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg><span class="sidebar-item-label">Automations</span></a>
+        <a href="dashboard-ai-agents.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg><span class="sidebar-item-label">AI Agents</span></a>
+        <a href="dashboard-knowledge.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg><span class="sidebar-item-label">Knowledge Base</span></a>
+      </div>
+      <span class="sidebar-group-label">Commerce</span>
+      <div class="sidebar-group">
+        <a href="dashboard-products.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line></svg><span class="sidebar-item-label">Products</span></a>
+        <a href="dashboard-orders.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V22H4V12"></path><path d="M22 7H2v5h20V7z"></path></svg><span class="sidebar-item-label">Orders</span></a>
+      </div>
+      <span class="sidebar-group-label">Analytics & Dev</span>
+      <div class="sidebar-group">
+        <a href="dashboard-analytics.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg><span class="sidebar-item-label">Analytics</span></a>
+        <a href="dashboard-api.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><span class="sidebar-item-label">API & Keys</span></a>
+        <a href="dashboard-webhooks.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path></svg><span class="sidebar-item-label">Webhooks</span></a>
+        <a href="dashboard-integrations.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><path d="M13 6h3a2 2 0 0 1 2 2v7"></path><line x1="6" y1="9" x2="6" y2="21"></line></svg><span class="sidebar-item-label">Integrations</span></a>
+      </div>
+      <span class="sidebar-group-label">Account</span>
+      <div class="sidebar-group">
+        <a href="dashboard-team.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path></svg><span class="sidebar-item-label">Team</span></a>
+        <a href="dashboard-billing.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg><span class="sidebar-item-label">Billing</span></a>
+        <a href="dashboard-support.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path></svg><span class="sidebar-item-label">Support</span></a>
+        <a href="dashboard-settings.html" class="sidebar-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4"></path></svg><span class="sidebar-item-label">Settings</span></a>
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user-card"><div class="avatar avatar-md" style="background:linear-gradient(135deg,#D9F000,#9BE600);color:#070B0D;font-weight:800">U</div><div class="sidebar-user-info"><div class="sidebar-user-name">User Account</div><div class="sidebar-user-email">user@example.com</div></div></div>
+    </div>
+  </aside>
+
+  <!-- Topbar -->
+  <header class="dash-topbar" id="dashTopbar">
+    <div class="topbar-left">
+      <button class="btn-icon sidebar-toggle" data-action="toggle-sidebar" aria-label="Toggle sidebar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+      <span style="font-size:16px;font-weight:700;color:var(--text-primary)">Unified Inbox</span>
+      <span class="badge badge-green">12 Unread</span>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-icon" id="themeToggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-sun" style="display:none"><circle cx="12" cy="12" r="5"></circle></svg></button>
+      <button class="btn btn-primary btn-sm" onclick="showNewConversation()">+ New Conversation</button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="dash-main">
+    <div class="inbox-wrapper">
+      <!-- Conversation List -->
+      <div class="inbox-conv-list" style="border-right:1px solid var(--border);display:flex;flex-direction:column;background:var(--bg-secondary);overflow:hidden">
+        <!-- Search + Filters -->
+        <div style="padding:12px;border-bottom:1px solid var(--border)">
+          <div class="search-input-wrapper" style="margin-bottom:10px">
+            <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" class="form-input" placeholder="Search conversations..." style="font-size:13px" id="searchConversations" />
+          </div>
+          <div style="display:flex;gap:6px;overflow-x:auto">
+            <button class="filter-chip active" onclick="filterConversations('all', this)">All</button>
+            <button class="filter-chip" onclick="filterConversations('unread', this)">Unread</button>
+            <button class="filter-chip" onclick="filterConversations('ai', this)">AI</button>
+            <button class="filter-chip" onclick="filterConversations('human', this)">Human</button>
+            <button class="filter-chip" onclick="filterConversations('open', this)">Open</button>
+          </div>
+        </div>
+
+        <!-- Conversations -->
+        <div class="conversation-list" id="conversationList">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Chat Window -->
+      <div class="inbox-chat">
+        <!-- Chat Topbar -->
+        <div class="chat-topbar">
+          <div class="chat-contact-info">
+            <div class="avatar avatar-md" style="background:linear-gradient(135deg,#D9F000,#9BE600);color:#070B0D;font-weight:700" id="chatAvatar">R</div>
+            <div>
+              <div class="chat-contact-name" id="chatContactName">Rahul Ahmed</div>
+              <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)">
+                <div class="status-dot status-connected"></div>
+                <span id="chatContactStatus">Online • +880 1712-345678</span>
+              </div>
+            </div>
+          </div>
+          <div class="chat-actions">
+            <button class="btn btn-sm btn-secondary" onclick="handleAssignAgent()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              Assign
+            </button>
+            <button class="btn btn-sm btn-secondary" onclick="handleAIReply()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+              AI Reply
+            </button>
+            <div class="dropdown">
+              <button class="btn-icon" data-dropdown>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+              </button>
+              <div class="dropdown-menu">
+                <div class="dropdown-item" onclick="addTag()">Add Tag</div>
+                <div class="dropdown-item" onclick="addNote()">Add Note</div>
+                <div class="dropdown-item" onclick="createLead()">Create Lead</div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item" onclick="closeConversation()">Close Conversation</div>
+                <div class="dropdown-item danger" onclick="blockContact()">Block Contact</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-messages" id="chatMessages">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Message Input -->
+        <div class="chat-input-area">
+          <div style="display:flex;gap:8px;margin-bottom:8px">
+            <button class="btn btn-sm btn-ghost" onclick="insertEmoji()" title="Emoji">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+            </button>
+            <button class="btn btn-sm btn-ghost" onclick="attachFile()" title="Attach file">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+            </button>
+            <button class="btn btn-sm btn-ghost" onclick="sendTemplate()" title="Send template">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+            </button>
+            <button class="btn btn-sm" style="background:var(--purple-dim);color:var(--purple);border-color:rgba(139,92,246,0.3)" onclick="handleAIReply()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+              AI Reply
+            </button>
+          </div>
+          <textarea class="chat-input" id="messageInput" placeholder="Type a message..." rows="1" onkeydown="handleMessageKey(event)"></textarea>
+          <button class="btn btn-primary" onclick="sendMessage()" style="flex-shrink:0;height:44px;width:44px;padding:0;border-radius:50%" aria-label="Send message">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Info Panel -->
+      <div class="inbox-info-panel" style="border-left:1px solid var(--border);background:var(--bg-secondary);overflow-y:auto">
+        <div class="info-panel-section">
+          <div class="info-panel-title">Contact Info</div>
+          <div style="text-align:center;margin-bottom:16px">
+            <div class="avatar avatar-xl" style="background:linear-gradient(135deg,#D9F000,#9BE600);color:#070B0D;font-weight:800;margin:0 auto 8px">R</div>
+            <div style="font-size:16px;font-weight:700;color:var(--text-primary)">Rahul Ahmed</div>
+            <div style="font-size:13px;color:var(--text-muted)">TechCorp BD</div>
+          </div>
+          <div class="info-field"><span class="info-field-label">Phone</span><span class="info-field-value">+880 1712-345678</span></div>
+          <div class="info-field"><span class="info-field-label">Email</span><span class="info-field-value" style="font-size:12px">rahul@example.com</span></div>
+          <div class="info-field"><span class="info-field-label">Status</span><span class="badge badge-success" style="font-size:11px">Customer</span></div>
+          <div class="info-field"><span class="info-field-label">Source</span><span class="info-field-value">WhatsApp</span></div>
+        </div>
+
+        <div class="info-panel-section">
+          <div class="info-panel-title">Tags</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <span class="badge badge-green">VIP</span>
+            <span class="badge badge-info">Dhaka</span>
+            <span class="badge badge-default">+ Add</span>
+          </div>
+        </div>
+
+        <div class="info-panel-section">
+          <div class="info-panel-title">Quick Actions</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn btn-sm btn-secondary w-full" style="justify-content:flex-start;gap:10px" onclick="window.location.href='dashboard-leads.html'">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D9F000" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line></svg>
+              View Lead Profile
+            </button>
+            <button class="btn btn-sm btn-secondary w-full" style="justify-content:flex-start;gap:10px" onclick="createLead()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D9F000" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+              Create Lead
+            </button>
+            <button class="btn btn-sm btn-secondary w-full" style="justify-content:flex-start;gap:10px" onclick="Toast.success('Order created','Order flow initiated')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#35D879" stroke-width="2"><path d="M20 12V22H4V12"></path></svg>
+              Create Order
+            </button>
+            <button class="btn btn-sm btn-secondary w-full" style="justify-content:flex-start;gap:10px" onclick="addNote()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFD43B" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+              Add Note
+            </button>
+          </div>
+        </div>
+
+        <div class="info-panel-section">
+          <div class="info-panel-title">Assigned Agent</div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="avatar avatar-sm" style="background:var(--purple-dim);color:var(--purple);font-weight:700">A</div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--text-primary)">Agent Sarah</div>
+              <div style="font-size:11px;color:var(--text-muted)">Support Team</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/dashboard.js"></script>
+  <script>
+    const demoConversations = [
+      { id: 1, name: 'Rahul Ahmed', company: 'TechCorp BD', lastMsg: 'Thank you! That helped.', time: '2m', unread: 3, status: 'ai', avatar: 'R', color: '#D9F000' },
+      { id: 2, name: 'Sarah Islam', company: 'Creative Agency', lastMsg: 'What\'s the price for the Pro plan?', time: '15m', unread: 1, status: 'human', avatar: 'S', color: '#8B5CF6' },
+      { id: 3, name: 'Karim Hassan', company: 'StartupXYZ', lastMsg: 'I want to place an order', time: '1h', unread: 0, status: 'lead', avatar: 'K', color: '#3B82F6' },
+      { id: 4, name: 'Fatima Begum', company: 'Retail Plus', lastMsg: 'Is the delivery free?', time: '2h', unread: 2, status: 'ai', avatar: 'F', color: '#35D879' },
+      { id: 5, name: 'Mohammed Ali', company: 'Food Express', lastMsg: 'Order confirmed, thanks!', time: '3h', unread: 0, status: 'closed', avatar: 'M', color: '#FFD43B' },
+      { id: 6, name: 'Nadia Chowdhury', company: 'Fashion Hub', lastMsg: 'Can I get a refund?', time: '5h', unread: 4, status: 'human', avatar: 'N', color: '#FF5B5B' },
+    ];
+
+    const demoMessages = [
+      { from: 'Rahul Ahmed', content: 'Hi, I need help with my order.', time: '10:30 AM', type: 'inbound' },
+      { from: 'NEXORAAI AI', content: 'Hello Rahul! Happy to help. Could you please provide your order ID?', time: '10:31 AM', type: 'outbound', ai: true },
+      { from: 'Rahul Ahmed', content: 'Order #ORD-2024-0512', time: '10:32 AM', type: 'inbound' },
+      { from: 'NEXORAAI AI', content: 'I found your order! Order #ORD-2024-0512 is currently being processed and will be shipped within 24 hours. You\'ll receive a tracking number via WhatsApp. Is there anything else I can help you with?', time: '10:32 AM', type: 'outbound', ai: true },
+      { from: 'Rahul Ahmed', content: 'Thank you! That helped.', time: '10:45 AM', type: 'inbound' },
+    ];
+
+    function renderConversations(convs) {
+      const list = document.getElementById('conversationList');
+      list.innerHTML = convs.map(c => {
+        const statusBadge = {
+          ai: '<span style="font-size:9px;font-weight:700;padding:2px 6px;background:var(--purple-dim);color:var(--purple);border-radius:99px">AI</span>',
+          human: '<span style="font-size:9px;font-weight:700;padding:2px 6px;background:var(--info-dim);color:var(--info);border-radius:99px">Human</span>',
+          lead: '<span style="font-size:9px;font-weight:700;padding:2px 6px;background:var(--primary-dim);color:var(--primary);border-radius:99px">Lead</span>',
+          closed: '<span style="font-size:9px;font-weight:700;padding:2px 6px;background:var(--bg-elevated);color:var(--text-muted);border-radius:99px">Closed</span>',
+        }[c.status] || '';
+
+        return `
+          <div class="conversation-item ${c.id === 1 ? 'active' : ''}" onclick="selectConversation(${c.id})" data-conv-id="${c.id}" data-conv-status="${c.status}">
+            <div class="avatar avatar-md" style="background:${c.color};color:#070B0D;font-weight:700;flex-shrink:0">${c.avatar}</div>
+            <div class="conversation-info" style="flex:1;min-width:0">
+              <div class="conversation-header">
+                <span class="conversation-name">${c.name}</span>
+                <span class="conversation-time">${c.time}</span>
+              </div>
+              <div class="conversation-preview">${c.lastMsg}</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+                ${statusBadge}
+                <span style="font-size:10px;color:var(--text-muted)">${c.company}</span>
+              </div>
+            </div>
+            ${c.unread > 0 ? `<div class="conv-unread-count">${c.unread}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderMessages(msgs) {
+      const container = document.getElementById('chatMessages');
+      container.innerHTML = msgs.map(m => {
+        const isOut = m.type === 'outbound';
+        return `
+          <div style="display:flex;flex-direction:column;align-items:${isOut ? 'flex-end' : 'flex-start'}">
+            ${m.ai ? `<div class="message-ai-badge" style="margin-bottom:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg> AI Reply</div>` : ''}
+            <div class="message-bubble ${isOut ? (m.ai ? 'ai' : 'outbound') : 'inbound'}">${m.content}</div>
+            <span class="message-time" style="padding:0 4px">${m.time}</span>
+          </div>
+        `;
+      }).join('');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function selectConversation(id) {
+      document.querySelectorAll('.conversation-item').forEach(el => el.classList.remove('active'));
+      const el = document.querySelector(`[data-conv-id="${id}"]`);
+      if (el) el.classList.add('active');
+    }
+
+    function filterConversations(type, btn) {
+      document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (type === 'all') {
+        renderConversations(demoConversations);
+      } else {
+        renderConversations(demoConversations.filter(c => c.status === type));
+      }
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      demoMessages.push({ from: 'You', content: text, time: 'Just now', type: 'outbound', ai: false });
+      renderMessages(demoMessages);
+      input.value = '';
+
+      // Simulate AI response
+      setTimeout(() => {
+        demoMessages.push({ from: 'NEXORAAI AI', content: 'Thank you for your message. I\'m processing your request and will get back to you shortly.', time: 'Just now', type: 'outbound', ai: true });
+        renderMessages(demoMessages);
+      }, 1200);
+    }
+
+    function handleMessageKey(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    }
+
+    function handleAIReply() { Toast.info('AI Reply', 'AI is analyzing the conversation and generating a contextual reply...'); }
+    function handleAssignAgent() { Toast.success('Assign Agent', 'Agent assignment dialog would open here.'); }
+    function addTag() { Toast.info('Add Tag', 'Tag management would open here.'); }
+    function addNote() { Toast.info('Add Note', 'Note editor would open here.'); }
+    function createLead() { Toast.success('Create Lead', 'Lead created from this conversation.'); }
+    function closeConversation() { Toast.info('Conversation Closed', 'Conversation marked as closed.'); }
+    function blockContact() { Toast.warning('Block Contact', 'Are you sure? Contact blocking requires confirmation.'); }
+    function insertEmoji() { Toast.info('Emoji Picker', 'Emoji picker coming soon.'); }
+    function attachFile() { Toast.info('Attach File', 'File attachment requires storage configuration.'); }
+    function sendTemplate() { Toast.info('Templates', 'WhatsApp message template selector would open here.'); }
+    function showNewConversation() { Toast.info('New Conversation', 'Select a contact to start a new conversation.'); }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderConversations(demoConversations);
+      renderMessages(demoMessages);
+    });
+
+    // Search
+    document.getElementById('searchConversations').addEventListener('input', function() {
+      const q = this.value.toLowerCase();
+      const filtered = demoConversations.filter(c => c.name.toLowerCase().includes(q) || c.lastMsg.toLowerCase().includes(q));
+      renderConversations(filtered);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How It Works — NEXORAAI</title>
+  <meta name="description" content="Discover how NEXORAAI connects to WhatsApp in 60 seconds, trains an AI agent on your business knowledge, and automates 90% of customer conversations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/homepage.css" />
+  <style>
+    .step-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+    @media (max-width: 868px) {
+      .step-card { grid-template-columns: 1fr; }
+    }
+    .step-number {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .step-visual {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 30px;
+      box-shadow: 0 16px 32px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body class="dark-mode">
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../index.html" class="logo">
+          <div class="logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#D9F000" fill-opacity="0.15"/><path d="M8 24L14 8H16L10 24H8Z" fill="#D9F000"/><path d="M16 8L22 24H20L14 8H16Z" fill="#D9F000" fill-opacity="0.6"/><circle cx="22" cy="10" r="3" fill="#9BE600"/><circle cx="22" cy="10" r="1.5" fill="#D9F000"/></svg></div>
+          <span class="logo-text">NEXORA<span class="logo-accent">AI</span></span>
+        </a>
+        <nav class="site-nav">
+          <ul>
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="how-it-works.html" class="nav-link active">How It Works</a></li>
+            <li><a href="features.html" class="nav-link">Features</a></li>
+            <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+            <li><a href="documentation.html" class="nav-link">Docs</a></li>
+            <li><a href="help.html" class="nav-link">Help</a></li>
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="login.html" class="btn btn-ghost">Login</a>
+          <a href="register.html" class="btn btn-primary">Start Free Trial</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section style="padding:120px 0 60px;text-align:center">
+    <div class="container">
+      <span class="badge badge-accent" style="margin-bottom:16px">SIMPLE 4-STEP ONBOARDING</span>
+      <h1 style="font-size:48px;font-weight:900;letter-spacing:-0.03em;margin:0 0 16px">
+        Go Live in Under <span style="color:var(--primary)">5 Minutes</span>
+      </h1>
+      <p style="font-size:18px;color:var(--text-secondary);max-width:640px;margin:0 auto">
+        No complicated developer setup. Connect your existing phone number, drop your documents, and let AI handle your customer chats.
+      </p>
+    </div>
+  </section>
+
+  <!-- Steps Walkthrough -->
+  <section style="padding:40px 0 80px">
+    <div class="container" style="max-width:1040px">
+      <!-- Step 1 -->
+      <div class="step-card">
+        <div>
+          <span class="step-number">STEP 01</span>
+          <h2 style="font-size:32px;font-weight:800;margin:0 0 16px">Connect WhatsApp in 60 Seconds</h2>
+          <p style="color:var(--text-secondary);line-height:1.6;font-size:15px;margin-bottom:20px">
+            Simply scan our secure QR code with your phone or link your official Meta WhatsApp Business Cloud API account. Zero downtime, zero missed messages.
+          </p>
+          <div style="display:flex;gap:12px;font-size:13px;color:var(--text-primary)">
+            <span>✓ Dual-engine support (Cloud API & QR Gateway)</span>
+          </div>
+        </div>
+        <div class="step-visual">
+          <div style="background:#070B0D;border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;text-align:center">
+            <div style="width:140px;height:140px;background:#fff;border-radius:12px;margin:0 auto 16px;padding:8px;display:flex;align-items:center;justify-content:center">
+              <svg width="124" height="124" viewBox="0 0 24 24" fill="#070B0D"><rect x="2" y="2" width="8" height="8" rx="1"></rect><rect x="14" y="2" width="8" height="8" rx="1"></rect><rect x="2" y="14" width="8" height="8" rx="1"></rect><rect x="14" y="14" width="4" height="4"></rect><rect x="19" y="19" width="3" height="3"></rect><rect x="18" y="14" width="4" height="2"></rect><rect x="14" y="18" width="2" height="4"></rect></svg>
+            </div>
+            <div style="font-weight:700;color:var(--text-primary);font-size:14px">Scan with WhatsApp &gt; Linked Devices</div>
+            <span class="badge badge-green" style="margin-top:10px">Socket: Listening</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step-card" style="direction:rtl">
+        <div style="direction:ltr">
+          <span class="step-number">STEP 02</span>
+          <h2 style="font-size:32px;font-weight:800;margin:0 0 16px">Drop Your Business Knowledge</h2>
+          <p style="color:var(--text-secondary);line-height:1.6;font-size:15px;margin-bottom:20px">
+            Upload your product catalog PDFs, paste your website URL, or write your FAQs. Our RAG engine automatically chunks and embeds your data into a dedicated vector knowledge store.
+          </p>
+          <div style="display:flex;gap:12px;font-size:13px;color:var(--text-primary)">
+            <span>✓ Accurate answers with zero hallucinations</span>
+          </div>
+        </div>
+        <div class="step-visual" style="direction:ltr">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="padding:14px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px">
+              <span style="font-size:24px">📄</span>
+              <div style="flex:1">
+                <div style="font-weight:600;font-size:14px">Catalog_2026.pdf</div>
+                <div style="font-size:12px;color:var(--text-muted)">412 chunks embedded</div>
+              </div>
+              <span class="badge badge-green">Ready</span>
+            </div>
+            <div style="padding:14px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px">
+              <span style="font-size:24px">🌐</span>
+              <div style="flex:1">
+                <div style="font-weight:600;font-size:14px">https://myshop.com/faq</div>
+                <div style="font-size:12px;color:var(--text-muted)">86 web chunks indexed</div>
+              </div>
+              <span class="badge badge-green">Ready</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step-card">
+        <div>
+          <span class="step-number">STEP 03</span>
+          <h2 style="font-size:32px;font-weight:800;margin:0 0 16px">Customize AI Persona & Flows</h2>
+          <p style="color:var(--text-secondary);line-height:1.6;font-size:15px;margin-bottom:20px">
+            Configure your bot's personality, language settings (Bengali or English), office hours, and automatic CRM qualification triggers.
+          </p>
+          <div style="display:flex;gap:12px;font-size:13px;color:var(--text-primary)">
+            <span>✓ Seamless human agent handoff anytime</span>
+          </div>
+        </div>
+        <div class="step-visual">
+          <div style="background:#0B141A;border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px">
+            <div style="background:#202C33;color:#E9EDEF;padding:12px;border-radius:8px 8px 8px 0;margin-bottom:12px;font-size:13px">
+              Assalamu Alaikum! How can I assist you with our services today?
+            </div>
+            <div style="background:#005C4B;color:#E9EDEF;padding:12px;border-radius:8px 8px 0 8px;margin-bottom:12px;font-size:13px;margin-left:auto;max-width:80%">
+              Can I get the pricing for annual subscription?
+            </div>
+            <div style="background:#202C33;color:#E9EDEF;padding:12px;border-radius:8px 8px 8px 0;font-size:13px">
+              Certainly! Our Pro Plan is $149/mo (or 20% off billed annually). Would you like to view our feature sheet?
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step-card" style="direction:rtl">
+        <div style="direction:ltr">
+          <span class="step-number">STEP 04</span>
+          <h2 style="font-size:32px;font-weight:800;margin:0 0 16px">Watch Leads & Revenue Multiply</h2>
+          <p style="color:var(--text-secondary);line-height:1.6;font-size:15px;margin-bottom:20px">
+            Qualified contacts appear live in your Kanban pipeline, orders sync to your checkout systems, and your agents only handle high-value closing conversations.
+          </p>
+        </div>
+        <div class="step-visual" style="direction:ltr">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div style="padding:16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);text-align:center">
+              <div style="font-size:24px;font-weight:900;color:var(--primary)">1.4s</div>
+              <div style="font-size:12px;color:var(--text-muted)">First Response Time</div>
+            </div>
+            <div style="padding:16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);text-align:center">
+              <div style="font-size:24px;font-weight:900;color:var(--success)">88.4%</div>
+              <div style="font-size:12px;color:var(--text-muted)">Bot Resolution Rate</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="padding:80px 0;text-align:center;background:linear-gradient(180deg,var(--bg-card),#070B0D);border-top:1px solid var(--border)">
+    <div class="container">
+      <h2 style="font-size:36px;font-weight:800;margin:0 0 16px">Start Automating Your WhatsApp Today</h2>
+      <p style="color:var(--text-secondary);font-size:16px;margin:0 0 32px">14-day free trial. No credit card required.</p>
+      <a href="register.html" class="btn btn-primary" style="padding:14px 32px;font-size:16px">Claim Your Free Account 🚀</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer" style="padding:60px 0;background:var(--bg-card);border-top:1px solid var(--border)">
+    <div class="container" style="text-align:center;font-size:13px;color:var(--text-muted)">
+      <div style="font-size:18px;font-weight:800;color:var(--text-primary);margin-bottom:8px">NEXORA<span style="color:var(--primary)">AI</span></div>
+      <p>© 2026 NEXORAAI. WhatsApp API + AI Automation + Smart Lead Management. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

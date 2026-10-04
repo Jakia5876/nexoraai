@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billing & Subscriptions — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+</head>
+<body class="dark-mode" data-page="billing">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('billing', 'Billing & Subscriptions');</script>
+
+<main class="dash-main">
+<div class="page-content">
+  <div class="page-header">
+    <div class="page-header-left">
+      <h1 class="page-title">Billing & Usage Management</h1>
+      <p class="page-subtitle">Manage subscription tiers, track monthly quota consumption, and download invoices</p>
+    </div>
+  </div>
+
+  <!-- Plan & Usage Overview -->
+  <div style="display:grid;grid-template-columns:1.4fr 1.6fr;gap:24px;margin-bottom:24px">
+    <!-- Active Plan Box -->
+    <div class="card" style="padding:24px;background:linear-gradient(135deg,rgba(217,240,0,0.06),var(--bg-card));border:1px solid rgba(217,240,0,0.3)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+        <div>
+          <span class="badge badge-accent" style="margin-bottom:8px">CURRENT PLAN</span>
+          <h2 style="font-size:24px;font-weight:900;margin:4px 0 2px 0">Professional Plan</h2>
+          <div style="font-size:13px;color:var(--text-muted)">Renews on Nov 04, 2026 via Visa •••• 4242</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:28px;font-weight:900;color:var(--primary)">$149<span style="font-size:14px;color:var(--text-muted)">/mo</span></div>
+          <div style="font-size:12px;color:var(--text-muted)">≈ ৳ 16,500 BDT</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:24px">
+        <button class="btn btn-primary btn-sm" onclick="upgradeModal()">Change Plan</button>
+        <button class="btn btn-secondary btn-sm" onclick="updatePaymentMethod()">Update Payment Method</button>
+      </div>
+    </div>
+
+    <!-- Usage Meters -->
+    <div class="card" style="padding:24px">
+      <h3 style="font-size:16px;margin:0 0 16px 0">Monthly Usage Quotas</h3>
+      
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+            <span style="color:var(--text-secondary)">WhatsApp Messages Dispatched</span>
+            <span style="font-weight:700">48,920 / 100,000 (48.9%)</span>
+          </div>
+          <div style="width:100%;height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden">
+            <div style="width:48.9%;height:100%;background:var(--primary)"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+            <span style="color:var(--text-secondary)">AI Tokens (GPT-4o & Claude)</span>
+            <span style="font-weight:700">4.8M / 10M (48%)</span>
+          </div>
+          <div style="width:100%;height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden">
+            <div style="width:48%;height:100%;background:#3B82F6"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+            <span style="color:var(--text-secondary)">CRM Stored Contacts</span>
+            <span style="font-weight:700">4,820 / 25,000 (19.2%)</span>
+          </div>
+          <div style="width:100%;height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden">
+            <div style="width:19.2%;height:100%;background:var(--success)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Invoices Table -->
+  <div class="table-container">
+    <div class="table-toolbar">
+      <div style="font-weight:700;font-size:15px;color:var(--text-primary)">Invoice History</div>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Invoice ID</th>
+          <th>Billing Date</th>
+          <th>Plan</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th style="text-align:right">Receipt</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-family:var(--font-mono);font-weight:700">INV-2026-004</td>
+          <td>Oct 04, 2026</td>
+          <td>Professional Plan (Monthly)</td>
+          <td style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">$149.00</td>
+          <td><span class="badge badge-green">Paid</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="downloadInvoice('INV-2026-004')">📥 PDF</button>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="font-family:var(--font-mono);font-weight:700">INV-2026-003</td>
+          <td>Sep 04, 2026</td>
+          <td>Professional Plan (Monthly)</td>
+          <td style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">$149.00</td>
+          <td><span class="badge badge-green">Paid</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="downloadInvoice('INV-2026-003')">📥 PDF</button>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="font-family:var(--font-mono);font-weight:700">INV-2026-002</td>
+          <td>Aug 04, 2026</td>
+          <td>Professional Plan (Monthly)</td>
+          <td style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">$149.00</td>
+          <td><span class="badge badge-green">Paid</span></td>
+          <td style="text-align:right">
+            <button class="btn btn-ghost btn-sm" onclick="downloadInvoice('INV-2026-002')">📥 PDF</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</main>
+
+<script>
+function upgradeModal() {
+  showToast('Redirecting to plans & pricing upgrades...', 'info');
+  setTimeout(() => window.location.href = 'pricing.html', 800);
+}
+function updatePaymentMethod() {
+  showToast('Opening secure Stripe & bKash payment portal...', 'info');
+}
+function downloadInvoice(id) {
+  showToast(`Downloading receipt ${id}.pdf...`, 'success');
+}
+</script>
+</body>
+</html>
