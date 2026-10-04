@@ -129,7 +129,7 @@
 }
 
 .user-profile-btn:hover {
-  border-color: rgba(217,240,0,0.3);
+  border-color: var(--border-focus);
   background: var(--bg-card);
 }
 
@@ -189,7 +189,7 @@
   transition: all var(--transition-fast);
 }
 
-.workspace-selector:hover { border-color: rgba(217,240,0,0.3); }
+.workspace-selector:hover { border-color: var(--border-focus); }
 
 .workspace-icon {
   width: 32px; height: 32px;
@@ -508,7 +508,7 @@
   flex: 1;
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
   background: var(--primary-dim);
-  border: 1px solid rgba(217,240,0,0.2);
+  border: 1px solid var(--primary-dim);
   transition: background var(--transition-fast);
   cursor: pointer;
   position: relative;
@@ -590,7 +590,7 @@
 .filter-chip.active {
   background: var(--primary-dim);
   color: var(--primary);
-  border-color: rgba(217,240,0,0.3);
+  border-color: var(--border-focus);
 }
 
 .filter-spacer { flex: 1; }
@@ -624,7 +624,7 @@
 }
 
 .pipeline-stage.new { border-color: rgba(59,130,246,0.3); color: var(--info); background: var(--info-dim); }
-.pipeline-stage.contacted { border-color: rgba(217,240,0,0.3); color: var(--primary); background: var(--primary-dim); }
+.pipeline-stage.contacted { border-color: var(--border-focus); color: var(--primary); background: var(--primary-dim); }
 .pipeline-stage.qualified { border-color: rgba(139,92,246,0.3); color: var(--purple); background: var(--purple-dim); }
 .pipeline-stage.proposal { border-color: rgba(255,212,59,0.3); color: var(--warning); background: var(--warning-dim); }
 .pipeline-stage.won { border-color: rgba(53,216,121,0.3); color: var(--success); background: var(--success-dim); }
@@ -869,7 +869,7 @@
 }
 
 .palette-node:hover {
-  border-color: rgba(217,240,0,0.3);
+  border-color: var(--border-focus);
   color: var(--text-primary);
   background: var(--bg-card-hover);
 }
@@ -887,7 +887,7 @@
   transition: all var(--transition-fast);
 }
 
-.api-key-card:hover { border-color: rgba(217,240,0,0.2); }
+.api-key-card:hover { border-color: var(--primary-dim); }
 
 .api-key-info { flex: 1; min-width: 0; }
 .api-key-name { font-size: var(--text-base); font-weight: var(--weight-semibold); color: var(--text-primary); margin-bottom: 4px; }
@@ -923,7 +923,7 @@
 }
 
 .date-filter-btn:hover { color: var(--text-primary); border-color: var(--text-muted); }
-.date-filter-btn.active { background: var(--primary-dim); color: var(--primary); border-color: rgba(217,240,0,0.3); }
+.date-filter-btn.active { background: var(--primary-dim); color: var(--primary); border-color: var(--border-focus); }
 
 /* ---- Mobile Bottom Nav ---- */
 .mobile-bottom-nav {
@@ -969,7 +969,7 @@
   display: none;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(217,240,0,0.4);
+  box-shadow: 0 4px 20px var(--primary-glow);
   cursor: pointer;
   z-index: var(--z-fixed);
   font-size: var(--text-2xl);
@@ -1039,7 +1039,7 @@
   transition: all var(--transition-base);
 }
 
-.session-card:hover { border-color: rgba(217,240,0,0.2); }
+.session-card:hover { border-color: var(--primary-dim); }
 
 .session-header {
   display: flex;
@@ -1225,7 +1225,7 @@
   align-items: flex-start;
 }
 
-.ticket-card:hover { border-color: rgba(217,240,0,0.2); box-shadow: var(--shadow-md); }
+.ticket-card:hover { border-color: var(--primary-dim); box-shadow: var(--shadow-md); }
 
 .ticket-priority-bar {
   width: 4px;
@@ -1241,7 +1241,7 @@
 /* ---- Billing ---- */
 .plan-current-card {
   background: var(--bg-card);
-  border: 1.5px solid rgba(217,240,0,0.3);
+  border: 1.5px solid var(--border-focus);
   border-radius: var(--radius-xl);
   padding: var(--space-6);
   position: relative;

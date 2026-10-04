@@ -12,7 +12,12 @@ const ThemeManager = (() => {
   const STORAGE_KEY = 'nexoraai-theme';
   const THEMES = { DARK: 'dark', LIGHT: 'light', SYSTEM: 'system' };
 
-  let currentTheme = localStorage.getItem(STORAGE_KEY) || THEMES.DARK;
+  // Default to light theme (clean white background)
+  let currentTheme = localStorage.getItem(STORAGE_KEY);
+  if (!currentTheme || currentTheme === THEMES.DARK) {
+    currentTheme = THEMES.LIGHT;
+    try { localStorage.setItem(STORAGE_KEY, THEMES.LIGHT); } catch (e) {}
+  }
 
   function applyTheme(theme) {
     const isDark = theme === THEMES.DARK ||
