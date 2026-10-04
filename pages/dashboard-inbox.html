@@ -27,6 +27,13 @@
       .inbox-conv-list { display: none; }
     }
   </style>
+<link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>NexoraAuth.requireAuth();</script>
 </head>
 <body class="light-mode" data-page="inbox">
 
@@ -36,7 +43,7 @@
   <aside class="dash-sidebar" id="dashSidebar">
     <div class="sidebar-header">
       <a href="../index.html" class="logo">
-        <div class="logo-icon"><svg width="28" height="28" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#D9F000" fill-opacity="0.15"/><path d="M8 24L14 8H16L10 24H8Z" fill="#D9F000"/><path d="M16 8L22 24H20L14 8H16Z" fill="#D9F000" fill-opacity="0.6"/><circle cx="22" cy="10" r="3" fill="#9BE600"/><circle cx="22" cy="10" r="1.5" fill="#D9F000"/></svg></div>
+        <img src="../assets/images/logo.png" alt="NEXORAAI" class="brand-logo-img" style="height:32px;width:32px;object-fit:contain;border-radius:8px" />
         <span class="logo-text">NEXORA<span class="logo-accent">AI</span></span>
       </a>
     </div>

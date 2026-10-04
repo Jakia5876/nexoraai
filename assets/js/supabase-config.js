@@ -9,4 +9,3 @@ window.NEXORA_SUPABASE_CONFIG = {
   publishableKey: "sb_publishable_2RUFSQD6AVs_5_Au0xZgFw_1rABARCW"
 };
 
-console.log("⚡ NEXORAAI connected to Supabase project: vipnmuzedonrfzdjdbsm");

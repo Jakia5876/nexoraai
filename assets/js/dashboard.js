@@ -5,10 +5,10 @@
 
 function createDashboardShell(activePage, pageTitle) {
   let activeUser = {
-    name: 'Jakia Dantal',
-    email: 'jakiadantal@gmail.com',
-    role: 'super_admin',
-    isSuperAdmin: true
+    name: 'Account',
+    email: '',
+    role: 'user',
+    isSuperAdmin: false
   };
   try {
     const storedUser = localStorage.getItem('nexora_user');
@@ -20,7 +20,7 @@ function createDashboardShell(activePage, pageTitle) {
   }
 
   const initial = (activeUser.name || 'J').charAt(0).toUpperCase();
-  const roleBadge = (activeUser.isSuperAdmin || activeUser.role === 'super_admin' || activeUser.email === 'jakiadantal@gmail.com') ? ' (Admin)' : '';
+  const roleBadge = (activeUser.isSuperAdmin === true) ? ' (Admin)' : '';
 
   const sidebarHTML = `
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -108,7 +108,7 @@ function createDashboardShell(activePage, pageTitle) {
           <div class="dropdown-item" onclick="window.location.href='dashboard-settings.html'">Settings</div>
           <div class="dropdown-item" onclick="window.location.href='dashboard-billing.html'">Billing</div>
           <div class="dropdown-divider"></div>
-          <div class="dropdown-item danger" onclick="localStorage.removeItem('nexora_user'); window.location.href='login.html'">Sign Out</div>
+          <div class="dropdown-item danger" onclick="NexoraAuth.signOut()">Sign Out</div>
         </div>
       </div>
     </div>

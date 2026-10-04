@@ -84,6 +84,12 @@
       .register-card { padding: 32px 24px; }
     }
   </style>
+<link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="../assets/js/auth.js"></script>
 </head>
 <body class="light-mode">
 
@@ -272,11 +278,28 @@
       btn.disabled = true;
       btn.textContent = 'Creating account...';
 
-      // Simulate registration (replace with Supabase auth)
-      await new Promise(r => setTimeout(r, 1500));
+      const res = await NexoraAuth.signUp({
+        email, password, name, business,
+        phone: document.getElementById('regPhone').value.trim(),
+        country: document.getElementById('regCountry').value
+      });
 
-      Toast.success('Account created!', 'Redirecting to onboarding...');
-      setTimeout(() => window.location.href = 'onboarding.html', 1200);
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      btn.textContent = 'Create Account';
+
+      if (res.error) {
+        Toast.error('Sign up failed', res.error.message);
+        return;
+      }
+
+      if (res.needsConfirmation) {
+        Toast.success('Check your email', 'We sent a confirmation link to ' + email + '. Confirm it, then sign in.');
+        setTimeout(() => window.location.href = 'login.html', 3500);
+      } else {
+        Toast.success('Account created!', 'Redirecting to onboarding...');
+        setTimeout(() => window.location.href = 'onboarding.html', 1200);
+      }
     });
   </script>
 </body>

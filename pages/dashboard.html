@@ -10,6 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/design-system.css" />
   <link rel="stylesheet" href="../assets/css/dashboard.css" />
+<link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>NexoraAuth.requireAuth();</script>
 </head>
 <body class="light-mode" data-page="dashboard">
 
@@ -20,15 +27,7 @@
   <aside class="dash-sidebar" id="dashSidebar" aria-label="Dashboard navigation">
     <div class="sidebar-header">
       <a href="../index.html" class="logo">
-        <div class="logo-icon">
-          <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-            <rect width="32" height="32" rx="8" fill="#D9F000" fill-opacity="0.15"/>
-            <path d="M8 24L14 8H16L10 24H8Z" fill="#D9F000"/>
-            <path d="M16 8L22 24H20L14 8H16Z" fill="#D9F000" fill-opacity="0.6"/>
-            <circle cx="22" cy="10" r="3" fill="#9BE600"/>
-            <circle cx="22" cy="10" r="1.5" fill="#D9F000"/>
-          </svg>
-        </div>
+        <img src="../assets/images/logo.png" alt="NEXORAAI" class="brand-logo-img" style="height:32px;width:32px;object-fit:contain;border-radius:8px" />
         <span class="logo-text">NEXORA<span class="logo-accent">AI</span></span>
       </a>
     </div>
@@ -179,8 +178,8 @@
       <div class="sidebar-user-card" id="sidebarUserCard" onclick="window.location.href='admin.html'" role="button" tabindex="0" title="Switch to Admin Center">
         <div class="avatar avatar-md" id="dashSidebarAvatar" style="background: linear-gradient(135deg, #D9F000, #9BE600); color:#070B0D; font-weight:800;">J</div>
         <div class="sidebar-user-info">
-          <div class="sidebar-user-name" id="dashSidebarName">Jakia Dantal</div>
-          <div class="sidebar-user-email" id="dashSidebarEmail">jakiadantal@gmail.com (Admin)</div>
+          <div class="sidebar-user-name" id="dashSidebarName">Account</div>
+          <div class="sidebar-user-email" id="dashSidebarEmail"></div>
         </div>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#91A0A8" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
       </div>
@@ -251,7 +250,7 @@
       <div class="dropdown">
         <button class="user-profile-btn" data-dropdown aria-label="User menu" id="userMenuBtn">
           <div class="avatar avatar-sm" id="dashTopAvatar" style="background:linear-gradient(135deg,#D9F000,#9BE600);color:#070B0D;font-weight:800">J</div>
-          <span class="user-profile-name" id="dashTopName">Jakia Dantal</span>
+          <span class="user-profile-name" id="dashTopName">Account</span>
           <svg class="user-profile-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
         <div class="dropdown-menu">
@@ -665,9 +664,9 @@
     // Initialize user session on dashboard
     (function initUserSession() {
       let activeUser = {
-        name: 'Jakia Dantal',
-        email: 'jakiadantal@gmail.com',
-        isSuperAdmin: true
+        name: 'Account',
+        email: '',
+        isSuperAdmin: false
       };
       try {
         const stored = localStorage.getItem('nexora_user');
