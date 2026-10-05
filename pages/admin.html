@@ -50,11 +50,19 @@
       <a href="javascript:void(0)" onclick="setAdminTab('orgs')" class="sidebar-item" id="admTab-orgs"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 7V3h12v4"></path></svg><span class="sidebar-item-label">Organizations</span></a>
       <a href="javascript:void(0)" onclick="setAdminTab('plans')" class="sidebar-item" id="admTab-plans"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg><span class="sidebar-item-label">Plans & Pricing</span></a>
     </div>
+    <span class="sidebar-group-label">Sales & Orders</span>
+    <div class="sidebar-group">
+      <a href="javascript:void(0)" onclick="setAdminTab('incomplete-orders')" class="sidebar-item" id="admTab-incomplete-orders">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path><line x1="12" y1="14" x2="12" y2="18"></line><circle cx="12" cy="21" r="0.5"></circle></svg>
+        <span class="sidebar-item-label">Incomplete Orders</span>
+        <span class="badge badge-red" style="font-size:10px;padding:2px 6px;margin-left:auto">18 New</span>
+      </a>
+      <a href="javascript:void(0)" onclick="setAdminTab('payments')" class="sidebar-item" id="admTab-payments"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><span class="sidebar-item-label">Transactions</span></a>
+    </div>
     <span class="sidebar-group-label">Infrastructure</span>
     <div class="sidebar-group">
       <a href="javascript:void(0)" onclick="setAdminTab('whatsapp')" class="sidebar-item" id="admTab-whatsapp"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg><span class="sidebar-item-label">WhatsApp Monitor</span></a>
       <a href="javascript:void(0)" onclick="setAdminTab('email')" class="sidebar-item" id="admTab-email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg><span class="sidebar-item-label">Email Monitor</span></a>
-      <a href="javascript:void(0)" onclick="setAdminTab('payments')" class="sidebar-item" id="admTab-payments"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg><span class="sidebar-item-label">Transactions</span></a>
       <a href="javascript:void(0)" onclick="setAdminTab('audit')" class="sidebar-item" id="admTab-audit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg><span class="sidebar-item-label">Audit Logs</span></a>
     </div>
     <span class="sidebar-group-label">Configuration</span>
@@ -80,6 +88,10 @@
     <span style="font-size:15px;font-weight:700;color:var(--text-primary)">NEXORAAI System Administration</span>
   </div>
   <div class="topbar-right" style="display:flex;align-items:center;gap:12px">
+    <button type="button" class="btn btn-sm" onclick="setAdminTab('incomplete-orders')" style="background:rgba(255,91,91,0.15);border:1px solid #FF5B5B;color:#FF5B5B;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer;padding:5px 12px;border-radius:20px">
+      <span style="display:inline-block;width:8px;height:8px;background:#FF5B5B;border-radius:50%;animation:pulse 1.5s infinite"></span>
+      🛒 18 Incomplete Orders
+    </button>
     <span class="badge badge-green">Production Cluster: Healthy</span>
     <div style="display:flex;align-items:center;gap:8px;background:var(--bg-secondary);padding:4px 12px;border-radius:20px;border:1px solid var(--border)">
       <div class="avatar avatar-sm" style="background:#FF5B5B;color:#fff;font-weight:800">J</div>
@@ -105,6 +117,31 @@
         <h1 class="page-title">Admin Dashboard</h1>
         <p class="page-subtitle">Real-time macro metrics, tenant counts, message throughput, and platform health</p>
       </div>
+      <div class="page-header-actions">
+        <button class="btn btn-primary" onclick="setAdminTab('incomplete-orders')" style="background:#FF5B5B;border-color:#FF5B5B;color:#fff;font-weight:700">
+          🛒 View Incomplete Orders (18)
+        </button>
+      </div>
+    </div>
+
+    <!-- Incomplete Orders Alert Banner -->
+    <div class="card" style="padding:16px 20px;margin-bottom:24px;border:1px solid rgba(255,91,91,0.35);background:linear-gradient(135deg,rgba(255,91,91,0.08),rgba(217,240,0,0.03));display:flex;align-items:center;justify-content:space-between;border-radius:12px">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div style="width:42px;height:42px;background:rgba(255,91,91,0.18);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#FF5B5B;font-size:20px">
+          🛒
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:var(--text-primary)">
+            18 Incomplete Orders Detected Today (<span style="color:#F59E0B">৳ 84,650 Potential Lost Sales</span>)
+          </div>
+          <div style="font-size:12px;color:var(--text-muted)">
+            Visitors entered their phone & details on checkout but didn't finish payment. Recover them with 1-click WhatsApp reminders!
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="setAdminTab('incomplete-orders')" style="background:#FF5B5B;border-color:#FF5B5B;color:#fff;font-weight:700;white-space:nowrap">
+        ⚡ Open Incomplete Orders Tracker →
+      </button>
     </div>
 
     <div class="stats-row stats-row-4" style="margin-bottom:24px">
@@ -433,6 +470,340 @@
     </div>
   </div>
 
+  <!-- ==================== 4C. INCOMPLETE ORDERS TRACKER (ABANDONED CHECKOUTS) ==================== -->
+  <div id="panel-incomplete-orders" style="display:none">
+    <div class="page-header">
+      <div class="page-header-left">
+        <div style="display:flex;align-items:center;gap:10px">
+          <h1 class="page-title">Incomplete Orders Tracker</h1>
+          <span class="badge badge-red" style="font-size:12px;padding:3px 10px">🔴 Live Checkout Drop-offs</span>
+        </div>
+        <p class="page-subtitle">Track visitors who started entering checkout details (Name, Phone, Address) but left without placing the order. Trigger automated WhatsApp recovery blasts to reclaim lost sales.</p>
+      </div>
+      <div class="page-header-actions" style="display:flex;gap:10px">
+        <button class="btn btn-secondary" onclick="openTrackerSetupModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          Tracker Script Setup (.js / .php)
+        </button>
+        <button class="btn btn-primary" onclick="triggerBatchRecovery()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+          ⚡ Recover All (WhatsApp Blast)
+        </button>
+      </div>
+    </div>
+
+    <!-- Metric KPI Cards -->
+    <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:16px;margin-bottom:24px">
+      <div class="card" style="padding:18px;border-left:4px solid #FF5B5B">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Total Abandoned Checkouts</div>
+        <div style="font-size:24px;font-weight:800;color:var(--text-primary)" id="incStat-total">18 Pending</div>
+        <div style="font-size:11px;color:#FF5B5B;margin-top:4px">● 14 Captured in last 24h</div>
+      </div>
+      <div class="card" style="padding:18px;border-left:4px solid #F59E0B">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Potential Lost Revenue</div>
+        <div style="font-size:24px;font-weight:800;color:#F59E0B" id="incStat-lost">৳ 84,650</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">Across all tenant storefronts</div>
+      </div>
+      <div class="card" style="padding:18px;border-left:4px solid var(--primary)">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Recovered Revenue</div>
+        <div style="font-size:24px;font-weight:800;color:var(--primary)" id="incStat-recovered">৳ 38,200</div>
+        <div style="font-size:11px;color:var(--success);margin-top:4px">🎉 45.2% Recovery Conversion</div>
+      </div>
+      <div class="card" style="padding:18px;border-left:4px solid #10B981">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;font-weight:600">Auto-Recovery System</div>
+        <div style="font-size:20px;font-weight:800;color:var(--success);display:flex;align-items:center;gap:6px">
+          <span style="display:inline-block;width:10px;height:10px;background:#10B981;border-radius:50%;animation:pulse 2s infinite"></span>
+          ONLINE
+        </div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px">WhatsApp Bot + 15m delay</div>
+      </div>
+    </div>
+
+    <!-- Quick Filter Toolbar -->
+    <div class="table-container">
+      <div class="table-toolbar" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:var(--bg-secondary);border-bottom:1px solid var(--border)">
+        <div class="table-search" style="flex:1;max-width:380px;position:relative">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted)"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="incSearchInput" placeholder="Search by phone, customer name, order ID..." class="form-control" style="padding-left:36px;font-size:13px" oninput="filterIncompleteTable()" />
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <select class="form-control form-control-sm" id="incStatusFilter" onchange="filterIncompleteTable()" style="width:160px;font-size:12.5px">
+            <option value="">All Statuses</option>
+            <option value="pending">Pending (Not contacted)</option>
+            <option value="reminded">WhatsApp Reminded</option>
+            <option value="recovered">Recovered (Paid)</option>
+            <option value="abandoned">Expired / Dropped</option>
+          </select>
+          <select class="form-control form-control-sm" id="incTenantFilter" onchange="filterIncompleteTable()" style="width:160px;font-size:12.5px">
+            <option value="">All Tenants / Stores</option>
+            <option value="ShopHive Bangladesh">ShopHive BD</option>
+            <option value="Apex Footwear Retail">Apex Footwear</option>
+            <option value="TechLand Gadgets">TechLand Gadgets</option>
+          </select>
+          <button class="btn btn-secondary btn-sm" onclick="refreshIncompleteData()">🔄 Refresh</button>
+        </div>
+      </div>
+
+      <!-- Incomplete Orders Table -->
+      <table class="table" id="incompleteOrdersTable">
+        <thead>
+          <tr>
+            <th>Checkout Session</th>
+            <th>Customer Info</th>
+            <th>Store / Tenant</th>
+            <th>Cart Items & Value</th>
+            <th>Dropped Step</th>
+            <th>Time Elapsed</th>
+            <th>Recovery Status</th>
+            <th style="text-align:right">Quick Recovery Action</th>
+          </tr>
+        </thead>
+        <tbody id="incompleteTableBody">
+          <tr data-status="pending" data-tenant="ShopHive Bangladesh" data-phone="01711223344" data-name="Mahmudul Hasan">
+            <td>
+              <div style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">#INC-9804</div>
+              <span class="badge" style="font-size:10px;background:rgba(255,91,91,0.15);color:#FF5B5B">Keystroke Tracked</span>
+            </td>
+            <td>
+              <div style="font-weight:700;color:var(--text-primary)">Mahmudul Hasan</div>
+              <div style="font-size:12px;color:var(--primary);font-family:var(--font-mono);display:flex;align-items:center;gap:4px">
+                📞 01711-223344
+              </div>
+              <div style="font-size:11px;color:var(--text-muted)">mahmudul@gmail.com • Dhanmondi, Dhaka</div>
+            </td>
+            <td>
+              <div style="font-weight:600">ShopHive Bangladesh</div>
+              <div style="font-size:11px;color:var(--text-muted)">WooCommerce API</div>
+            </td>
+            <td>
+              <div style="font-weight:700;color:var(--text-primary)">1x Wireless Earbuds Pro</div>
+              <div style="font-size:12px;color:var(--text-muted)">Qty: 1 • Color: Matte Black</div>
+              <div style="font-family:var(--font-mono);font-weight:800;color:#F59E0B">৳ 2,450</div>
+            </td>
+            <td>
+              <span class="badge badge-purple" style="font-size:11px">Payment Method (bKash)</span>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Left at OTP Screen</div>
+            </td>
+            <td>
+              <div style="font-weight:600;color:#FF5B5B">6 mins ago</div>
+              <div style="font-size:11px;color:var(--text-muted)">Today, 10:24 AM</div>
+            </td>
+            <td>
+              <span class="badge badge-red" id="status-INC-9804">Pending Recovery</span>
+            </td>
+            <td style="text-align:right">
+              <div style="display:flex;justify-content:flex-end;gap:6px">
+                <button class="btn btn-primary btn-sm" style="background:#25D366;border-color:#25D366;color:#fff;font-weight:600" onclick="sendWhatsAppRecovery('INC-9804', 'Mahmudul Hasan', '01711223344', 'Wireless Earbuds Pro', '2,450')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                  WhatsApp
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="markAsRecovered('INC-9804')" title="Mark as Recovered">✅</button>
+                <button class="btn btn-ghost btn-sm" onclick="viewIncompleteModal('INC-9804', 'Mahmudul Hasan', '01711223344', 'mahmudul@gmail.com', 'Wireless Earbuds Pro', '৳ 2,450', 'Payment Method (bKash)', 'Dhanmondi, Dhaka')">👁️</button>
+              </div>
+            </td>
+          </tr>
+
+          <tr data-status="pending" data-tenant="Apex Footwear Retail" data-phone="01819988776" data-name="Nusrat Jahan">
+            <td>
+              <div style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">#INC-9803</div>
+              <span class="badge" style="font-size:10px;background:rgba(255,91,91,0.15);color:#FF5B5B">Keystroke Tracked</span>
+            </td>
+            <td>
+              <div style="font-weight:700;color:var(--text-primary)">Nusrat Jahan</div>
+              <div style="font-size:12px;color:var(--primary);font-family:var(--font-mono);display:flex;align-items:center;gap:4px">
+                📞 01819-988776
+              </div>
+              <div style="font-size:11px;color:var(--text-muted)">nusrat.jahan@gmail.com • Mirpur 10, Dhaka</div>
+            </td>
+            <td>
+              <div style="font-weight:600">Apex Footwear Retail</div>
+              <div style="font-size:11px;color:var(--text-muted)">Custom Webhook</div>
+            </td>
+            <td>
+              <div style="font-weight:700;color:var(--text-primary)">2x Leather Formal Shoes (Size 41)</div>
+              <div style="font-size:12px;color:var(--text-muted)">Qty: 2 • Color: Tan Brown</div>
+              <div style="font-family:var(--font-mono);font-weight:800;color:#F59E0B">৳ 6,800</div>
+            </td>
+            <td>
+              <span class="badge badge-accent" style="font-size:11px">Address / Courier Form</span>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Tab Closed on Delivery Fee</div>
+            </td>
+            <td>
+              <div style="font-weight:600;color:#FF5B5B">18 mins ago</div>
+              <div style="font-size:11px;color:var(--text-muted)">Today, 10:12 AM</div>
+            </td>
+            <td>
+              <span class="badge badge-red" id="status-INC-9803">Pending Recovery</span>
+            </td>
+            <td style="text-align:right">
+              <div style="display:flex;justify-content:flex-end;gap:6px">
+                <button class="btn btn-primary btn-sm" style="background:#25D366;border-color:#25D366;color:#fff;font-weight:600" onclick="sendWhatsAppRecovery('INC-9803', 'Nusrat Jahan', '01819988776', 'Leather Formal Shoes (Size 41)', '6,800')">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                  WhatsApp
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="markAsRecovered('INC-9803')" title="Mark as Recovered">✅</button>
+                <button class="btn btn-ghost btn-sm" onclick="viewIncompleteModal('INC-9803', 'Nusrat Jahan', '01819988776', 'nusrat.jahan@gmail.com', 'Leather Formal Shoes', '৳ 6,800', 'Address Form', 'Mirpur 10, Dhaka')">👁️</button>
+              </div>
+            </td>
+          </tr>
+
+          <tr data-status="reminded" data-tenant="TechLand Gadgets" data-phone="01923456789" data-name="Kazi Tariqul Islam">
+            <td>
+              <div style="font-family:var(--font-mono);font-weight:700;color:var(--primary)">#INC-9799</div>
+              <span class="badge badge-accent" style="font-size:10px">IoT Hook</span>
+            </td>
+            <td>
+              <div style="font-weight:700;color:var(--text-primary)">Kazi Tariqul Islam</div>
+              <div style="font-size:12px;color:var(--primary);font-family:var(--font-mono)">📞 01923-456789</div>
+              <div style="font-size:11px;color:var(--text-muted)">tariqul.kazi@outlook.com • Uttara, Dhaka</div>
+            </td>
+            <td>
+              <div style="font-weight:600">TechLand Gadgets</div>
+              <div style="font-size:11px;color:var(--text-muted)">Shopify Webhook</div>
+            </td>
+            <td>
+              <div style="font-weight:700;color:var(--text-primary)">1x Smart Fitness Watch Ultra</div>
+              <div style="font-size:12px;color:var(--text-muted)">Qty: 1 • Edition: Titanium</div>
+              <div style="font-family:var(--font-mono);font-weight:800;color:#F59E0B">৳ 4,200</div>
+            </td>
+            <td>
+              <span class="badge badge-blue" style="font-size:11px">Coupon Code Error</span>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px">Coupon 'SAVE10' failed</div>
+            </td>
+            <td>
+              <div style="font-weight:600;color:var(--text-muted)">45 mins ago</div>
+              <div style="font-size:11px;color:var(--text-muted)">Today, 09:45 AM</div>
+            </td>
+            <td>
+              <span class="badge badge-accent" id="status-INC-9799">WhatsApp Reminded</span>
+            </td>
+            <td style="text-align:right">
+              <div style="display:flex;justify-content:flex-end;gap:6px">
+                <button class="btn btn-secondary btn-sm" onclick="sendWhatsAppRecovery('INC-9799', 'Kazi Tariqul Islam', '01923456789', 'Smart Fitness Watch Ultra', '4,200', 'SPECIAL5')">
+                  💬 Follow-up (5% Off)
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="markAsRecovered('INC-9799')">✅</button>
+              </div>
+            </td>
+          </tr>
+
+          <tr data-status="recovered" data-tenant="ShopHive Bangladesh" data-phone="01633001122" data-name="Sultana Razia">
+            <td style="background:rgba(16,185,129,0.04)">
+              <div style="font-family:var(--font-mono);font-weight:700;color:var(--success)">#INC-9788</div>
+              <span class="badge badge-green" style="font-size:10px">RECOVERED 🎉</span>
+            </td>
+            <td style="background:rgba(16,185,129,0.04)">
+              <div style="font-weight:700;color:var(--text-primary)">Sultana Razia</div>
+              <div style="font-size:12px;color:var(--primary);font-family:var(--font-mono)">📞 01633-001122</div>
+              <div style="font-size:11px;color:var(--text-muted)">Chittagong GEC Circle</div>
+            </td>
+            <td style="background:rgba(16,185,129,0.04)">
+              <div style="font-weight:600">ShopHive Bangladesh</div>
+            </td>
+            <td style="background:rgba(16,185,129,0.04)">
+              <div style="font-weight:700;color:var(--text-primary)">1x 100W Fast GaN Charger</div>
+              <div style="font-family:var(--font-mono);font-weight:800;color:var(--success)">৳ 1,850 (Paid)</div>
+            </td>
+            <td style="background:rgba(16,185,129,0.04)">
+              <span class="badge badge-green" style="font-size:11px">Recovered via WhatsApp</span>
+            </td>
+            <td style="background:rgba(16,185,129,0.04)">
+              <div style="font-weight:600;color:var(--success)">Converted</div>
+              <div style="font-size:11px;color:var(--text-muted)">1 hr 12m after drop</div>
+            </td>
+            <td style="background:rgba(16,185,129,0.04)">
+              <span class="badge badge-green">Order #ORD-8412 Placed</span>
+            </td>
+            <td style="background:rgba(16,185,129,0.04);text-align:right">
+              <span class="badge badge-green" style="font-size:11px">৳ 1,850 Settled</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Incomplete Order Details Modal -->
+  <div id="incDetailsModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
+    <div class="card" style="width:90%;max-width:550px;padding:24px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.5)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:12px">
+        <h3 style="margin:0;font-size:18px;display:flex;align-items:center;gap:8px">
+          🛒 Checkout Session Details <span id="modalIncId" class="badge badge-accent">#INC-0000</span>
+        </h3>
+        <button class="btn btn-ghost btn-sm" onclick="closeIncModal()" style="font-size:18px;line-height:1">✕</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:13px">
+        <div style="background:var(--bg-secondary);padding:12px;border-radius:8px">
+          <div style="font-weight:700;color:var(--text-primary);margin-bottom:4px" id="modalCustomerName">-</div>
+          <div style="color:var(--primary);font-family:var(--font-mono)" id="modalCustomerPhone">-</div>
+          <div style="color:var(--text-muted);font-size:12px" id="modalCustomerEmail">-</div>
+          <div style="color:var(--text-muted);font-size:12px" id="modalCustomerAddress">-</div>
+        </div>
+        <div style="background:var(--bg-secondary);padding:12px;border-radius:8px">
+          <div style="font-weight:700;color:var(--text-muted);font-size:11px;text-transform:uppercase;margin-bottom:4px">Cart Items & Total</div>
+          <div style="font-weight:700;font-size:15px;color:var(--text-primary)" id="modalCartItems">-</div>
+          <div style="font-size:16px;font-weight:800;color:#F59E0B;margin-top:4px" id="modalCartValue">-</div>
+        </div>
+        <div style="background:var(--bg-secondary);padding:12px;border-radius:8px">
+          <div style="font-weight:700;color:var(--text-muted);font-size:11px;text-transform:uppercase;margin-bottom:4px">Where they dropped off</div>
+          <div style="font-weight:600;color:#FF5B5B" id="modalDroppedStep">-</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+        <button class="btn btn-secondary" onclick="closeIncModal()">Close</button>
+        <button class="btn btn-primary" id="modalWhatsAppBtn" style="background:#25D366;border-color:#25D366;color:#fff">
+          💬 Send WhatsApp Recovery Link
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tracker Setup & Embed Script Modal -->
+  <div id="incTrackerModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
+    <div class="card" style="width:90%;max-width:720px;max-height:90vh;overflow-y:auto;padding:26px;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;box-shadow:0 25px 50px rgba(0,0,0,0.6)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:12px">
+        <h3 style="margin:0;font-size:18px;display:flex;align-items:center;gap:8px">
+          ⚡ Incomplete Orders Tracker Integration
+        </h3>
+        <button class="btn btn-ghost btn-sm" onclick="closeTrackerModal()" style="font-size:18px;line-height:1">✕</button>
+      </div>
+      
+      <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">
+        Capture checkout inputs (Name, Phone number, Email, Address, Selected Products) in real-time as the customer types. If they close the tab or disconnect before placing the order, their session is automatically pushed to this tracker.
+      </p>
+
+      <!-- Option 1: JS snippet -->
+      <div style="margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:13px;font-weight:700;color:var(--text-primary)">Option 1: Frontend JavaScript Embed (<code style="color:var(--primary)">iot-checkout.js</code>)</span>
+          <button class="btn btn-ghost btn-sm" onclick="copySnippet('jsCodeSnippet')">📋 Copy Script Tag</button>
+        </div>
+        <pre id="jsCodeSnippet" style="background:#0F172A;color:#38BDF8;padding:12px;border-radius:8px;font-size:12px;overflow-x:auto;border:1px solid rgba(255,255,255,0.1)">&lt;!-- NEXORAAI Incomplete Orders Realtime Tracker --&gt;
+&lt;script src="https://nexoraai.com/assets/js/iot-checkout.js" data-tenant-key="ORG_NEXORA_LIVE" data-endpoint="https://api.nexoraai.com/v1/track/incomplete" defer&gt;&lt;/script&gt;</pre>
+      </div>
+
+      <!-- Option 2: PHP Tracker -->
+      <div style="margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:13px;font-weight:700;color:var(--text-primary)">Option 2: WordPress / WooCommerce Plugin (<code style="color:var(--primary)">incomplete-orders-tracker.php</code>)</span>
+          <button class="btn btn-ghost btn-sm" onclick="copySnippet('phpCodeSnippet')">📋 Copy Webhook Hook</button>
+        </div>
+        <pre id="phpCodeSnippet" style="background:#0F172A;color:#A7F3D0;padding:12px;border-radius:8px;font-size:12px;overflow-x:auto;border:1px solid rgba(255,255,255,0.1)">&lt;?php
+// In WooCommerce functions.php or mu-plugins:
+add_action('wp_footer', function() {
+    if (is_checkout()) {
+        echo '&lt;script src="' . plugin_dir_url(__FILE__) . 'assets/iot-checkout.js"&gt;&lt;/script&gt;';
+    }
+});
+?&gt;</pre>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:10px">
+        <button class="btn btn-primary" onclick="closeTrackerModal()">Got It!</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== 5. TRANSACTIONS ==================== -->
   <div id="panel-payments" style="display:none">
     <div class="page-header">
@@ -584,7 +955,7 @@
 <script src="../assets/js/app.js"></script>
 <script>
 function setAdminTab(tab) {
-  const tabs = ['overview', 'users', 'orgs', 'plans', 'whatsapp', 'email', 'payments', 'audit', 'settings'];
+  const tabs = ['overview', 'users', 'orgs', 'plans', 'incomplete-orders', 'whatsapp', 'email', 'payments', 'audit', 'settings'];
   tabs.forEach(t => {
     const el = document.getElementById('panel-' + t);
     const btn = document.getElementById('admTab-' + t);
@@ -593,6 +964,143 @@ function setAdminTab(tab) {
       if (t === tab) btn.classList.add('active');
       else btn.classList.remove('active');
     }
+  });
+}
+
+// Incomplete Orders Table Filter
+function filterIncompleteTable() {
+  const search = (document.getElementById('incSearchInput')?.value || '').toLowerCase();
+  const status = document.getElementById('incStatusFilter')?.value || '';
+  const tenant = document.getElementById('incTenantFilter')?.value || '';
+  const rows = document.querySelectorAll('#incompleteTableBody tr');
+
+  rows.forEach(row => {
+    const rowStatus = row.getAttribute('data-status') || '';
+    const rowTenant = row.getAttribute('data-tenant') || '';
+    const text = row.textContent.toLowerCase();
+
+    const matchesSearch = !search || text.includes(search);
+    const matchesStatus = !status || rowStatus === status;
+    const matchesTenant = !tenant || rowTenant === tenant;
+
+    if (matchesSearch && matchesStatus && matchesTenant) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
+function refreshIncompleteData() {
+  showToast('Fetching live checkout session feeds from Supabase & Webhooks...', 'info');
+  setTimeout(() => {
+    showToast('Incomplete orders up to date! 18 active sessions monitored.', 'success');
+  }, 600);
+}
+
+// Send Single WhatsApp Recovery Message
+function sendWhatsAppRecovery(orderId, name, phone, item, value, coupon) {
+  const couponText = coupon ? `\n🎁 Exclusive 5% off coupon: *${coupon}*` : '';
+  const msg = encodeURIComponent(
+    `Assalamu Alaikum ${name}! 👋\n\nWe noticed you started checkout for *${item}* (৳ ${value}) on our store but couldn't finish your order.\n\nWould you like us to confirm and dispatch your order directly over WhatsApp? Reply *YES* or click here to finish with 1 click:${couponText}\nhttps://nexoraai.com/pay/${orderId}`
+  );
+  
+  // Format phone number
+  let cleanPhone = phone.replace(/[^0-9]/g, '');
+  if (cleanPhone.startsWith('0')) cleanPhone = '88' + cleanPhone;
+  else if (!cleanPhone.startsWith('88')) cleanPhone = '88' + cleanPhone;
+
+  // Open WhatsApp Web / App
+  window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
+
+  // Update Status Badge
+  const badge = document.getElementById('status-' + orderId);
+  if (badge) {
+    badge.className = 'badge badge-accent';
+    badge.textContent = 'WhatsApp Reminded';
+  }
+  const row = badge?.closest('tr');
+  if (row) row.setAttribute('data-status', 'reminded');
+
+  showToast(`Recovery message prepared & dispatched for ${name} (${phone})!`, 'success');
+}
+
+// Batch Recovery Blast
+function triggerBatchRecovery() {
+  if (confirm('Trigger automated AI WhatsApp recovery message to all 14 pending abandoned checkouts from the last 24h?')) {
+    showToast('🚀 Dispatching batch WhatsApp recovery reminders via Cloud API...', 'info');
+    setTimeout(() => {
+      document.querySelectorAll('#incompleteTableBody tr[data-status="pending"]').forEach(row => {
+        const badge = row.querySelector('.badge-red');
+        if (badge) {
+          badge.className = 'badge badge-accent';
+          badge.textContent = 'WhatsApp Reminded';
+        }
+        row.setAttribute('data-status', 'reminded');
+      });
+      showToast('🎉 Batch recovery dispatched to 14 customers successfully!', 'success');
+    }, 1200);
+  }
+}
+
+// Mark Incomplete Order As Recovered / Paid
+function markAsRecovered(orderId) {
+  const badge = document.getElementById('status-' + orderId);
+  if (badge) {
+    badge.className = 'badge badge-green';
+    badge.textContent = 'RECOVERED 🎉';
+  }
+  const row = badge?.closest('tr');
+  if (row) {
+    row.setAttribute('data-status', 'recovered');
+    row.style.background = 'rgba(16,185,129,0.06)';
+  }
+  showToast(`Order #${orderId} marked as Recovered! Revenue credited.`, 'success');
+}
+
+// View Incomplete Order Modal
+function viewIncompleteModal(id, name, phone, email, items, value, step, address) {
+  document.getElementById('modalIncId').textContent = '#' + id;
+  document.getElementById('modalCustomerName').textContent = name;
+  document.getElementById('modalCustomerPhone').textContent = '📞 ' + phone;
+  document.getElementById('modalCustomerEmail').textContent = '✉️ ' + email;
+  document.getElementById('modalCustomerAddress').textContent = '📍 ' + address;
+  document.getElementById('modalCartItems').textContent = items;
+  document.getElementById('modalCartValue').textContent = value;
+  document.getElementById('modalDroppedStep').textContent = step;
+
+  const btn = document.getElementById('modalWhatsAppBtn');
+  btn.onclick = () => {
+    closeIncModal();
+    sendWhatsAppRecovery(id, name, phone, items, value);
+  };
+
+  const modal = document.getElementById('incDetailsModal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeIncModal() {
+  const modal = document.getElementById('incDetailsModal');
+  if (modal) modal.style.display = 'none';
+}
+
+// Tracker Setup Modal
+function openTrackerSetupModal() {
+  const modal = document.getElementById('incTrackerModal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeTrackerModal() {
+  const modal = document.getElementById('incTrackerModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function copySnippet(elementId) {
+  const text = document.getElementById(elementId)?.innerText || '';
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Code snippet copied to clipboard! 📋', 'success');
+  }).catch(() => {
+    showToast('Copied to clipboard', 'info');
   });
 }
 
@@ -607,6 +1115,16 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       logoutAdmin();
     });
+  }
+
+  // Check URL hash or stored target tab
+  const hash = window.location.hash.replace('#', '');
+  const storedTab = localStorage.getItem('admin_target_tab');
+  if (hash === 'incomplete-orders' || storedTab === 'incomplete-orders') {
+    setAdminTab('incomplete-orders');
+    localStorage.removeItem('admin_target_tab');
+  } else if (hash) {
+    setAdminTab(hash);
   }
 });
 </script>

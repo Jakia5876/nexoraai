@@ -60,8 +60,9 @@ function createDashboardShell(activePage, pageTitle) {
       </div>
       <span class="sidebar-group-label">Commerce</span>
       <div class="sidebar-group">
-        <a href="dashboard-products.html" class="sidebar-item ${activePage==='products'?'active':''}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line></svg><span class="sidebar-item-label">Products</span></a>
+        <a href="dashboard-products.html" class="sidebar-item ${activePage==='products'?'active':''}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg><span class="sidebar-item-label">Products</span></a>
         <a href="dashboard-orders.html" class="sidebar-item ${activePage==='orders'?'active':''}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V22H4V12"></path><path d="M22 7H2v5h20V7z"></path></svg><span class="sidebar-item-label">Orders</span></a>
+        <a href="dashboard-incomplete-orders.html" class="sidebar-item ${activePage==='incomplete-orders'?'active':''}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF5B5B" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path><line x1="12" y1="14" x2="12" y2="18"></line><circle cx="12" cy="21" r="0.5"></circle></svg><span class="sidebar-item-label" style="color:#FF5B5B;font-weight:600">Incomplete Orders</span><span class="badge badge-red" style="font-size:9px;padding:1px 5px;margin-left:auto">18</span></a>
       </div>
       <span class="sidebar-group-label">Analytics & Dev</span>
       <div class="sidebar-group">

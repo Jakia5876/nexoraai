@@ -28,7 +28,11 @@
       <h1 class="page-title">Orders & Transactions</h1>
       <p class="page-subtitle">Track orders placed natively via WhatsApp chat flows and automated checkout links</p>
     </div>
-    <div class="page-header-actions">
+    <div class="page-header-actions" style="display:flex;gap:8px">
+      <button class="btn btn-secondary" id="toggleIncompleteBtn" onclick="toggleIncompleteOrdersView()" style="border-color:#FF5B5B;color:#FF5B5B">
+        <span style="display:inline-block;width:8px;height:8px;background:#FF5B5B;border-radius:50%"></span>
+        Incomplete Checkouts (<span id="incompleteCountBadge">18</span>)
+      </button>
       <button class="btn btn-secondary" onclick="exportOrders()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
         Export Orders
@@ -207,22 +211,74 @@ function exportOrders() {
   setTimeout(() => showToast('Orders export completed! orders_2026.csv downloaded.', 'success'), 1000);
 }
 
-function filterOrders() {
-  const q = document.getElementById('orderSearch').value.toLowerCase();
-  const pay = document.getElementById('payFilter').value.toLowerCase();
-  const del = document.getElementById('delFilter').value.toLowerCase();
+let viewingIncomplete = false;
 
-  document.querySelectorAll('#ordersBody tr').forEach(r => {
-    const text = r.innerText.toLowerCase();
-    const rPay = (r.getAttribute('data-pay') || '').toLowerCase();
-    const rDel = (r.getAttribute('data-del') || '').toLowerCase();
+function toggleIncompleteOrdersView() {
+  viewingIncomplete = !viewingIncomplete;
+  const btn = document.getElementById('toggleIncompleteBtn');
+  const title = document.querySelector('.page-title');
+  const subtitle = document.querySelector('.page-subtitle');
+  const tbody = document.getElementById('ordersBody');
 
-    const matchesQ = !q || text.includes(q);
-    const matchesPay = !pay || rPay.includes(pay);
-    const matchesDel = !del || rDel.includes(del);
+  if (viewingIncomplete) {
+    btn.classList.add('btn-primary');
+    btn.style.background = '#FF5B5B';
+    btn.style.borderColor = '#FF5B5B';
+    btn.style.color = '#fff';
+    btn.innerHTML = '← Back to All Orders';
+    title.innerHTML = 'Incomplete Orders & Abandoned Checkouts';
+    subtitle.innerHTML = 'Visitors who entered contact info but dropped before paying. Send automated WhatsApp recovery messages!';
 
-    r.style.display = (matchesQ && matchesPay && matchesDel) ? '' : 'none';
-  });
+    tbody.innerHTML = `
+      <tr data-pay="Abandoned" data-del="Pending">
+        <td style="font-family:var(--font-mono);font-weight:700;color:#FF5B5B">#INC-9804</td>
+        <td>
+          <div style="font-weight:700;color:var(--text-primary)">Mahmudul Hasan</div>
+          <div style="font-size:12px;color:var(--primary);font-family:var(--font-mono)">+880 1711-223344</div>
+          <div style="font-size:11px;color:var(--text-muted)">Dhanmondi, Dhaka</div>
+        </td>
+        <td>
+          <div style="font-size:13px;color:var(--text-primary)">1x Wireless Earbuds Pro</div>
+          <div style="font-size:11px;color:#FF5B5B">Dropped at bKash OTP</div>
+        </td>
+        <td style="font-family:var(--font-mono);font-weight:700;color:#F59E0B">৳ 2,450</td>
+        <td><span class="badge badge-red">Abandoned Cart</span></td>
+        <td><span class="badge badge-accent">6 mins ago</span></td>
+        <td style="text-align:right">
+          <button class="btn btn-primary btn-sm" style="background:#25D366;border-color:#25D366;color:#fff" onclick="sendIncompleteWaRecovery('01711223344', 'Mahmudul Hasan', 'Wireless Earbuds Pro', '2,450', 'INC-9804')">💬 WhatsApp Recover</button>
+        </td>
+      </tr>
+      <tr data-pay="Abandoned" data-del="Pending">
+        <td style="font-family:var(--font-mono);font-weight:700;color:#FF5B5B">#INC-9803</td>
+        <td>
+          <div style="font-weight:700;color:var(--text-primary)">Nusrat Jahan</div>
+          <div style="font-size:12px;color:var(--primary);font-family:var(--font-mono)">+880 1819-988776</div>
+          <div style="font-size:11px;color:var(--text-muted)">Mirpur 10, Dhaka</div>
+        </td>
+        <td>
+          <div style="font-size:13px;color:var(--text-primary)">2x Leather Formal Shoes</div>
+          <div style="font-size:11px;color:#FF5B5B">Left at Address Form</div>
+        </td>
+        <td style="font-family:var(--font-mono);font-weight:700;color:#F59E0B">৳ 6,800</td>
+        <td><span class="badge badge-red">Abandoned Cart</span></td>
+        <td><span class="badge badge-accent">18 mins ago</span></td>
+        <td style="text-align:right">
+          <button class="btn btn-primary btn-sm" style="background:#25D366;border-color:#25D366;color:#fff" onclick="sendIncompleteWaRecovery('01819988776', 'Nusrat Jahan', 'Leather Formal Shoes', '6,800', 'INC-9803')">💬 WhatsApp Recover</button>
+        </td>
+      </tr>
+    `;
+    showToast('Viewing 18 live abandoned checkouts', 'info');
+  } else {
+    location.reload();
+  }
+}
+
+function sendIncompleteWaRecovery(phone, name, item, value, orderId) {
+  let cleanPhone = phone.replace(/[^0-9]/g, '');
+  if (!cleanPhone.startsWith('88')) cleanPhone = '88' + (cleanPhone.startsWith('0') ? cleanPhone : '0' + cleanPhone);
+  const msg = encodeURIComponent(`Assalamu Alaikum ${name}! We noticed you started buying ${item} (৳ ${value}) but did not complete checkout. Would you like us to confirm this over WhatsApp? https://nexoraai.com/pay/${orderId}`);
+  window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
+  showToast(`WhatsApp recovery opened for ${name}!`, 'success');
 }
 </script>
 </body>
