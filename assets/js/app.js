@@ -71,7 +71,12 @@ const LanguageManager = (() => {
       nav_docs: "ডকুমেন্টেশন",
       nav_help: "হেল্প সেন্টার",
       nav_login: "লগইন",
-      nav_register: "শুরু করুন ফ্রি"
+      nav_register: "শুরু করুন ফ্রি",
+      footer_desc: "হোয়াটসঅ্যাপ ক্লাউড API, অটোনোমাস AI এজেন্টস, ড্রপ-অফ অর্ডার রিকভারি এবং কমার্স অটোমেশনের সর্বাধুনিক প্ল্যাটফর্ম।",
+      footer_col_prod: "প্রোডাক্ট",
+      footer_col_res: "রিসোর্স",
+      footer_col_comp: "কোম্পানি ও পলিসি",
+      footer_copy: "© ২০২৬ NEXORAAI. সর্বস্বত্ব সংরক্ষিত।"
     },
     en: {
       nav_home: "Home",
@@ -81,7 +86,12 @@ const LanguageManager = (() => {
       nav_docs: "Documentation",
       nav_help: "Help Center",
       nav_login: "Login",
-      nav_register: "Get Started Free"
+      nav_register: "Get Started Free",
+      footer_desc: "The all-in-one platform for WhatsApp Cloud API, AI agents, cart drop-off recovery, and sales automation.",
+      footer_col_prod: "Product",
+      footer_col_res: "Resources",
+      footer_col_comp: "Company & Legal",
+      footer_copy: "© 2026 NEXORAAI. All rights reserved."
     }
   };
 
@@ -104,20 +114,20 @@ const LanguageManager = (() => {
 
     document.documentElement.lang = currentLang;
 
-    // Apply translations
-    const dict = (window.I18N_DICT && window.I18N_DICT[currentLang]) ? window.I18N_DICT[currentLang] : I18N_GLOBAL[currentLang];
-    if (dict) {
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (dict[key]) {
-          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-            el.placeholder = dict[key];
-          } else {
-            el.innerHTML = dict[key];
-          }
+    // Apply translations by merging global and page dictionaries
+    const pageDict = (window.I18N_DICT && window.I18N_DICT[currentLang]) ? window.I18N_DICT[currentLang] : {};
+    const dict = Object.assign({}, I18N_GLOBAL[currentLang] || {}, pageDict);
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key] !== undefined) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.placeholder = dict[key];
+        } else {
+          el.innerHTML = dict[key];
         }
-      });
-    }
+      }
+    });
   }
 
   function setLanguage(lang) {
@@ -125,6 +135,8 @@ const LanguageManager = (() => {
     const msg = currentLang === 'en' ? 'Switched to English' : 'বাংলা ভাষায় পরিবর্তিত হয়েছে';
     if (window.Toast && typeof window.Toast.show === 'function') {
       window.Toast.show(msg, 'info');
+    } else if (typeof showToast === 'function') {
+      showToast(msg, 'info');
     }
   }
 
@@ -140,7 +152,7 @@ const LanguageManager = (() => {
     });
   }
 
-  return { init, setLanguage, getLang: () => currentLang };
+  return { init, setLanguage, applyLang, getLang: () => currentLang };
 })();
 
 // ============================================
