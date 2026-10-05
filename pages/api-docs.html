@@ -254,6 +254,11 @@
       <span style="font-size:12px;background:rgba(21,128,61,0.1);color:#15803D;padding:2px 8px;border-radius:4px;font-weight:700">REST API v1</span>
     </div>
     <div style="display:flex;align-items:center;gap:16px">
+      <!-- Language Switcher (EN / BN) -->
+      <div class="lang-toggle-wrap" id="langToggleWrap" role="group" aria-label="Language selection">
+        <button type="button" class="lang-pill-btn" id="langBtnEN" onclick="switchSiteLang('en')" title="Switch to English">EN</button>
+        <button type="button" class="lang-pill-btn active" id="langBtnBN" onclick="switchSiteLang('bn')" title="বাংলায় পরিবর্তন করুন">BN</button>
+      </div>
       <a href="documentation.html" style="font-size:13px;color:#475569;text-decoration:none">Guides & SDKs</a>
       <a href="dashboard-api.html" class="btn btn-secondary btn-sm" style="font-size:12px">Get API Key</a>
       <a href="login.html" class="btn btn-primary btn-sm" style="font-size:12px">Dashboard</a>
@@ -831,5 +836,6 @@ $res = file_get_contents('https://api.nexoraai.com/v1/email/campaigns', false, s
     // Initialize default code
     renderCode();
   </script>
+  <script src="../assets/js/app.js"></script>
 </body>
 </html>

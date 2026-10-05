@@ -88,6 +88,11 @@
     <span style="font-size:15px;font-weight:700;color:var(--text-primary)">NEXORAAI System Administration</span>
   </div>
   <div class="topbar-right" style="display:flex;align-items:center;gap:12px">
+    <!-- Language Toggle (EN / BN) -->
+    <div class="lang-toggle-wrap" id="langToggleWrap" role="group" aria-label="Language selection">
+      <button type="button" class="lang-pill-btn" id="langBtnEN" onclick="switchSiteLang('en')" title="Switch to English">EN</button>
+      <button type="button" class="lang-pill-btn active" id="langBtnBN" onclick="switchSiteLang('bn')" title="বাংলা">BN</button>
+    </div>
     <button type="button" class="btn btn-sm" onclick="setAdminTab('incomplete-orders')" style="background:rgba(255,91,91,0.15);border:1px solid #FF5B5B;color:#FF5B5B;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer;padding:5px 12px;border-radius:20px">
       <span style="display:inline-block;width:8px;height:8px;background:#FF5B5B;border-radius:50%;animation:pulse 1.5s infinite"></span>
       🛒 18 Incomplete Orders

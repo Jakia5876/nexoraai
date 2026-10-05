@@ -58,6 +58,92 @@ const ThemeManager = (() => {
 })();
 
 // ============================================
+// LANGUAGE MANAGER (EN / BN)
+// ============================================
+const LanguageManager = (() => {
+  const STORAGE_KEY = 'nexora_lang';
+  const I18N_GLOBAL = {
+    bn: {
+      nav_home: "হোম",
+      nav_how: "যেভাবে কাজ করে",
+      nav_features: "ফিচারসমূহ",
+      nav_pricing: "প্রাইসিং",
+      nav_docs: "ডকুমেন্টেশন",
+      nav_help: "হেল্প সেন্টার",
+      nav_login: "লগইন",
+      nav_register: "শুরু করুন ফ্রি"
+    },
+    en: {
+      nav_home: "Home",
+      nav_how: "How It Works",
+      nav_features: "Features",
+      nav_pricing: "Pricing",
+      nav_docs: "Documentation",
+      nav_help: "Help Center",
+      nav_login: "Login",
+      nav_register: "Get Started Free"
+    }
+  };
+
+  let currentLang = localStorage.getItem(STORAGE_KEY) || 'bn';
+
+  function applyLang(lang) {
+    currentLang = lang === 'en' ? 'en' : 'bn';
+    try { localStorage.setItem(STORAGE_KEY, currentLang); } catch (e) {}
+
+    // Update active states on toggles
+    document.querySelectorAll('#langBtnBN, #langMobileBtnBN').forEach(btn => {
+      btn.classList.toggle('active', currentLang === 'bn');
+    });
+    document.querySelectorAll('#langBtnEN, #langMobileBtnEN').forEach(btn => {
+      btn.classList.toggle('active', currentLang === 'en');
+    });
+    document.querySelectorAll('[data-lang]').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
+    });
+
+    document.documentElement.lang = currentLang;
+
+    // Apply translations
+    const dict = (window.I18N_DICT && window.I18N_DICT[currentLang]) ? window.I18N_DICT[currentLang] : I18N_GLOBAL[currentLang];
+    if (dict) {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            el.placeholder = dict[key];
+          } else {
+            el.innerHTML = dict[key];
+          }
+        }
+      });
+    }
+  }
+
+  function setLanguage(lang) {
+    applyLang(lang);
+    const msg = currentLang === 'en' ? 'Switched to English' : 'বাংলা ভাষায় পরিবর্তিত হয়েছে';
+    if (window.Toast && typeof window.Toast.show === 'function') {
+      window.Toast.show(msg, 'info');
+    }
+  }
+
+  function init() {
+    applyLang(currentLang);
+    window.switchSiteLang = setLanguage;
+
+    document.querySelectorAll('#langBtnBN, #langMobileBtnBN').forEach(btn => {
+      btn.addEventListener('click', (e) => { e.preventDefault(); setLanguage('bn'); });
+    });
+    document.querySelectorAll('#langBtnEN, #langMobileBtnEN').forEach(btn => {
+      btn.addEventListener('click', (e) => { e.preventDefault(); setLanguage('en'); });
+    });
+  }
+
+  return { init, setLanguage, getLang: () => currentLang };
+})();
+
+// ============================================
 // MOBILE NAV
 // ============================================
 const MobileNav = (() => {
@@ -729,6 +815,7 @@ const DemoData = {
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
   ThemeManager.init();
+  LanguageManager.init();
   MobileNav.init();
   StickyHeader.init();
   Modal.init();

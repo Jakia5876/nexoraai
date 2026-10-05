@@ -210,6 +210,12 @@
     </div>
 
     <div class="topbar-right">
+      <!-- Language Toggle (EN / BN) -->
+      <div class="lang-toggle-wrap" id="langToggleWrap" role="group" aria-label="Language selection" style="margin-right:4px">
+        <button type="button" class="lang-pill-btn" id="langBtnEN" onclick="switchSiteLang('en')" title="Switch to English">EN</button>
+        <button type="button" class="lang-pill-btn active" id="langBtnBN" onclick="switchSiteLang('bn')" title="বাংলা">BN</button>
+      </div>
+
       <!-- Theme Toggle -->
       <button class="btn-icon" id="themeToggle" aria-label="Toggle theme">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>

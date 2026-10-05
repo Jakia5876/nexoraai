@@ -7,7 +7,7 @@
   <meta name="description" content="Transparent, scalable pricing for WhatsApp API, AI Automations, and Smart Lead Management. Choose Starter, Professional, or Enterprise." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/design-system.css" />
   <link rel="stylesheet" href="../assets/css/homepage.css" />
   <style>
@@ -17,6 +17,17 @@
       gap: 28px;
       margin-top: 48px;
       margin-bottom: 64px;
+    }
+    @media (max-width: 992px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .roi-grid {
+        grid-template-columns: 1fr !important;
+      }
     }
     @media (max-width: 992px) {
       .pricing-grid { grid-template-columns: 1fr; }
@@ -120,8 +131,12 @@
           </ul>
         </nav>
         <div class="header-actions">
-          <a href="login.html" class="btn btn-ghost">Login</a>
-          <a href="register.html" class="btn btn-primary">Start Free Trial</a>
+          <div class="lang-toggle-wrap" id="langToggleWrap" role="group" aria-label="Language selection">
+            <button type="button" class="lang-pill-btn" id="langBtnEN" onclick="switchSiteLang('en')" title="Switch to English">EN</button>
+            <button type="button" class="lang-pill-btn active" id="langBtnBN" onclick="switchSiteLang('bn')" title="বাংলায় পরিবর্তন করুন">BN</button>
+          </div>
+          <a href="login.html" class="btn btn-ghost" data-i18n="nav_login">Login</a>
+          <a href="register.html" class="btn btn-primary" data-i18n="nav_register">Start Free Trial</a>
         </div>
       </div>
     </div>
@@ -239,7 +254,7 @@
       </div>
 
       <div class="card" style="padding:32px">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+        <div class="roi-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
           <div>
             <div class="form-group">
               <label class="form-label">Incoming Inquiries / Day: <strong id="inquiryVal" style="color:var(--primary)">250</strong></label>
@@ -292,5 +307,6 @@
       document.getElementById('bdtSavings').innerText = '≈ ৳ ' + savedBdt.toLocaleString() + ' BDT Net Savings';
     }
   </script>
+  <script src="../assets/js/app.js" defer></script>
 </body>
 </html>
