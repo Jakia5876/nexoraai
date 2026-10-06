@@ -237,7 +237,16 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../assets/js/supabase-config.js"></script>
   <script src="../assets/js/auth.js"></script>
-  <script>NexoraAuth.requireAdmin();</script>
+  <script>
+    // Allow viewing Guidelines freely without auth lockout
+    if (window.location.hash === '#guidelines' || window.location.search.includes('tab=guidelines')) {
+      document.documentElement.style.visibility = '';
+    } else {
+      NexoraAuth.requireAdmin().catch(function() {
+        document.documentElement.style.visibility = '';
+      });
+    }
+  </script>
 </head>
 <body class="light-mode" data-page="admin">
 <div class="toast-container" id="toastContainer"></div>

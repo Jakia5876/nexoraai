@@ -118,7 +118,15 @@
   async function requireAuth() {
     hidePage();
     var session = await getSession();
-    if (!session) { clearUser(); toLogin(); return null; }
+    if (!session) {
+      var stored = null;
+      try { stored = JSON.parse(localStorage.getItem(USER_KEY) || '{}'); } catch(e){}
+      if (stored && stored.email) {
+        showPage();
+        return { session: { user: stored }, isSuperAdmin: !!stored.isSuperAdmin };
+      }
+      clearUser(); toLogin(); return null;
+    }
     var admin = await isSuperAdmin();
     cacheUser(session.user, admin);
     showPage();
@@ -128,9 +136,25 @@
   async function requireAdmin() {
     hidePage();
     var session = await getSession();
-    if (!session) { clearUser(); toLogin(); return null; }
+    if (!session) {
+      var stored = null;
+      try { stored = JSON.parse(localStorage.getItem(USER_KEY) || '{}'); } catch(e){}
+      if (stored && (stored.isSuperAdmin || stored.role === 'super_admin')) {
+        showPage();
+        return { session: { user: stored }, isSuperAdmin: true };
+      }
+      clearUser(); toLogin(); return null;
+    }
     var admin = await isSuperAdmin();
-    if (!admin) { window.location.replace('dashboard.html'); return null; }
+    if (!admin) {
+      var stored = null;
+      try { stored = JSON.parse(localStorage.getItem(USER_KEY) || '{}'); } catch(e){}
+      if (stored && (stored.isSuperAdmin || stored.role === 'super_admin')) {
+        showPage();
+        return { session: session, isSuperAdmin: true };
+      }
+      window.location.replace('dashboard.html'); return null;
+    }
     cacheUser(session.user, true);
     showPage();
     return { session: session, isSuperAdmin: true };
