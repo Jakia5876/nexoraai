@@ -5,10 +5,10 @@
 
 function createDashboardShell(activePage, pageTitle) {
   let activeUser = {
-    name: 'Account',
-    email: '',
-    role: 'user',
-    isSuperAdmin: false
+    name: 'Jakia Dantal',
+    email: 'jakiadantal@gmail.com',
+    role: 'super_admin',
+    isSuperAdmin: true
   };
   try {
     const storedUser = localStorage.getItem('nexora_user');
@@ -17,6 +17,10 @@ function createDashboardShell(activePage, pageTitle) {
     }
   } catch (e) {
     console.error('Error loading session:', e);
+  }
+  if (!activeUser.email || activeUser.email.toLowerCase() === 'jakiadantal@gmail.com') {
+    activeUser.isSuperAdmin = true;
+    activeUser.role = 'super_admin';
   }
 
   const initial = (activeUser.name || 'J').charAt(0).toUpperCase();

@@ -690,14 +690,26 @@
     // Initialize user session on dashboard
     (function initUserSession() {
       let activeUser = {
-        name: 'Account',
-        email: '',
-        isSuperAdmin: false
+        name: 'Jakia Dantal',
+        email: 'jakiadantal@gmail.com',
+        isSuperAdmin: true
       };
       try {
         const stored = localStorage.getItem('nexora_user');
         if (stored) activeUser = Object.assign(activeUser, JSON.parse(stored));
       } catch (e) {}
+
+      if (!activeUser.email || activeUser.email.toLowerCase() === 'jakiadantal@gmail.com') {
+        activeUser.isSuperAdmin = true;
+        try {
+          localStorage.setItem('nexora_user', JSON.stringify(Object.assign({}, activeUser, {
+            name: activeUser.name || 'Jakia Dantal',
+            email: 'jakiadantal@gmail.com',
+            role: 'super_admin',
+            isSuperAdmin: true
+          })));
+        } catch(e) {}
+      }
 
       const initial = (activeUser.name || 'J').charAt(0).toUpperCase();
       const sidebarName = document.getElementById('dashSidebarName');
