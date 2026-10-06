@@ -105,6 +105,7 @@ function createDashboardShell(activePage, pageTitle) {
         </button>
         <div class="dropdown-menu">
           <div class="dropdown-item" onclick="window.location.href='admin.html'">⚡ Admin Control Center</div>
+          <div class="dropdown-item" onclick="window.location.href='admin.html#guidelines'">📖 Guidelines & Admin SOP</div>
           <div class="dropdown-item" onclick="window.location.href='onboarding.html'">🚀 Setup Wizard</div>
           <div class="dropdown-item" onclick="window.location.href='dashboard-settings.html'">Settings</div>
           <div class="dropdown-item" onclick="window.location.href='dashboard-billing.html'">Billing</div>
@@ -132,8 +133,10 @@ function createDashboardShell(activePage, pageTitle) {
         <div class="cmd-item" onclick="window.location.href='dashboard-ai-agents.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>🤖</span> AI Agent Personas (GPT-4o & Claude)</div>
         <div class="cmd-item" onclick="window.location.href='dashboard-broadcasts.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>📢</span> WhatsApp Bulk SMS & Broadcast Dispatcher</div>
         <div class="cmd-item" onclick="window.location.href='dashboard-email.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>✉️</span> Bulk Email Blaster & SMTP Dispatcher</div>
+        <div class="cmd-item" onclick="window.location.href='dashboard-incomplete-orders.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>🛒</span> Incomplete Orders & Cart Recovery</div>
         <div class="cmd-item" onclick="window.location.href='dashboard-n8n.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>⚡</span> n8n Workflow Automation Hub</div>
         <div class="cmd-item" onclick="window.location.href='dashboard-api.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>🔑</span> Developer API & Webhook Keys</div>
+        <div class="cmd-item" onclick="window.location.href='admin.html#guidelines'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>📖</span> Nexora AI Platform Guidelines & Admin SOP</div>
         <div class="cmd-item" onclick="window.location.href='admin.html'" style="padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:10px;color:#F5F7F8;font-size:13.5px"><span>🛡️</span> Super Admin Control Center</div>
       </div>
     </div>
