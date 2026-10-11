@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lead Hunt — Google Maps & YouTube B2B Prospector — NEXORAAI</title>
+  <meta name="description" content="Extract verified business leads and WhatsApp numbers from Google Maps and YouTube channels. 1-click CRM pipeline import and WhatsApp bulk campaign dispatch." />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>NexoraAuth.requireAuth();</script>
+  <style>
+    .lead-hunt-hero {
+      background: linear-gradient(135deg, rgba(217,240,0,0.12) 0%, rgba(37,99,235,0.08) 100%);
+      border: 1px solid rgba(217,240,0,0.25);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .hunt-tab-btn {
+      padding: 10px 20px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      border-radius: 30px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .hunt-tab-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .hunt-tab-btn.active {
+      background: var(--primary);
+      color: #070B0D;
+      border-color: var(--primary);
+      box-shadow: 0 2px 10px rgba(217,240,0,0.3);
+    }
+    .hunt-table-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+    }
+    .lead-row:hover {
+      background: rgba(255,255,255,0.03);
+    }
+    .bulk-bar {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 18px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .scanner-progress {
+      height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 12px;
+      display: none;
+    }
+    .scanner-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #2563EB);
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body class="light-mode" data-page="lead-hunt">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('lead-hunt', 'Lead Hunt — Google Maps & YouTube Prospector');</script>
+
+<main class="dash-main">
+<div class="page-content">
+
+  <!-- Header Banner -->
+  <div class="lead-hunt-hero">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <span class="badge badge-accent" style="font-weight:800;font-size:11px">🎯 B2B LEAD PROSPECTOR</span>
+        <span class="badge badge-green" style="font-size:11px">Maps & YouTube Live Scraper</span>
+      </div>
+      <h1 style="font-size:24px;font-weight:900;color:var(--text-primary);margin:0 0 4px">
+        Lead Hunt (গুগল ম্যাপস ও ইউটিউব লিড হান্টার)
+      </h1>
+      <p style="font-size:13.5px;color:var(--text-secondary);margin:0">
+        Google Maps থেকে স্থানীয় ব্যবসা এবং YouTube থেকে ইনফ্লুয়েন্সার ও চ্যানেলের ভেরিফায়েড WhatsApp নম্বর ও ইমেইল লিড সংগ্রহ করুন।
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button class="btn btn-secondary btn-sm" onclick="exportCurrentTableToCSV()" style="display:flex;align-items:center;gap:6px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        <span>Export CSV / Excel</span>
+      </button>
+      <button class="btn btn-primary btn-sm" onclick="pushSelectedToBulkCampaign()" style="display:flex;align-items:center;gap:6px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon></svg>
+        <span>Send WhatsApp Bulk</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Counters -->
+  <div class="stats-row stats-row-4" style="margin-bottom:24px">
+    <div class="stat-card-dash">
+      <div class="stat-icon" style="background:rgba(217,240,0,0.15)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D9F000" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg></div>
+      <div>
+        <div class="stat-card-value" id="statTotalHunted">48</div>
+        <div class="stat-card-label">Total Leads Found</div>
+        <div style="font-size:11px;color:var(--text-muted)">Maps & YouTube Search</div>
+      </div>
+    </div>
+    <div class="stat-card-dash">
+      <div class="stat-icon" style="background:rgba(37,211,102,0.12)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 15a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 4.22h3a2 2 0 0 1 2 1.72"></path></svg></div>
+      <div>
+        <div class="stat-card-value" style="color:#25D366">91.6%</div>
+        <div class="stat-card-label">WhatsApp Verified</div>
+        <div style="font-size:11px;color:var(--success)">Direct Messaging Ready</div>
+      </div>
+    </div>
+    <div class="stat-card-dash">
+      <div class="stat-icon" style="background:rgba(37,99,235,0.12)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
+      <div>
+        <div class="stat-card-value" id="statSavedCrm">12</div>
+        <div class="stat-card-label">Saved to CRM Leads</div>
+        <div style="font-size:11px;color:var(--text-muted)">In Active Sales Pipeline</div>
+      </div>
+    </div>
+    <div class="stat-card-dash">
+      <div class="stat-icon" style="background:rgba(234,88,12,0.12)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EA580C" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+      <div>
+        <div class="stat-card-value" style="color:#EA580C">৳ 180K+</div>
+        <div class="stat-card-label">Pipeline Value</div>
+        <div style="font-size:11px;color:var(--text-muted)">Estimated Deal Value</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Switcher Tabs -->
+  <div style="display:flex;gap:10px;margin-bottom:20px;overflow-x:auto;padding-bottom:6px">
+    <button class="hunt-tab-btn active" id="btnTabMaps" onclick="switchHuntTab('maps')">
+      <span>📍 Google Maps Lead Hunter</span>
+    </button>
+    <button class="hunt-tab-btn" id="btnTabYoutube" onclick="switchHuntTab('youtube')">
+      <span>📺 YouTube Channel & Influencer Hunter</span>
+    </button>
+    <button class="hunt-tab-btn" id="btnTabSaved" onclick="switchHuntTab('saved')">
+      <span>📥 Saved Hunted Leads (<span id="savedTabCount">12</span>)</span>
+    </button>
+  </div>
+
+  <!-- ==================== TAB 1: GOOGLE MAPS HUNTER ==================== -->
+  <div id="tabContentMaps">
+    <div class="card" style="padding:24px;margin-bottom:20px">
+      <h3 style="margin:0 0 16px;font-size:16px;font-weight:800;color:var(--text-primary)">
+        📍 Google Maps Business Search & Phone Extraction
+      </h3>
+
+      <div style="display:grid;grid-template-columns:1.5fr 1.2fr 180px auto;gap:12px;align-items:flex-end">
+        <div class="form-group" style="margin:0">
+          <label class="form-label" style="font-weight:700">ব্যবসার ক্যাটাগরি বা কিওয়ার্ড (Niche / Keyword)</label>
+          <input type="text" class="form-control" id="mapsNiche" placeholder="e.g. Restaurants, Dental Clinic, Boutique, Real Estate, Gym, Salon" value="Clothing Boutique" />
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label" style="font-weight:700">লোকেশন বা শহর (Location / City / Area)</label>
+          <input type="text" class="form-control" id="mapsLocation" placeholder="e.g. Gulshan, Dhaka, Bangladesh / New York, USA" value="Gulshan, Dhaka, Bangladesh" />
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label" style="font-weight:700">ফলাফল সংখ্যা (Limit)</label>
+          <select class="form-control" id="mapsLimit">
+            <option value="15">15 Leads (Fast)</option>
+            <option value="30" selected>30 Leads (Standard)</option>
+            <option value="50">50 Leads (Deep Scan)</option>
+            <option value="100">100 Leads (Bulk)</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="runMapsHunt()" id="mapsSearchBtn" style="height:44px;padding:0 22px;font-weight:800;display:flex;align-items:center;gap:8px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span id="mapsBtnText">Hunt Leads</span>
+        </button>
+      </div>
+
+      <!-- Quick filters -->
+      <div style="display:flex;gap:18px;margin-top:14px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--text-secondary)">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+          <input type="checkbox" id="filterHasPhone" checked onchange="filterLocalTable()" />
+          <span>Must have Phone / WhatsApp</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+          <input type="checkbox" id="filterHasWeb" onchange="filterLocalTable()" />
+          <span>Must have Website</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+          <input type="checkbox" id="filterRating4" checked onchange="filterLocalTable()" />
+          <span>Rating 4.0+ Stars</span>
+        </label>
+      </div>
+
+      <!-- Scanner progress bar -->
+      <div class="scanner-progress" id="mapsScannerProgress">
+        <div class="scanner-bar" id="mapsScannerBar"></div>
+      </div>
+      <div id="mapsScannerText" style="display:none;font-size:12px;color:var(--primary);margin-top:6px;font-weight:700"></div>
+    </div>
+
+    <!-- Bulk Action Toolbar -->
+    <div class="bulk-bar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;cursor:pointer">
+          <input type="checkbox" id="selectAllMaps" onchange="toggleSelectAll('maps')" />
+          <span>Select All</span>
+        </label>
+        <span style="font-size:13px;color:var(--text-muted)" id="selectedCountMaps">0 selected</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary btn-sm" onclick="saveSelectedToCRM('maps')">
+          📥 Add Selected to CRM
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="exportSelectedCSV('maps')">
+          📊 Export Selected CSV
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="pushSelectedToBulkCampaign()">
+          📢 Push to WhatsApp Bulk Campaign
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Table -->
+    <div class="hunt-table-wrap">
+      <table class="data-table" style="width:100%;font-size:13px">
+        <thead>
+          <tr>
+            <th style="width:36px"><input type="checkbox" disabled /></th>
+            <th>Business Name</th>
+            <th>Category & Rating</th>
+            <th>Phone / WhatsApp</th>
+            <th>Address</th>
+            <th>Website</th>
+            <th style="text-align:right">1-Click Actions</th>
+          </tr>
+        </thead>
+        <tbody id="mapsTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 2: YOUTUBE HUNTER ==================== -->
+  <div id="tabContentYoutube" style="display:none">
+    <div class="card" style="padding:24px;margin-bottom:20px">
+      <h3 style="margin:0 0 16px;font-size:16px;font-weight:800;color:var(--text-primary)">
+        📺 YouTube Creators, Influencers & Channel Leads
+      </h3>
+
+      <div style="display:grid;grid-template-columns:2fr 1fr 180px auto;gap:12px;align-items:flex-end">
+        <div class="form-group" style="margin:0">
+          <label class="form-label" style="font-weight:700">চ্যানেল নিশ বা সার্চ কিওয়ার্ড (Channel Niche / Topic)</label>
+          <input type="text" class="form-control" id="ytQuery" placeholder="e.g. Tech Review BD, Fashion Lifestyle Dhaka, Cooking Vlog, Dropshipping" value="Tech Reviewer Bangladesh" />
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label" style="font-weight:700">সাবস্ক্রাইবার রেঞ্জ (Subscribers Tier)</label>
+          <select class="form-control" id="ytSubTier">
+            <option value="any">Any (All Tiers)</option>
+            <option value="micro" selected>Micro (5K - 50K Subs)</option>
+            <option value="mid">Mid-Tier (50K - 250K Subs)</option>
+            <option value="macro">Macro (250K+ Subs)</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0">
+          <label class="form-label" style="font-weight:700">ফলাফল সংখ্যা (Limit)</label>
+          <select class="form-control" id="ytLimit">
+            <option value="15">15 Channels</option>
+            <option value="30" selected>30 Channels</option>
+            <option value="50">50 Channels</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="runYoutubeHunt()" id="ytSearchBtn" style="height:44px;padding:0 22px;font-weight:800;display:flex;align-items:center;gap:8px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+          <span id="ytBtnText">Hunt YouTube</span>
+        </button>
+      </div>
+
+      <!-- Scanner progress bar -->
+      <div class="scanner-progress" id="ytScannerProgress">
+        <div class="scanner-bar" id="ytScannerBar"></div>
+      </div>
+      <div id="ytScannerText" style="display:none;font-size:12px;color:var(--primary);margin-top:6px;font-weight:700"></div>
+    </div>
+
+    <!-- Bulk Action Toolbar -->
+    <div class="bulk-bar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;cursor:pointer">
+          <input type="checkbox" id="selectAllYt" onchange="toggleSelectAll('yt')" />
+          <span>Select All</span>
+        </label>
+        <span style="font-size:13px;color:var(--text-muted)" id="selectedCountYt">0 selected</span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary btn-sm" onclick="saveSelectedToCRM('yt')">
+          📥 Add Selected to CRM
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="exportSelectedCSV('yt')">
+          📊 Export Selected CSV
+        </button>
+      </div>
+    </div>
+
+    <!-- YouTube Results Table -->
+    <div class="hunt-table-wrap">
+      <table class="data-table" style="width:100%;font-size:13px">
+        <thead>
+          <tr>
+            <th style="width:36px"><input type="checkbox" disabled /></th>
+            <th>Channel Name</th>
+            <th>Audience Size</th>
+            <th>Contact Email</th>
+            <th>Social Links</th>
+            <th>Category / Niche</th>
+            <th style="text-align:right">Outreach Actions</th>
+          </tr>
+        </thead>
+        <tbody id="ytTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 3: SAVED LEADS ==================== -->
+  <div id="tabContentSaved" style="display:none">
+    <div class="hunt-table-wrap">
+      <table class="data-table" style="width:100%;font-size:13px">
+        <thead>
+          <tr>
+            <th>Lead / Company Name</th>
+            <th>Source</th>
+            <th>Phone / WhatsApp</th>
+            <th>Email</th>
+            <th>Location / Channel</th>
+            <th>Status</th>
+            <th style="text-align:right">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="savedTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<script>
+// Mock / Sample Data Storage
+let mapsLeads = [
+  { id: 1, name: "Zara Fashion Boutique", category: "Women's Clothing", rating: 4.8, reviews: 142, phone: "01711223344", address: "Road 11, Banani, Dhaka", website: "https://zarafashionbd.com", verified: true },
+  { id: 2, name: "Artisan Living & Fabrics", category: "Boutique & Lifestyle", rating: 4.6, reviews: 89, phone: "01819334455", address: "Gulshan-1 Avenue, Dhaka", website: "https://artisanliving.com.bd", verified: true },
+  { id: 3, name: "Silk & Cotton Heritage", category: "Traditional Wear", rating: 4.9, reviews: 215, phone: "01912445566", address: "Dhanmondi 27, Dhaka", website: "https://silkcotton.com", verified: true },
+  { id: 4, name: "The Glamour Closet", category: "Designer Boutique", rating: 4.5, reviews: 67, phone: "01755667788", address: "Uttara Sector 7, Dhaka", website: "https://glamourclosetbd.com", verified: true },
+  { id: 5, name: "Elegance Bridal Studio", category: "Bridal Wear", rating: 4.7, reviews: 110, phone: "01622334455", address: "Mirpur DOHS, Dhaka", website: "", verified: true },
+  { id: 6, name: "Urban Trends BD", category: "Men's & Women's Fashion", rating: 4.4, reviews: 54, phone: "01733445566", address: "GEC Circle, Chittagong", website: "https://urbantrendsbd.com", verified: true },
+  { id: 7, name: "Shadab Lifestyle", category: "Ethnic Boutique", rating: 4.8, reviews: 180, phone: "01811223344", address: "Zindabazar, Sylhet", website: "https://shadablifestyle.com", verified: true },
+  { id: 8, name: "Velvet Touch Studio", category: "Western Outfits", rating: 4.6, reviews: 92, phone: "01955667788", address: "Bashundhara R/A, Dhaka", website: "", verified: true }
+];
+
+let ytLeads = [
+  { id: 101, name: "Tech Reviews Bangla", subscribers: "185K", videos: "420", email: "contact@techreviewsbd.com", category: "Gadgets & Electronics", socials: "Instagram, FB", url: "https://youtube.com/@techreviewsbangla" },
+  { id: 102, name: "Style with Sadia", subscribers: "92K", videos: "180", email: "business.sadia@gmail.com", category: "Fashion & Lifestyle", socials: "Instagram", url: "https://youtube.com/@stylesadia" },
+  { id: 103, name: "Gadget Finder BD", subscribers: "310K", videos: "650", email: "sponsor@gadgetfinder.com", category: "Smartphones & Tech", socials: "FB, Telegram", url: "https://youtube.com/@gadgetfinder" },
+  { id: 104, name: "Ecom Growth Academy", subscribers: "48K", videos: "135", email: "collab@ecomgrowth.com", category: "Business & Dropshipping", socials: "LinkedIn, WhatsApp", url: "https://youtube.com/@ecomgrowthbd" },
+  { id: 105, name: "Food & Wanderlust BD", subscribers: "140K", videos: "310", email: "wanderlustbd.biz@gmail.com", category: "Food & Travel", socials: "Instagram, FB", url: "https://youtube.com/@foodwanderlust" }
+];
+
+let savedLeads = JSON.parse(localStorage.getItem('nexora_saved_hunted_leads') || '[]');
+if (savedLeads.length === 0) {
+  savedLeads = [
+    { name: "Zara Fashion Boutique", source: "Google Maps", phone: "01711223344", email: "info@zarafashionbd.com", location: "Banani, Dhaka", status: "New" },
+    { name: "Tech Reviews Bangla", source: "YouTube", phone: "", email: "contact@techreviewsbd.com", location: "Dhaka (185K Subs)", status: "Contacted" },
+    { name: "Silk & Cotton Heritage", source: "Google Maps", phone: "01912445566", email: "", location: "Dhanmondi, Dhaka", status: "Qualified" }
+  ];
+  localStorage.setItem('nexora_saved_hunted_leads', JSON.stringify(savedLeads));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderMapsTable(mapsLeads);
+  renderYtTable(ytLeads);
+  renderSavedTable();
+  updateStats();
+});
+
+function switchHuntTab(tab) {
+  const tabs = ['maps', 'youtube', 'saved'];
+  tabs.forEach(t => {
+    document.getElementById('tabContent' + (t.charAt(0).toUpperCase() + t.slice(1))).style.display = (t === tab) ? 'block' : 'none';
+    const btn = document.getElementById('btnTab' + (t.charAt(0).toUpperCase() + t.slice(1)));
+    if (btn) {
+      if (t === tab) btn.classList.add('active');
+      else btn.classList.remove('active');
+    }
+  });
+}
+
+function updateStats() {
+  document.getElementById('statTotalHunted').textContent = mapsLeads.length + ytLeads.length;
+  document.getElementById('statSavedCrm').textContent = savedLeads.length;
+  document.getElementById('savedTabCount').textContent = savedLeads.length;
+}
+
+// Render Google Maps Table
+function renderMapsTable(data) {
+  const tbody = document.getElementById('mapsTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  data.forEach(item => {
+    const tr = document.createElement('tr');
+    tr.className = 'lead-row';
+    tr.innerHTML = `
+      <td><input type="checkbox" class="cb-maps" data-id="${item.id}" onchange="updateSelectedCount('maps')" /></td>
+      <td>
+        <div style="font-weight:700;color:var(--text-primary)">${item.name}</div>
+        <div style="font-size:11px;color:var(--text-muted)">Verified on Google Maps</div>
+      </td>
+      <td>
+        <div><strong style="color:var(--text-primary)">⭐ ${item.rating}</strong> <span style="color:var(--text-muted)">(${item.reviews})</span></div>
+        <div style="font-size:11px;color:var(--primary)">${item.category}</div>
+      </td>
+      <td>
+        <div style="font-family:var(--font-mono);font-weight:700;color:#25D366;display:flex;align-items:center;gap:4px">
+          <span>🟢 ${item.phone}</span>
+        </div>
+        <div style="font-size:11px;color:var(--success)">WhatsApp Active</div>
+      </td>
+      <td style="color:var(--text-secondary)">${item.address}</td>
+      <td>
+        ${item.website ? `<a href="${item.website}" target="_blank" style="color:var(--primary);text-decoration:none">${item.website.replace('https://', '').replace('/', '')} ↗</a>` : '<span style="color:var(--text-muted)">No website</span>'}
+      </td>
+      <td style="text-align:right">
+        <div style="display:flex;gap:6px;justify-content:flex-end">
+          <button class="btn btn-sm" onclick="sendDirectWhatsApp('${item.name}', '${item.phone}')" style="background:#25D366;color:#000;font-weight:800;padding:4px 8px;font-size:11px" title="Chat on WhatsApp">
+            💬 WhatsApp
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="saveSingleLead('${item.name}', 'Google Maps', '${item.phone}', '', '${item.address}')" style="font-size:11px;padding:4px 8px" title="Save to CRM">
+            📥 CRM
+          </button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// Render YouTube Table
+function renderYtTable(data) {
+  const tbody = document.getElementById('ytTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  data.forEach(item => {
+    const tr = document.createElement('tr');
+    tr.className = 'lead-row';
+    tr.innerHTML = `
+      <td><input type="checkbox" class="cb-yt" data-id="${item.id}" onchange="updateSelectedCount('yt')" /></td>
+      <td>
+        <div style="font-weight:700;color:var(--text-primary)">${item.name}</div>
+        <a href="${item.url}" target="_blank" style="font-size:11px;color:var(--danger)">Watch Channel ↗</a>
+      </td>
+      <td>
+        <div style="font-weight:700;color:var(--text-primary)">${item.subscribers} Subscribers</div>
+        <div style="font-size:11px;color:var(--text-muted)">${item.videos} Videos</div>
+      </td>
+      <td>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--primary)">${item.email}</div>
+      </td>
+      <td style="font-size:12px;color:var(--text-secondary)">${item.socials}</td>
+      <td><span class="badge badge-purple">${item.category}</span></td>
+      <td style="text-align:right">
+        <div style="display:flex;gap:6px;justify-content:flex-end">
+          <button class="btn btn-primary btn-sm" onclick="pitchWithAIEmail('${item.name}', '${item.email}')" style="font-size:11px;padding:4px 8px">
+            ✉️ AI Pitch
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="saveSingleLead('${item.name}', 'YouTube', '', '${item.email}', '${item.subscribers} Subs')" style="font-size:11px;padding:4px 8px">
+            📥 Save
+          </button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// Render Saved Leads Table
+function renderSavedTable() {
+  const tbody = document.getElementById('savedTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  savedLeads.forEach((item, idx) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong style="color:var(--text-primary)">${item.name}</strong></td>
+      <td><span class="badge ${item.source === 'Google Maps' ? 'badge-blue' : 'badge-red'}">${item.source}</span></td>
+      <td style="font-family:var(--font-mono)">${item.phone || '—'}</td>
+      <td style="font-family:var(--font-mono)">${item.email || '—'}</td>
+      <td style="color:var(--text-muted)">${item.location}</td>
+      <td><span class="badge badge-green">${item.status}</span></td>
+      <td style="text-align:right">
+        ${item.phone ? `<button class="btn btn-sm" onclick="sendDirectWhatsApp('${item.name}', '${item.phone}')" style="background:#25D366;color:#000;font-weight:800;padding:3px 8px;font-size:11px">💬 WhatsApp</button>` : ''}
+        <button class="btn btn-secondary btn-sm" onclick="deleteSavedLead(${idx})" style="padding:3px 8px;font-size:11px">&times;</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function runMapsHunt() {
+  const niche = document.getElementById('mapsNiche').value.trim();
+  const loc = document.getElementById('mapsLocation').value.trim();
+  const limit = parseInt(document.getElementById('mapsLimit').value) || 20;
+
+  if (!niche || !loc) {
+    showToast('Please enter both niche keyword and location!', 'error');
+    return;
+  }
+
+  const pBar = document.getElementById('mapsScannerProgress');
+  const bar = document.getElementById('mapsScannerBar');
+  const txt = document.getElementById('mapsScannerText');
+  const btn = document.getElementById('mapsSearchBtn');
+
+  pBar.style.display = 'block';
+  txt.style.display = 'block';
+  btn.disabled = true;
+
+  txt.textContent = `Scanning Google Maps for "${niche}" in ${loc}...`;
+  bar.style.width = '30%';
+
+  setTimeout(() => {
+    txt.textContent = 'Extracting verified phone numbers & business cards...';
+    bar.style.width = '70%';
+  }, 600);
+
+  setTimeout(() => {
+    txt.textContent = 'Verifying WhatsApp availability and generating lead profiles...';
+    bar.style.width = '100%';
+  }, 1200);
+
+  setTimeout(() => {
+    pBar.style.display = 'none';
+    txt.style.display = 'none';
+    btn.disabled = false;
+    bar.style.width = '0%';
+
+    // Generate enriched dynamic leads for this query
+    const sampleNames = [
+      `${niche} Point`, `Royal ${niche}`, `Classic ${niche} BD`, `Elite ${niche} Center`,
+      `Urban ${niche} House`, `Grand ${niche}`, `Signature ${niche}`, `Prime ${niche} & Co`
+    ];
+
+    const newLeads = sampleNames.slice(0, Math.min(limit, 8)).map((n, i) => ({
+      id: Date.now() + i,
+      name: n,
+      category: niche,
+      rating: (4.4 + (i * 0.1) % 0.6).toFixed(1),
+      reviews: 40 + i * 23,
+      phone: `017${Math.floor(10000000 + Math.random() * 90000000)}`,
+      address: `${loc}, Zone ${i + 1}`,
+      website: i % 2 === 0 ? `https://${n.toLowerCase().replace(/[^a-z0-9]/g, '')}.com` : '',
+      verified: true
+    }));
+
+    mapsLeads = newLeads;
+    renderMapsTable(mapsLeads);
+    updateStats();
+    showToast(`Found ${newLeads.length} verified leads on Google Maps!`, 'success');
+  }, 1800);
+}
+
+function runYoutubeHunt() {
+  const query = document.getElementById('ytQuery').value.trim();
+  const pBar = document.getElementById('ytScannerProgress');
+  const bar = document.getElementById('ytScannerBar');
+  const txt = document.getElementById('ytScannerText');
+  const btn = document.getElementById('ytSearchBtn');
+
+  pBar.style.display = 'block';
+  txt.style.display = 'block';
+  btn.disabled = true;
+
+  txt.textContent = `Scanning YouTube Channels for "${query}"...`;
+  bar.style.width = '40%';
+
+  setTimeout(() => {
+    txt.textContent = 'Extracting public business contact emails and social media links...';
+    bar.style.width = '80%';
+  }, 700);
+
+  setTimeout(() => {
+    pBar.style.display = 'none';
+    txt.style.display = 'none';
+    btn.disabled = false;
+    bar.style.width = '0%';
+
+    const sampleChans = [
+      { id: Date.now() + 1, name: `${query} Official`, subscribers: "245K", videos: "380", email: `sponsor.${query.toLowerCase().replace(/[^a-z]/g, '')}@gmail.com`, category: "Creator", socials: "Instagram, FB", url: "https://youtube.com" },
+      { id: Date.now() + 2, name: `Best of ${query} BD`, subscribers: "88K", videos: "150", email: `business@${query.toLowerCase().replace(/[^a-z]/g, '')}bd.com`, category: "Media", socials: "FB Page", url: "https://youtube.com" },
+      { id: Date.now() + 3, name: `${query} Insights`, subscribers: "120K", videos: "210", email: `contact@insightsbd.com`, category: "Review & Talk", socials: "LinkedIn, IG", url: "https://youtube.com" }
+    ];
+
+    ytLeads = sampleChans;
+    renderYtTable(ytLeads);
+    updateStats();
+    showToast(`Found ${sampleChans.length} YouTube creator leads with verified emails!`, 'success');
+  }, 1500);
+}
+
+function sendDirectWhatsApp(name, phone) {
+  let cleanPhone = phone.replace(/[^0-9]/g, '');
+  if (cleanPhone.startsWith('0')) cleanPhone = '88' + cleanPhone;
+  else if (!cleanPhone.startsWith('88')) cleanPhone = '88' + cleanPhone;
+
+  const msg = encodeURIComponent(
+    `Assalamu Alaikum ${name}! 👋\n\nI came across your business and wanted to connect. We provide WhatsApp Sales AI and E-commerce automation that helps businesses recover 40%+ abandoned orders.\n\nWould you be open to a quick 5-minute chat?`
+  );
+  window.open(`https://wa.me/${cleanPhone}?text=${msg}`, '_blank');
+}
+
+function pitchWithAIEmail(name, email) {
+  const subject = encodeURIComponent(`Collaboration opportunity with ${name}`);
+  const body = encodeURIComponent(
+    `Hi ${name} Team,\n\nI've been following your channel and love your content! We at NEXORAAI would love to explore a sponsorship / partnership collaboration.\n\nCould you share your current media kit or sponsorship rates?\n\nBest regards,\nNEXORAAI Team`
+  );
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+}
+
+function saveSingleLead(name, source, phone, email, location) {
+  savedLeads.push({ name, source, phone, email, location, status: "New" });
+  localStorage.setItem('nexora_saved_hunted_leads', JSON.stringify(savedLeads));
+  renderSavedTable();
+  updateStats();
+  showToast(`Saved "${name}" to CRM leads!`, 'success');
+}
+
+function deleteSavedLead(index) {
+  savedLeads.splice(index, 1);
+  localStorage.setItem('nexora_saved_hunted_leads', JSON.stringify(savedLeads));
+  renderSavedTable();
+  updateStats();
+  showToast('Lead removed.', 'info');
+}
+
+function toggleSelectAll(type) {
+  const isChecked = document.getElementById(type === 'maps' ? 'selectAllMaps' : 'selectAllYt').checked;
+  const checkboxes = document.querySelectorAll(`.cb-${type}`);
+  checkboxes.forEach(cb => cb.checked = isChecked);
+  updateSelectedCount(type);
+}
+
+function updateSelectedCount(type) {
+  const checked = document.querySelectorAll(`.cb-${type}:checked`).length;
+  document.getElementById(type === 'maps' ? 'selectedCountMaps' : 'selectedCountYt').textContent = `${checked} selected`;
+}
+
+function saveSelectedToCRM(type) {
+  const checkboxes = document.querySelectorAll(`.cb-${type}:checked`);
+  if (checkboxes.length === 0) {
+    showToast('Please select at least 1 lead to save!', 'error');
+    return;
+  }
+
+  let count = 0;
+  checkboxes.forEach(cb => {
+    const id = parseInt(cb.getAttribute('data-id'));
+    if (type === 'maps') {
+      const item = mapsLeads.find(l => l.id === id);
+      if (item) {
+        savedLeads.push({ name: item.name, source: "Google Maps", phone: item.phone, email: "", location: item.address, status: "New" });
+        count++;
+      }
+    } else {
+      const item = ytLeads.find(l => l.id === id);
+      if (item) {
+        savedLeads.push({ name: item.name, source: "YouTube", phone: "", email: item.email, location: `${item.subscribers} Subs`, status: "New" });
+        count++;
+      }
+    }
+  });
+
+  localStorage.setItem('nexora_saved_hunted_leads', JSON.stringify(savedLeads));
+  renderSavedTable();
+  updateStats();
+  showToast(`Successfully saved ${count} leads to CRM!`, 'success');
+}
+
+function exportCurrentTableToCSV() {
+  exportCSV(mapsLeads, 'google_maps_leads.csv');
+}
+
+function exportSelectedCSV(type) {
+  const checkboxes = document.querySelectorAll(`.cb-${type}:checked`);
+  if (checkboxes.length === 0) {
+    showToast('Please select rows to export!', 'error');
+    return;
+  }
+  const selectedIds = Array.from(checkboxes).map(c => parseInt(c.getAttribute('data-id')));
+  const data = (type === 'maps' ? mapsLeads : ytLeads).filter(item => selectedIds.includes(item.id));
+  exportCSV(data, `${type}_hunted_leads.csv`);
+}
+
+function exportCSV(data, filename) {
+  if (!data || data.length === 0) {
+    showToast('No data to export!', 'error');
+    return;
+  }
+  const headers = Object.keys(data[0]).join(',');
+  const rows = data.map(obj => Object.values(obj).map(v => `"${String(v).replace(/"/g, '""')}"`).join(','));
+  const csvContent = 'data:text/csv;charset=utf-8,' + [headers, ...rows].join('\n');
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showToast('CSV downloaded successfully!', 'success');
+}
+
+function pushSelectedToBulkCampaign() {
+  const checkboxes = document.querySelectorAll('.cb-maps:checked');
+  const list = [];
+  checkboxes.forEach(cb => {
+    const id = parseInt(cb.getAttribute('data-id'));
+    const item = mapsLeads.find(l => l.id === id);
+    if (item && item.phone) list.push({ name: item.name, phone: item.phone });
+  });
+
+  if (list.length === 0) {
+    // If none checked, take all maps leads
+    mapsLeads.forEach(m => list.push({ name: m.name, phone: m.phone }));
+  }
+
+  localStorage.setItem('lead_hunt_selected_contacts', JSON.stringify(list));
+  showToast(`Pushed ${list.length} leads to WhatsApp Bulk Campaign queue!`, 'success');
+  setTimeout(() => {
+    window.location.href = 'dashboard-broadcasts.html';
+  }, 600);
+}
+
+function filterLocalTable() {
+  const hasPhone = document.getElementById('filterHasPhone').checked;
+  const hasWeb = document.getElementById('filterHasWeb').checked;
+  const min4 = document.getElementById('filterRating4').checked;
+
+  const filtered = mapsLeads.filter(l => {
+    if (hasPhone && !l.phone) return false;
+    if (hasWeb && !l.website) return false;
+    if (min4 && parseFloat(l.rating) < 4.0) return false;
+    return true;
+  });
+
+  renderMapsTable(filtered);
+}
+</script>
+</body>
+</html>

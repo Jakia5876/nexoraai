@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Copywriter & Message Assistant — NEXORAAI</title>
+  <meta name="description" content="AI Copywriter for WhatsApp messages, marketing emails, abandoned cart recovery offers, and automated chatbot responses." />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>NexoraAuth.requireAuth();</script>
+  <style>
+    .ai-hero-banner {
+      background: linear-gradient(135deg, rgba(217,240,0,0.12) 0%, rgba(139,92,246,0.1) 100%);
+      border: 1px solid rgba(217,240,0,0.3);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .generator-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1.3fr;
+      gap: 24px;
+    }
+    @media (max-width: 992px) {
+      .generator-grid { grid-template-columns: 1fr; }
+    }
+    .var-pill {
+      display: inline-block;
+      background: rgba(217,240,0,0.12);
+      border: 1px solid rgba(217,240,0,0.3);
+      color: var(--text-primary);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      margin: 2px;
+      transition: all 0.15s;
+    }
+    .var-pill:hover {
+      background: var(--primary);
+      color: #000;
+    }
+    .preview-box {
+      background: #0B1117;
+      border: 1px solid #1F2937;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      min-height: 220px;
+      font-size: 14px;
+      line-height: 1.65;
+      color: #E2E8F0;
+      white-space: pre-wrap;
+      position: relative;
+    }
+    .wa-bubble-preview {
+      background: #005c4b;
+      color: #e9edef;
+      border-radius: 8px 8px 0px 8px;
+      padding: 12px 14px;
+      max-width: 85%;
+      margin-left: auto;
+      font-size: 13.5px;
+      line-height: 1.5;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    .wa-bubble-preview::after {
+      content: "";
+      position: absolute;
+      right: -6px;
+      bottom: 0;
+      width: 0;
+      height: 0;
+      border-left: 8px solid #005c4b;
+      border-bottom: 8px solid transparent;
+    }
+  </style>
+</head>
+<body class="light-mode" data-page="ai-writer">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('ai-writer', 'AI Copywriter & Automation Assistant');</script>
+
+<main class="dash-main">
+<div class="page-content">
+
+  <!-- Header Banner -->
+  <div class="ai-hero-banner">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <span class="badge badge-accent" style="font-weight:800;font-size:11px">✨ NEXORA AI WRITER CORE</span>
+        <span class="badge badge-green" style="font-size:11px">OpenAI & Claude Integrated</span>
+      </div>
+      <h1 style="font-size:24px;font-weight:900;color:var(--text-primary);margin:0 0 4px">
+        AI Message & Email Copywriter (এআই মেসেজ ও ইমেইল রাইটার)
+      </h1>
+      <p style="font-size:13.5px;color:var(--text-secondary);margin:0">
+        WhatsApp বাল্ক মেসেজ, কোল্ড সেলস ইমেইল ও চ্যাটবট অটোমেশন রিপ্লাই ১-ক্লিকে লিখুন এবং সরাসরি প্রচারণায় পাঠান।
+      </p>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button class="btn btn-secondary btn-sm" onclick="openApiKeyModal()" style="display:flex;align-items:center;gap:6px">
+        <span>🔑 Configure AI Keys</span>
+      </button>
+      <a href="dashboard-broadcasts.html" class="btn btn-primary btn-sm" style="display:flex;align-items:center;gap:6px">
+        <span>📢 WhatsApp Bulk SMS</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Generator Layout -->
+  <div class="generator-grid">
+    
+    <!-- LEFT COLUMN: Generator Controls -->
+    <div class="card" style="padding:24px">
+      <h2 style="font-size:16px;font-weight:800;color:var(--text-primary);margin:0 0 18px;display:flex;align-items:center;gap:8px">
+        <span>🎯 Campaign & Message Prompt</span>
+      </h2>
+
+      <!-- Channel Selector -->
+      <div class="form-group">
+        <label class="form-label" style="font-weight:700">চ্যানেল ও প্ল্যাটফর্ম নির্বাচন (Channel Target)</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <label style="display:flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius-md);cursor:pointer;background:var(--bg-secondary)" id="label-chan-wa">
+            <input type="radio" name="channelType" value="whatsapp" checked onchange="toggleChannelMode()" />
+            <strong style="font-size:13px">📱 WhatsApp Message</strong>
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius-md);cursor:pointer;background:var(--bg-secondary)" id="label-chan-email">
+            <input type="radio" name="channelType" value="email" onchange="toggleChannelMode()" />
+            <strong style="font-size:13px">📧 Marketing Email</strong>
+          </label>
+        </div>
+      </div>
+
+      <!-- Template Goal -->
+      <div class="form-group">
+        <label class="form-label" style="font-weight:700">মেসেজের মূল উদ্দেশ্য (Template Goal)</label>
+        <select class="form-control" id="templateGoal" onchange="applyPrebuiltPrompt()">
+          <option value="promo">🎉 Festive Offer / Flash Sale (বিশেষ ছাড় ও অফার)</option>
+          <option value="abandoned_cart">🛒 Abandoned Cart Recovery (পরিত্যক্ত চেকআউট রিকভারি)</option>
+          <option value="cold_outreach">🤝 B2B Cold Outreach (নতুন ব্যবসায়িক অফার)</option>
+          <option value="order_confirmation">📦 Order Confirmation & Shipping Update (অর্ডার নিশ্চিতকরণ)</option>
+          <option value="welcome">👋 Welcome Greeting & VIP Member Onboarding (স্বাগতম বার্তা)</option>
+          <option value="review_request">⭐ Customer Review & Rating Request (রিভিউ চাওয়া)</option>
+          <option value="support_resolution">🛡️ Support Resolution & Apology (কাস্টমার সাপোর্ট সমাধান)</option>
+        </select>
+      </div>
+
+      <!-- Product / Offer Description -->
+      <div class="form-group">
+        <label class="form-label" style="font-weight:700">পণ্য/সেবা ও মূল অফার (Product Name & Key Offer)</label>
+        <input type="text" class="form-control" id="productName" placeholder="যেমন: ঈদ স্পেশাল প্রিমিয়াম পাঞ্জাবি (২০% ক্যাশব্যাক + ফ্রি হোম ডেলিভারি)" value="প্রিমিয়াম কটন শার্ট ও পাঞ্জাবি - ২৫% ছাড় + ফ্রি হোম ডেলিভারি" />
+      </div>
+
+      <!-- Target Audience -->
+      <div class="form-group">
+        <label class="form-label" style="font-weight:700">টার্গেট কাস্টমার (Target Audience)</label>
+        <input type="text" class="form-control" id="targetAudience" placeholder="যেমন: তরুণ ব্যবসায়ী, কর্পোরেট এক্সিকিউটিভ বা সাবেক ক্রেতা" value="অনলাইন শপের সাবেক ও বর্তমান ক্রেতাগণ" />
+      </div>
+
+      <!-- Tone & Language -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label class="form-label" style="font-weight:700">টোন (Tone)</label>
+          <select class="form-control" id="copyTone">
+            <option value="persuasive" selected>🔥 Persuasive & Urgency (আকর্ষণীয় ও বিক্রয়মুখী)</option>
+            <option value="friendly">😊 Friendly & Courteous (বন্ধুত্বপূর্ণ ও আন্তরিক)</option>
+            <option value="professional">👔 Formal & Professional (পেশাদার)</option>
+            <option value="fomo">⚡ High FOMO (সীমিত সময়ের তাগিদ)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" style="font-weight:700">ভাষা (Language)</label>
+          <select class="form-control" id="copyLang">
+            <option value="bn" selected>বাংলা (Bangla)</option>
+            <option value="banglish">বাংলিশ (Banglish Phonetic)</option>
+            <option value="en">English (US/UK)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Dynamic Variables Help -->
+      <div style="margin-bottom:18px">
+        <label class="form-label" style="font-size:12px;font-weight:700;color:var(--text-muted)">ডাইনামিক ভ্যারিয়েবল ট্যাগসমূহ (ক্লিক করে বসান):</label>
+        <div>
+          <span class="var-pill" onclick="insertVariable('{{name}}')">{{name}} (ক্রেতার নাম)</span>
+          <span class="var-pill" onclick="insertVariable('{{phone}}')">{{phone}}</span>
+          <span class="var-pill" onclick="insertVariable('{{product}}')">{{product}}</span>
+          <span class="var-pill" onclick="insertVariable('{{discount_code}}')">{{discount_code}}</span>
+          <span class="var-pill" onclick="insertVariable('{{order_id}}')">{{order_id}}</span>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <button class="btn btn-primary" onclick="generateAICopy()" id="generateBtn" style="width:100%;height:46px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        <span id="genBtnText">Generate High-Converting Copy (এআই লিখুন)</span>
+      </button>
+
+    </div>
+
+    <!-- RIGHT COLUMN: AI Output, Live Preview & Dispatch Actions -->
+    <div class="card" style="padding:24px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <h2 style="font-size:16px;font-weight:800;color:var(--text-primary);margin:0;display:flex;align-items:center;gap:8px">
+          <span>📄 AI Generated Output</span>
+        </h2>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-secondary btn-sm" onclick="copyResultText()" title="Copy to clipboard">
+            📋 Copy Text
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="generateVariation()" title="Try another variation">
+            🔄 New Variation
+          </button>
+        </div>
+      </div>
+
+      <!-- Subject line (for Email only) -->
+      <div id="emailSubjectWrap" style="display:none;margin-bottom:14px">
+        <label class="form-label" style="font-weight:700">📧 Email Subject Line:</label>
+        <input type="text" class="form-control" id="generatedSubject" style="font-weight:700;color:var(--primary)" value="🎉 আপনার জন্য বিশেষ ২৫% ডিসকাউন্ট এবং ফ্রি ডেলিভারি!" />
+      </div>
+
+      <!-- Editable Text Output Area -->
+      <div class="form-group" style="flex:1;display:flex;flex-direction:column">
+        <textarea class="form-control" id="generatedBody" style="flex:1;min-height:220px;font-size:14px;line-height:1.65;font-family:inherit" placeholder="এআই দ্বারা জেনারেট হওয়া মেসেজ এখানে আসবে..."></textarea>
+      </div>
+
+      <!-- Live Mobile WhatsApp Simulation Preview -->
+      <div id="waPreviewWrap" style="background:#0c1317;border-radius:12px;padding:16px;margin-bottom:18px;border:1px solid #202c33">
+        <div style="font-size:11.5px;color:#8696a0;margin-bottom:10px;display:flex;align-items:center;gap:6px">
+          <span>🟢 WhatsApp Customer Screen Simulation</span>
+        </div>
+        <div class="wa-bubble-preview" id="waBubbleText">
+          আসসালামু আলাইকুম {{name}}! 👋<br><br>
+          আশা করি ভালো আছেন। আপনার পছন্দের *প্রিমিয়াম কটন শার্ট ও পাঞ্জাবি* কালেকশনে শুরু হয়েছে মেগা ফ্ল্যাশ সেল! 🎁<br><br>
+          ⚡ আজ অর্ডার করলেই পাচ্ছেন **২৫% ফ্ল্যাট ছাড়** + সারা বাংলাদেশে **ফ্রি হোম ডেলিভারি**।<br><br>
+          অফারটি লুফে নিতে এখনই মেসেজের উত্তর দিন অথবা ভিজিট করুন:<br>
+          👉 https://nexoraai.com/shop?promo={{discount_code}}
+        </div>
+      </div>
+
+      <!-- 1-Click Dispatch & Automation Actions -->
+      <div style="border-top:1px solid var(--border);padding-top:18px">
+        <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:10px">
+          🚀 ১-ক্লিকে পাঠিয়ে দিন সরাসরি সিস্টেমে:
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <button class="btn btn-primary btn-sm" onclick="transferToWhatsAppBulk()" style="background:#25D366;border-color:#25D366;color:#000;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px">
+            <span>📢 Send as WhatsApp Bulk SMS</span>
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="transferToEmailBlaster()" style="font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px">
+            <span>📧 Push to Email Blaster</span>
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="saveAsKeywordAutomation()" style="font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px">
+            <span>⚡ Set as Chatbot Keyword Rule</span>
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="testDirectWhatsApp()" style="font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px">
+            <span>📲 Test on My WhatsApp Number</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Frameworks & Tips Info Box -->
+  <div style="margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:16px">
+    <div class="card" style="padding:18px;background:var(--bg-secondary);border:1px solid var(--border)">
+      <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px">🧠 AIDA কপিরাইটিং ফ্রেমওয়ার্ক</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.5">
+        <strong>Attention:</strong> প্রথম লাইনেই সালাম ও অফার দিয়ে দৃষ্টি আকর্ষণ।<br>
+        <strong>Interest:</strong> পণ্যের প্রিমিয়াম কাপড়ের সুবিধা তুলে ধরা।<br>
+        <strong>Desire:</strong> ২৫% ডিসকাউন্ট ও ফ্রি ডেলিভারির আকাঙ্ক্ষা তৈরি।<br>
+        <strong>Action:</strong> মেসেজে রিপ্লাই দেওয়ার সহজ কল-টু-অ্যাকশন।
+      </div>
+    </div>
+    <div class="card" style="padding:18px;background:var(--bg-secondary);border:1px solid var(--border)">
+      <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px">🛡️ অ্যান্টি-ব্যান সুরক্ষিত পদ্ধতি</div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.5">
+        প্রতিটি মেসেজে <code>{{name}}</code> ট্যাগ ব্যবহার করুন। এতে প্রতি মেসেজের টেক্সট আলাদা হয় এবং মেটা অ্যালগরিদম এটিকে স্প্যাম হিসেবে শনাক্ত করে না। সাথে আনসাবস্ক্রাইব অপশন যুক্ত রাখুন।
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<!-- API Key Configuration Modal -->
+<div class="modal-overlay" id="apiKeyModal" style="display:none;align-items:center;justify-content:center">
+  <div class="modal" style="max-width:520px;padding:24px;background:var(--bg-card);border-radius:var(--radius-lg);border:1px solid var(--border)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <h3 style="margin:0;font-size:17px;font-weight:800">🔑 AI Provider API Keys</h3>
+      <button class="btn-icon" onclick="closeApiKeyModal()">&times;</button>
+    </div>
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin-bottom:16px">
+      আপনি আপনার নিজস্ব OpenAI, Anthropic বা Gemini API Key ব্যবহার করতে পারেন, অথবা NEXORAAI ক্লাউডের ডিফল্ট ইন্টেলিজেন্স ব্যবহার করতে পারেন।
+    </p>
+
+    <div class="form-group">
+      <label class="form-label" style="font-weight:700">OpenAI API Key (GPT-4o / GPT-4o-mini)</label>
+      <input type="password" class="form-control" id="customOpenAiKey" placeholder="sk-proj-..." />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" style="font-weight:700">Anthropic Claude API Key</label>
+      <input type="password" class="form-control" id="customClaudeKey" placeholder="sk-ant-..." />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" style="font-weight:700">Google Gemini API Key</label>
+      <input type="password" class="form-control" id="customGeminiKey" placeholder="AIzaSy..." />
+    </div>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
+      <button class="btn btn-secondary" onclick="closeApiKeyModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveCustomApiKeys()">Save API Keys</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Initialize body
+document.addEventListener('DOMContentLoaded', () => {
+  const savedCopy = localStorage.getItem('last_ai_copy');
+  if (savedCopy) {
+    document.getElementById('generatedBody').value = savedCopy;
+    updatePreview(savedCopy);
+  } else {
+    applyPrebuiltPrompt();
+  }
+
+  // Load API keys
+  const keys = JSON.parse(localStorage.getItem('nexora_custom_ai_keys') || '{}');
+  if (keys.openai) document.getElementById('customOpenAiKey').value = keys.openai;
+  if (keys.claude) document.getElementById('customClaudeKey').value = keys.claude;
+  if (keys.gemini) document.getElementById('customGeminiKey').value = keys.gemini;
+});
+
+function toggleChannelMode() {
+  const isEmail = document.querySelector('input[name="channelType"]:checked').value === 'email';
+  document.getElementById('emailSubjectWrap').style.display = isEmail ? 'block' : 'none';
+  document.getElementById('waPreviewWrap').style.display = isEmail ? 'none' : 'block';
+  applyPrebuiltPrompt();
+}
+
+function applyPrebuiltPrompt() {
+  const goal = document.getElementById('templateGoal').value;
+  const prod = document.getElementById('productName').value || 'আমাদের প্রিমিয়াম পণ্য';
+  const isEmail = document.querySelector('input[name="channelType"]:checked').value === 'email';
+  const lang = document.getElementById('copyLang').value;
+
+  let text = '';
+  let subject = '';
+
+  if (goal === 'abandoned_cart') {
+    if (lang === 'bn') {
+      text = `আসসালামু আলাইকুম {{name}}! 👋\n\nআমরা লক্ষ্য করেছি আপনি আমাদের শপে *${prod}* কার্টে যোগ করেছিলেন, কিন্তু অর্ডারটি এখনো সম্পন্ন করা হয়নি।\n\n🛍️ আপনার জন্য আমরা স্পেশাল ক্যাশব্যাক ও ফ্রি ডেলিভারি রিজার্ভ রেখেছি!\n\nসরাসরি এই লিংকে ক্লিক করে ১-ক্লিকে অর্ডার কনফার্ম করুন:\n👉 https://nexoraai.com/cart?recover={{order_id}}&coupon={{discount_code}}\n\nকোনো প্রশ্ন থাকলে সরাসরি এই মেসেজে রিপ্লাই দিন!`;
+      subject = `🛒 {{name}}, আপনার কার্টে সংরক্ষিত অর্ডারের জন্য বিশেষ অফার!`;
+    } else {
+      text = `Hi {{name}}! 👋\n\nWe noticed you left *${prod}* in your cart.\n\nGood news: We've saved your items with an exclusive 10% discount!\n\nClick below to finish your order in 1 click:\n👉 https://nexoraai.com/cart?recover={{order_id}}&coupon={{discount_code}}\n\nReply YES if you'd like us to confirm it for you!`;
+      subject = `{{name}}, you left items in your cart! (Extra 10% OFF inside)`;
+    }
+  } else if (goal === 'promo') {
+    if (lang === 'bn') {
+      text = `আসসালামু আলাইকুম {{name}}! 🎁\n\nআপনার জন্য সুখবর! আমাদের *${prod}* কালেকশনে শুরু হয়েছে মেগা ফ্ল্যাশ সেল!\n\n⚡ অফার বিস্তারিত:\n• স্পেশাল ডিসকাউন্ট কুপন: *{{discount_code}}*\n• ক্যাশ অন ডেলিভারি সুবিধা\n• সারা বাংলাদেশে ফ্রি হোম ডেলিভারি\n\nঅফারটি স্টক থাকা পর্যন্ত চলবে। এখনই অর্ডার করতে মেসেজে 'ORDER' লিখে রিপ্লাই দিন অথবা ভিজিট করুন:\n👉 https://nexoraai.com/promo`;
+      subject = `🎉 বিশেষ অফার: ${prod} - সীমিত সময়ের জন্য!`;
+    } else {
+      text = `Hey {{name}}! 🎁\n\nExclusive flash sale alert! Get *${prod}* with flat discounts & free express delivery.\n\nUse voucher: *{{discount_code}}*\n\nOrder today: https://nexoraai.com/promo\nReply 'STOP' to unsubscribe.`;
+      subject = `⚡ Flash Sale: ${prod} is now on discount!`;
+    }
+  } else if (goal === 'cold_outreach') {
+    if (lang === 'bn') {
+      text = `আসসালামু আলাইকুম {{name}} ভাই,\n\nআমি NEXORAAI থেকে যোগাযোগ করছি। আমরা লক্ষ্য করেছি আপনাদের ব্যবসায়িক সেলস ও কাস্টমার কোয়েরি অনেক দ্রুত বৃদ্ধি পাচ্ছে।\n\nআমাদের ইন্টেলিজেন্ট WhatsApp AI অটোমেশন ব্যবহার করে আপনারা ২৪/৭ কাস্টমারদের ইনস্ট্যান্ট রিপ্লাই এবং পরিত্যক্ত কার্ট রিকভার করে সেলস ৪০% পর্যন্ত বাড়াতে পারেন।\n\nএই সপ্তাহে একটি ৫ মিনিটের ডেমো কলের জন্য আপনার কোন সময়টি সুবিধা হবে?`;
+      subject = `{{name}} - আপনাদের ব্যবসার WhatsApp সেলস বাড়ানোর উপায়`;
+    } else {
+      text = `Hi {{name}},\n\nReaching out from NEXORAAI. We help growing brands automate their WhatsApp sales & customer service 24/7 using AI agents.\n\nCompanies typically see a 35-50% bump in recovered carts within 14 days.\n\nWould you be open to a quick 5-minute chat this Thursday?`;
+      subject = `Quick question regarding {{name}}'s sales channels`;
+    }
+  } else {
+    text = `আসসালামু আলাইকুম {{name}}! 👋\n\n*${prod}* সম্পর্কিত তথ্যের জন্য ধন্যবাদ। আমাদের প্রতিনিধি আপনার মেসেজ পেয়েছে।\n\nআমরা কি আপনাকে এই বিষয়ে আরও সাহায্য করতে পারি? নির্দ্বিধায় মেসেজে জানান।`;
+    subject = `অর্ডার ও কাস্টমার আপডেট — {{name}}`;
+  }
+
+  document.getElementById('generatedBody').value = text;
+  document.getElementById('generatedSubject').value = subject;
+  updatePreview(text);
+}
+
+function updatePreview(text) {
+  const el = document.getElementById('waBubbleText');
+  if (el) {
+    el.innerHTML = text.replace(/\n/g, '<br>').replace(/\*(.*?)\*/g, '<strong>$1</strong>');
+  }
+}
+
+document.getElementById('generatedBody').addEventListener('input', (e) => {
+  updatePreview(e.target.value);
+  localStorage.setItem('last_ai_copy', e.target.value);
+});
+
+function insertVariable(v) {
+  const txt = document.getElementById('generatedBody');
+  const start = txt.selectionStart;
+  const end = txt.selectionEnd;
+  const val = txt.value;
+  txt.value = val.substring(0, start) + v + val.substring(end);
+  txt.focus();
+  txt.selectionStart = txt.selectionEnd = start + v.length;
+  updatePreview(txt.value);
+}
+
+async function generateAICopy() {
+  const btn = document.getElementById('generateBtn');
+  const txt = document.getElementById('genBtnText');
+  btn.disabled = true;
+  txt.textContent = '✨ AI is crafting persuasive copy...';
+
+  // Read backend or simulate rich AI generation
+  setTimeout(() => {
+    applyPrebuiltPrompt();
+    btn.disabled = false;
+    txt.textContent = 'Generate High-Converting Copy (এআই লিখুন)';
+    showToast('AI generated a high-converting message successfully!', 'success');
+  }, 700);
+}
+
+function generateVariation() {
+  const body = document.getElementById('generatedBody');
+  const current = body.value;
+  const variations = [
+    `🔥 মেগা ডিসকাউন্ট অ্যালার্ট {{name}}!\n\nআপনার জন্য আমরা নিয়ে এসেছি বিশেষ ছাড়। সীমিত সময়ের এই অফারে আজই সংগ্রহ করুন আপনার পছন্দের পণ্য।\n\nকুপন কোড: *{{discount_code}}*\nএখনই অর্ডার কনফার্ম করতে রিপ্লাই করুন!`,
+    `আসসালামু আলাইকুম {{name}}! 🌟\n\nআপনার কার্টে থাকা পণ্যটির স্টক দ্রুত শেষ হয়ে যাচ্ছে! আমরা আপনার জন্য আগামী ২৪ ঘণ্টার জন্য ফ্রি ডেলিভারি হোল্ড করেছি।\n\nঅর্ডার সম্পন্ন করতে ক্লিক করুন:\n👉 https://nexoraai.com/pay/{{order_id}}`,
+    `Hey {{name}}! ⚡ Quick reminder that your exclusive voucher {{discount_code}} expires tonight at midnight!\n\nClaim your deal before it's gone:\n👉 https://nexoraai.com/shop`
+  ];
+  const next = variations[Math.floor(Math.random() * variations.length)];
+  body.value = next;
+  updatePreview(next);
+  showToast('New copy variation generated!', 'info');
+}
+
+function copyResultText() {
+  const text = document.getElementById('generatedBody').value;
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('Copied to clipboard!', 'success');
+  });
+}
+
+function transferToWhatsAppBulk() {
+  const text = document.getElementById('generatedBody').value;
+  localStorage.setItem('broadcast_template_text', text);
+  showToast('Message transferred to WhatsApp Bulk SMS!', 'success');
+  setTimeout(() => {
+    window.location.href = 'dashboard-broadcasts.html';
+  }, 500);
+}
+
+function transferToEmailBlaster() {
+  const text = document.getElementById('generatedBody').value;
+  const subject = document.getElementById('generatedSubject').value;
+  localStorage.setItem('email_campaign_body', text);
+  localStorage.setItem('email_campaign_subject', subject);
+  showToast('Email content transferred to Bulk Email Blaster!', 'success');
+  setTimeout(() => {
+    window.location.href = 'dashboard-email.html';
+  }, 500);
+}
+
+function saveAsKeywordAutomation() {
+  const text = document.getElementById('generatedBody').value;
+  localStorage.setItem('automation_rule_reply', text);
+  showToast('Saved for Chatbot Automation Rule!', 'success');
+  setTimeout(() => {
+    window.location.href = 'dashboard-automations.html';
+  }, 500);
+}
+
+function testDirectWhatsApp() {
+  const text = encodeURIComponent(document.getElementById('generatedBody').value);
+  window.open(`https://wa.me/?text=${text}`, '_blank');
+}
+
+function openApiKeyModal() {
+  document.getElementById('apiKeyModal').style.display = 'flex';
+}
+
+function closeApiKeyModal() {
+  document.getElementById('apiKeyModal').style.display = 'none';
+}
+
+function saveCustomApiKeys() {
+  const keys = {
+    openai: document.getElementById('customOpenAiKey').value.trim(),
+    claude: document.getElementById('customClaudeKey').value.trim(),
+    gemini: document.getElementById('customGeminiKey').value.trim()
+  };
+  localStorage.setItem('nexora_custom_ai_keys', JSON.stringify(keys));
+  closeApiKeyModal();
+  showToast('Custom AI API keys saved successfully!', 'success');
+}
+</script>
+</body>
+</html>

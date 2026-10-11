@@ -346,6 +346,38 @@ function startBroadcastProcess() {
 function viewBroadcastLogs() {
   showToast('Opening detailed WhatsApp Bulk SMS audit log...', 'info');
 }
+
+// Auto-import from AI Writer and Lead Hunt
+document.addEventListener('DOMContentLoaded', () => {
+  const incomingMsg = localStorage.getItem('broadcast_template_text');
+  if (incomingMsg) {
+    const el = document.getElementById('broadcastMsg');
+    if (el) {
+      el.value = incomingMsg;
+      updateLivePreview();
+      showToast('Loaded AI generated message copy into template!', 'success');
+      localStorage.removeItem('broadcast_template_text');
+    }
+  }
+
+  const incomingLeadsStr = localStorage.getItem('lead_hunt_selected_contacts');
+  if (incomingLeadsStr) {
+    try {
+      const incomingLeads = JSON.parse(incomingLeadsStr);
+      if (Array.isArray(incomingLeads) && incomingLeads.length > 0) {
+        switchRecipientMode('custom');
+        const phoneList = incomingLeads.map(l => l.phone).filter(Boolean);
+        const input = document.getElementById('customNumbersInput');
+        if (input) {
+          input.value = phoneList.join('\n');
+          countCustomNumbers();
+          showToast(`Imported ${phoneList.length} leads directly from Lead Hunt!`, 'success');
+        }
+        localStorage.removeItem('lead_hunt_selected_contacts');
+      }
+    } catch (e) {}
+  }
+});
 </script>
 </body>
 </html>
