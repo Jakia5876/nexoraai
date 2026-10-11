@@ -21,3 +21,5 @@ build/
 Thumbs.db
 desktop.ini
 *.log
+
+!robots.txt
