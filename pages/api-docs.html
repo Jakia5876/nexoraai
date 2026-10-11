@@ -6,14 +6,14 @@
   <title>API Reference & Developer Documentation — NEXORAAI</title>
   <meta name="description" content="Complete REST API documentation for NEXORAAI: WhatsApp messaging, sessions, media, contacts, webhooks, and campaign automation." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/css/design-system.css" />
   <style>
     body {
       background: #FFFFFF;
       color: #0F172A;
       margin: 0;
-      font-family: 'Inter', -apple-system, sans-serif;
+      font-family: 'Hind Siliguri', 'Inter', -apple-system, sans-serif;
       overflow-x: hidden;
     }
 
@@ -238,6 +238,9 @@
       .api-center { padding: 24px; }
     }
   </style>
+<link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png" />
 </head>
 <body>
 
@@ -245,20 +248,17 @@
   <header class="api-header">
     <div style="display:flex;align-items:center;gap:16px">
       <a href="../index.html" class="logo" style="display:flex;align-items:center;gap:10px;text-decoration:none">
-        <div class="logo-icon">
-          <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-            <rect width="32" height="32" rx="8" fill="#D9F000" fill-opacity="0.15"/>
-            <path d="M8 24L14 8H16L10 24H8Z" fill="#D9F000"/>
-            <path d="M16 8L22 24H20L14 8H16Z" fill="#D9F000" fill-opacity="0.6"/>
-            <circle cx="22" cy="10" r="3" fill="#9BE600"/>
-            <circle cx="22" cy="10" r="1.5" fill="#D9F000"/>
-          </svg>
-        </div>
+        <img src="../assets/images/logo.png" alt="NEXORAAI" class="brand-logo-img" style="height:32px;width:32px;object-fit:contain;border-radius:8px" />
         <span class="logo-text" style="font-size:18px;font-weight:900;color:#0F172A">NEXORA<span style="color:#15803D">AI</span></span>
       </a>
       <span style="font-size:12px;background:rgba(21,128,61,0.1);color:#15803D;padding:2px 8px;border-radius:4px;font-weight:700">REST API v1</span>
     </div>
     <div style="display:flex;align-items:center;gap:16px">
+      <!-- Language Switcher (EN / BN) -->
+      <div class="lang-toggle-wrap" id="langToggleWrap" role="group" aria-label="Language selection">
+        <button type="button" class="lang-pill-btn" id="langBtnEN" onclick="switchSiteLang('en')" title="Switch to English">EN</button>
+        <button type="button" class="lang-pill-btn active" id="langBtnBN" onclick="switchSiteLang('bn')" title="বাংলায় পরিবর্তন করুন">BN</button>
+      </div>
       <a href="documentation.html" style="font-size:13px;color:#475569;text-decoration:none">Guides & SDKs</a>
       <a href="dashboard-api.html" class="btn btn-secondary btn-sm" style="font-size:12px">Get API Key</a>
       <a href="login.html" class="btn btn-primary btn-sm" style="font-size:12px">Dashboard</a>
@@ -836,5 +836,6 @@ $res = file_get_contents('https://api.nexoraai.com/v1/email/campaigns', false, s
     // Initialize default code
     renderCode();
   </script>
+  <script src="../assets/js/app.js"></script>
 </body>
 </html>

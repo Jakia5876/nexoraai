@@ -58,6 +58,104 @@ const ThemeManager = (() => {
 })();
 
 // ============================================
+// LANGUAGE MANAGER (EN / BN)
+// ============================================
+const LanguageManager = (() => {
+  const STORAGE_KEY = 'nexora_lang';
+  const I18N_GLOBAL = {
+    bn: {
+      nav_home: "হোম",
+      nav_how: "যেভাবে কাজ করে",
+      nav_features: "ফিচারসমূহ",
+      nav_pricing: "প্রাইসিং",
+      nav_docs: "ডকুমেন্টেশন",
+      nav_help: "হেল্প সেন্টার",
+      nav_login: "লগইন",
+      nav_register: "শুরু করুন ফ্রি",
+      footer_desc: "হোয়াটসঅ্যাপ ক্লাউড API, অটোনোমাস AI এজেন্টস, ড্রপ-অফ অর্ডার রিকভারি এবং কমার্স অটোমেশনের সর্বাধুনিক প্ল্যাটফর্ম।",
+      footer_col_prod: "প্রোডাক্ট",
+      footer_col_res: "রিসোর্স",
+      footer_col_comp: "কোম্পানি ও পলিসি",
+      footer_copy: "© ২০২৬ NEXORAAI. সর্বস্বত্ব সংরক্ষিত।"
+    },
+    en: {
+      nav_home: "Home",
+      nav_how: "How It Works",
+      nav_features: "Features",
+      nav_pricing: "Pricing",
+      nav_docs: "Documentation",
+      nav_help: "Help Center",
+      nav_login: "Login",
+      nav_register: "Get Started Free",
+      footer_desc: "The all-in-one platform for WhatsApp Cloud API, AI agents, cart drop-off recovery, and sales automation.",
+      footer_col_prod: "Product",
+      footer_col_res: "Resources",
+      footer_col_comp: "Company & Legal",
+      footer_copy: "© 2026 NEXORAAI. All rights reserved."
+    }
+  };
+
+  let currentLang = localStorage.getItem(STORAGE_KEY) || 'bn';
+
+  function applyLang(lang) {
+    currentLang = lang === 'en' ? 'en' : 'bn';
+    try { localStorage.setItem(STORAGE_KEY, currentLang); } catch (e) {}
+
+    // Update active states on toggles
+    document.querySelectorAll('#langBtnBN, #langMobileBtnBN').forEach(btn => {
+      btn.classList.toggle('active', currentLang === 'bn');
+    });
+    document.querySelectorAll('#langBtnEN, #langMobileBtnEN').forEach(btn => {
+      btn.classList.toggle('active', currentLang === 'en');
+    });
+    document.querySelectorAll('[data-lang]').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
+    });
+
+    document.documentElement.lang = currentLang;
+
+    // Apply translations by merging global and page dictionaries
+    const pageDict = (window.I18N_DICT && window.I18N_DICT[currentLang]) ? window.I18N_DICT[currentLang] : {};
+    const dict = Object.assign({}, I18N_GLOBAL[currentLang] || {}, pageDict);
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key] !== undefined) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.placeholder = dict[key];
+        } else {
+          el.innerHTML = dict[key];
+        }
+      }
+    });
+  }
+
+  function setLanguage(lang) {
+    applyLang(lang);
+    const msg = currentLang === 'en' ? 'Switched to English' : 'বাংলা ভাষায় পরিবর্তিত হয়েছে';
+    if (window.Toast && typeof window.Toast.show === 'function') {
+      window.Toast.show(msg, 'info');
+    } else if (typeof showToast === 'function') {
+      showToast(msg, 'info');
+    }
+  }
+
+  function init() {
+    applyLang(currentLang);
+    window.switchSiteLang = setLanguage;
+
+    document.querySelectorAll('#langBtnBN, #langMobileBtnBN').forEach(btn => {
+      btn.addEventListener('click', (e) => { e.preventDefault(); setLanguage('bn'); });
+    });
+    document.querySelectorAll('#langBtnEN, #langMobileBtnEN').forEach(btn => {
+      btn.addEventListener('click', (e) => { e.preventDefault(); setLanguage('en'); });
+    });
+  }
+
+  return { init, setLanguage, applyLang, getLang: () => currentLang };
+})();
+
+// ============================================
 // MOBILE NAV
 // ============================================
 const MobileNav = (() => {
@@ -729,6 +827,7 @@ const DemoData = {
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
   ThemeManager.init();
+  LanguageManager.init();
   MobileNav.init();
   StickyHeader.init();
   Modal.init();

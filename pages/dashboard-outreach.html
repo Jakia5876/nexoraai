@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Outreach — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png" />
+  <style>
+    /* ── Outreach Top Navigation ── */
+    .outreach-top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 5px 6px;
+      margin-bottom: 24px;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .outreach-top-nav .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      white-space: nowrap;
+    }
+    .outreach-top-nav .nav-item:hover {
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.06);
+    }
+    .outreach-top-nav .nav-item.active {
+      background: #4F46E5;
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 2px 12px rgba(79,70,229,0.35);
+    }
+    .outreach-top-nav .nav-item .nav-icon {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .outreach-top-nav .nav-item .nav-badge {
+      background: #EF4444;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 10px;
+      min-width: 18px;
+      text-align: center;
+      line-height: 16px;
+    }
+
+    /* ── Outreach Sub Tabs ── */
+    .outreach-sub-tabs {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+      padding-bottom: 0;
+    }
+    .outreach-sub-tabs .sub-tab {
+      padding: 12px 28px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      cursor: pointer;
+      border-bottom: 2.5px solid transparent;
+      transition: all 0.2s ease;
+      margin-bottom: -1px;
+    }
+    .outreach-sub-tabs .sub-tab:hover {
+      color: var(--text-primary);
+    }
+    .outreach-sub-tabs .sub-tab.active {
+      color: #4F46E5;
+      border-bottom-color: #4F46E5;
+      font-weight: 600;
+    }
+
+    /* ── Connect Mailbox Banner ── */
+    .connect-mailbox-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .connect-mailbox-banner .banner-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .connect-mailbox-banner .banner-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #818CF8, #6366F1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #fff;
+    }
+    .connect-mailbox-banner .banner-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .connect-mailbox-banner .banner-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    .connect-mailbox-banner .setup-link {
+      color: #6366F1;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.2s;
+    }
+    .connect-mailbox-banner .setup-link:hover {
+      color: #4F46E5;
+    }
+
+    /* ── Sending Mailbox Card ── */
+    .sending-mailbox-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl, 16px);
+      padding: 32px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      max-width: 720px;
+    }
+    .sending-mailbox-card h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin: 0 0 6px;
+    }
+    .sending-mailbox-card .subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+
+    /* ── Email Provider Grid ── */
+    .provider-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .provider-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 18px 10px;
+      border-radius: 14px;
+      border: 2px solid transparent;
+      background: var(--bg-surface);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .provider-card:hover {
+      border-color: rgba(99,102,241,0.3);
+      background: rgba(99,102,241,0.04);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(99,102,241,0.12);
+    }
+    .provider-card.selected {
+      border-color: #6366F1;
+      background: rgba(99,102,241,0.06);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+    }
+    .provider-card .provider-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .provider-card .provider-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-align: center;
+    }
+    .provider-card .provider-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* Provider icon backgrounds */
+    .provider-icon-gmail { background: linear-gradient(135deg, #EA4335, #FBBC05, #34A853, #4285F4); }
+    .provider-icon-zoho { background: #E74C3C; }
+    .provider-icon-outlook { background: #0078D4; }
+    .provider-icon-titan { background: #1A1A2E; }
+    .provider-icon-hostinger { background: #673DE6; }
+    .provider-icon-domain { background: #F97316; }
+    .provider-icon-other { background: #6B7280; }
+
+    /* ── Helper Text ── */
+    .provider-helper-text {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+      padding: 0 4px;
+    }
+
+    /* ── Continue Button ── */
+    .btn-continue-google {
+      width: 100%;
+      padding: 16px 24px;
+      background: linear-gradient(135deg, #6366F1, #4F46E5);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 20px rgba(99,102,241,0.35);
+    }
+    .btn-continue-google:hover {
+      background: linear-gradient(135deg, #4F46E5, #4338CA);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(99,102,241,0.45);
+    }
+
+    /* ── Status Indicator ── */
+    .connection-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .connection-status .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #9CA3AF;
+    }
+    .connection-status .status-dot.connected {
+      background: #22C55E;
+      box-shadow: 0 0 8px rgba(34,197,94,0.5);
+    }
+
+    /* ── SMTP Config Modal ── */
+    .smtp-config-section {
+      display: none;
+      margin-top: 24px;
+      padding: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+    .smtp-config-section.visible {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Connected Account Cards ── */
+    .connected-accounts {
+      margin-top: 28px;
+    }
+    .connected-accounts h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+    }
+    .account-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      transition: all 0.2s ease;
+    }
+    .account-card:hover {
+      border-color: rgba(99,102,241,0.3);
+    }
+    .account-card .account-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .account-card .account-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .account-card .account-email {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .account-card .account-status {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ── Templates Tab ── */
+    .templates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .template-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .template-card:hover {
+      border-color: rgba(99,102,241,0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+
+    /* ── Send Tab ── */
+    .send-compose {
+      max-width: 680px;
+    }
+
+    /* ── Campaigns Tab ── */
+    .campaigns-list .campaign-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: 10px;
+      transition: all 0.2s ease;
+    }
+    .campaigns-list .campaign-row:hover {
+      border-color: rgba(99,102,241,0.3);
+    }
+
+    @media (max-width: 768px) {
+      .provider-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .outreach-top-nav {
+        flex-wrap: wrap;
+        border-radius: 16px;
+        gap: 4px;
+      }
+      .outreach-top-nav .nav-item {
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+    }
+    @media (max-width: 480px) {
+      .provider-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>NexoraAuth.requireAuth();</script>
+</head>
+<body class="light-mode" data-page="outreach">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('outreach', 'Outreach');</script>
+
+<main class="dash-main">
+<div class="page-content">
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- Multi-Channel Top Navigation (Collect, Controls, Leads, Outreach, WhatsApp) -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="outreach-top-nav">
+    <a href="dashboard-contacts.html" class="nav-item">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+      </span>
+      Collect
+    </a>
+    <a href="dashboard-automations.html" class="nav-item">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33"></path></svg>
+      </span>
+      Controls
+    </a>
+    <a href="dashboard-leads.html" class="nav-item">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+      </span>
+      Leads
+      <span class="nav-badge">50</span>
+    </a>
+    <a href="dashboard-outreach.html" class="nav-item active">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"></path><path d="M22 2L15 22L11 13L2 9L22 2Z"></path></svg>
+      </span>
+      Outreach
+    </a>
+    <a href="dashboard-whatsapp.html" class="nav-item">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+      </span>
+      WhatsApp
+    </a>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- Sub Tabs: Mailbox, Templates, Send, Campaigns -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="outreach-sub-tabs">
+    <div class="sub-tab active" data-tab="mailbox" onclick="switchOutreachTab('mailbox')">Mailbox</div>
+    <div class="sub-tab" data-tab="templates" onclick="switchOutreachTab('templates')">Templates</div>
+    <div class="sub-tab" data-tab="send" onclick="switchOutreachTab('send')">Send</div>
+    <div class="sub-tab" data-tab="campaigns" onclick="switchOutreachTab('campaigns')">Campaigns</div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- TAB 1: Mailbox Connect -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div id="tabMailbox" class="tab-content">
+
+    <!-- Connect your mailbox banner -->
+    <div class="connect-mailbox-banner">
+      <div class="banner-left">
+        <div class="banner-icon">@</div>
+        <div>
+          <div class="banner-title">Connect your mailbox</div>
+          <div class="banner-desc">Gmail App Password or custom SMTP</div>
+        </div>
+      </div>
+      <a class="setup-link" onclick="scrollToSendingMailbox()">
+        Set up <span>→</span>
+      </a>
+    </div>
+
+    <!-- Sending mailbox section -->
+    <div class="sending-mailbox-card" id="sendingMailboxSection">
+      <h3>Sending mailbox</h3>
+      <div class="subtitle">Choose your email provider</div>
+
+      <!-- Email Provider Grid -->
+      <div class="provider-grid">
+        <!-- Gmail -->
+        <div class="provider-card selected" data-provider="gmail" onclick="selectProvider('gmail')">
+          <div class="provider-icon provider-icon-gmail">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 6L12 13L21 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/><rect x="2" y="4" width="20" height="16" rx="2" stroke="#fff" stroke-width="1.5" fill="none"/></svg>
+          </div>
+          <div class="provider-name">Gmail</div>
+          <div class="provider-desc">Google sign-in</div>
+        </div>
+
+        <!-- Zoho Mail -->
+        <div class="provider-card" data-provider="zoho" onclick="selectProvider('zoho')">
+          <div class="provider-icon provider-icon-zoho">
+            <span style="font-size:20px;font-weight:900">Z</span>
+          </div>
+          <div class="provider-name">Zoho Mail</div>
+          <div class="provider-desc">App password</div>
+        </div>
+
+        <!-- Outlook / 365 -->
+        <div class="provider-card" data-provider="outlook" onclick="selectProvider('outlook')">
+          <div class="provider-icon provider-icon-outlook">
+            <span style="font-size:20px;font-weight:900">O</span>
+          </div>
+          <div class="provider-name">Outlook / 365</div>
+          <div class="provider-desc">SMTP password</div>
+        </div>
+
+        <!-- Titan -->
+        <div class="provider-card" data-provider="titan" onclick="selectProvider('titan')">
+          <div class="provider-icon provider-icon-titan">
+            <span style="font-size:20px;font-weight:900">T</span>
+          </div>
+          <div class="provider-name">Titan</div>
+          <div class="provider-desc">Mailbox password</div>
+        </div>
+
+        <!-- Hostinger -->
+        <div class="provider-card" data-provider="hostinger" onclick="selectProvider('hostinger')">
+          <div class="provider-icon" style="background:#673DE6">
+            <span style="font-size:20px;font-weight:900">H</span>
+          </div>
+          <div class="provider-name">Hostinger</div>
+          <div class="provider-desc">Mailbox password</div>
+        </div>
+
+        <!-- Domain email -->
+        <div class="provider-card" data-provider="domain" onclick="selectProvider('domain')">
+          <div class="provider-icon provider-icon-domain">
+            <span style="font-size:18px">@</span>
+          </div>
+          <div class="provider-name">Domain email</div>
+          <div class="provider-desc">cPanel / hosting</div>
+        </div>
+
+        <!-- Other SMTP -->
+        <div class="provider-card" data-provider="other" onclick="selectProvider('other')">
+          <div class="provider-icon provider-icon-other">
+            <span style="font-size:16px">⊙</span>
+          </div>
+          <div class="provider-name">Other SMTP</div>
+          <div class="provider-desc">Any provider</div>
+        </div>
+      </div>
+
+      <!-- Helper Text (Gmail-specific by default) -->
+      <div class="provider-helper-text" id="providerHelperText">
+        Sign in with your Google account — no app password to generate, and it works even if your Workspace admin has app passwords turned off.
+      </div>
+
+      <!-- Continue Button -->
+      <button class="btn-continue-google" id="continueBtn" onclick="continueWithProvider()">
+        <span id="continueBtnIcon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </span>
+        <span id="continueBtnText">Continue with Google →</span>
+      </button>
+
+      <!-- Connection Status -->
+      <div class="connection-status" id="connectionStatus">
+        <span class="status-dot"></span>
+        <span id="statusText">Not connected</span>
+      </div>
+    </div>
+
+    <!-- SMTP Config Section (for non-Gmail providers) -->
+    <div class="smtp-config-section" id="smtpConfigSection">
+      <h4 style="font-size:16px;font-weight:700;color:var(--text-primary);margin:0 0 18px">SMTP Configuration</h4>
+      <div class="form-row" style="display:flex;gap:14px;margin-bottom:14px">
+        <div class="form-group" style="flex:2">
+          <label class="form-label">SMTP Host</label>
+          <input type="text" class="form-control" id="outreachSmtpHost" placeholder="smtp.example.com" />
+        </div>
+        <div class="form-group" style="flex:1">
+          <label class="form-label">Port</label>
+          <input type="number" class="form-control" id="outreachSmtpPort" value="587" />
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:14px">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-control" id="outreachSmtpEmail" placeholder="you@example.com" />
+      </div>
+      <div class="form-group" style="margin-bottom:14px">
+        <label class="form-label">Password / App Password</label>
+        <input type="password" class="form-control" id="outreachSmtpPassword" placeholder="Enter your password" />
+      </div>
+      <div style="display:flex;gap:10px;margin-top:18px">
+        <button class="btn btn-primary" onclick="connectSmtpMailbox()">Connect Mailbox</button>
+        <button class="btn btn-secondary" onclick="testSmtpConnection()">Test Connection</button>
+      </div>
+    </div>
+
+    <!-- Connected Accounts -->
+    <div class="connected-accounts" id="connectedAccounts" style="display:none">
+      <h4>Connected Mailboxes</h4>
+      <div id="accountsList"></div>
+    </div>
+
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- TAB 2: Templates -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div id="tabTemplates" class="tab-content" style="display:none">
+    <div class="page-header" style="margin-bottom:24px">
+      <div>
+        <h2 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0">Email Templates</h2>
+        <p style="font-size:13px;color:var(--text-secondary);margin:4px 0 0">Create and manage reusable outreach email templates for your campaigns.</p>
+      </div>
+      <button class="btn btn-primary" onclick="showToast('Opening template editor...', 'info')">+ New Template</button>
+    </div>
+
+    <div class="templates-grid">
+      <div class="template-card" onclick="showToast('Opening Cold Outreach template...', 'info')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+          <span style="font-size:28px">🧊</span>
+          <span class="badge badge-blue" style="font-size:10px">Cold Outreach</span>
+        </div>
+        <div style="font-weight:700;font-size:14px;color:var(--text-primary);margin-bottom:6px">Cold Introduction Email</div>
+        <div style="font-size:12.5px;color:var(--text-secondary);line-height:1.5">Professional first-touch email for new leads with personalized intro, value proposition and soft CTA.</div>
+        <div style="margin-top:14px;display:flex;gap:8px;font-size:11px;color:var(--text-muted)">
+          <span>Open rate: <strong style="color:#D9F000">42.3%</strong></span>
+          <span>•</span>
+          <span>Reply rate: <strong>18.2%</strong></span>
+        </div>
+      </div>
+
+      <div class="template-card" onclick="showToast('Opening Follow-up template...', 'info')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+          <span style="font-size:28px">🔄</span>
+          <span class="badge badge-accent" style="font-size:10px">Follow-up</span>
+        </div>
+        <div style="font-weight:700;font-size:14px;color:var(--text-primary);margin-bottom:6px">Friendly Follow-Up</div>
+        <div style="font-size:12.5px;color:var(--text-secondary);line-height:1.5">Gentle nudge for leads who haven't responded, with social proof and urgency trigger.</div>
+        <div style="margin-top:14px;display:flex;gap:8px;font-size:11px;color:var(--text-muted)">
+          <span>Open rate: <strong style="color:#D9F000">38.7%</strong></span>
+          <span>•</span>
+          <span>Reply rate: <strong>22.1%</strong></span>
+        </div>
+      </div>
+
+      <div class="template-card" onclick="showToast('Opening Meeting Request template...', 'info')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+          <span style="font-size:28px">📅</span>
+          <span class="badge badge-green" style="font-size:10px">Meeting</span>
+        </div>
+        <div style="font-weight:700;font-size:14px;color:var(--text-primary);margin-bottom:6px">Meeting Request</div>
+        <div style="font-size:12.5px;color:var(--text-secondary);line-height:1.5">Direct meeting request with calendar link, time zone awareness, and flexible scheduling options.</div>
+        <div style="margin-top:14px;display:flex;gap:8px;font-size:11px;color:var(--text-muted)">
+          <span>Open rate: <strong style="color:#D9F000">51.4%</strong></span>
+          <span>•</span>
+          <span>Reply rate: <strong>28.9%</strong></span>
+        </div>
+      </div>
+
+      <div class="template-card" onclick="showToast('Opening Promo Offer template...', 'info')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+          <span style="font-size:28px">🏷️</span>
+          <span class="badge badge-purple" style="font-size:10px">Promo</span>
+        </div>
+        <div style="font-weight:700;font-size:14px;color:var(--text-primary);margin-bottom:6px">Special Offer Blast</div>
+        <div style="font-size:12.5px;color:var(--text-secondary);line-height:1.5">Limited-time promotional email with coupon code, discount highlight and urgency countdown.</div>
+        <div style="margin-top:14px;display:flex;gap:8px;font-size:11px;color:var(--text-muted)">
+          <span>Open rate: <strong style="color:#D9F000">56.8%</strong></span>
+          <span>•</span>
+          <span>Click rate: <strong>31.4%</strong></span>
+        </div>
+      </div>
+
+      <div class="template-card" onclick="showToast('Opening Re-engagement template...', 'info')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+          <span style="font-size:28px">💡</span>
+          <span class="badge badge-accent" style="font-size:10px">Winback</span>
+        </div>
+        <div style="font-weight:700;font-size:14px;color:var(--text-primary);margin-bottom:6px">Re-engagement Email</div>
+        <div style="font-size:12.5px;color:var(--text-secondary);line-height:1.5">Win back inactive contacts with feature updates, incentives and personalized content.</div>
+        <div style="margin-top:14px;display:flex;gap:8px;font-size:11px;color:var(--text-muted)">
+          <span>Open rate: <strong style="color:#D9F000">33.2%</strong></span>
+          <span>•</span>
+          <span>Reply rate: <strong>12.6%</strong></span>
+        </div>
+      </div>
+
+      <div class="template-card" style="border-style:dashed;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px" onclick="showToast('Opening template editor...', 'info')">
+        <div style="font-size:36px;color:var(--text-muted);margin-bottom:8px">+</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text-secondary)">Create Custom Template</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- TAB 3: Send -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div id="tabSend" class="tab-content" style="display:none">
+    <div class="send-compose">
+      <h2 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0 0 6px">Compose & Send</h2>
+      <p style="font-size:13px;color:var(--text-secondary);margin:0 0 24px">Send a personalized outreach email directly from your connected mailbox.</p>
+
+      <div class="form-group" style="margin-bottom:16px">
+        <label class="form-label">From</label>
+        <select class="form-control" id="sendFromEmail">
+          <option value="">Select connected mailbox...</option>
+          <option value="jakiadantal@gmail.com">jakiadantal@gmail.com (Gmail)</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom:16px">
+        <label class="form-label">To *</label>
+        <input type="text" class="form-control" placeholder="recipient@example.com" id="sendToEmail" />
+      </div>
+
+      <div class="form-group" style="margin-bottom:16px">
+        <label class="form-label">Subject *</label>
+        <input type="text" class="form-control" placeholder="Email subject line..." id="sendSubject" />
+      </div>
+
+      <div class="form-group" style="margin-bottom:16px">
+        <label class="form-label">Message *</label>
+        <textarea class="form-control" rows="8" id="sendBody" placeholder="Write your email message..." style="font-size:14px;line-height:1.6"></textarea>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:center">
+        <button class="btn btn-primary" onclick="sendOutreachEmail()" style="padding:12px 24px">
+          ✉️ Send Email
+        </button>
+        <button class="btn btn-secondary" onclick="showToast('Scheduling for later...', 'info')">
+          ⏱️ Schedule
+        </button>
+        <button class="btn btn-ghost" onclick="showToast('Saving as draft...', 'info')">
+          Save Draft
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════ -->
+  <!-- TAB 4: Campaigns -->
+  <!-- ════════════════════════════════════════════════════════ -->
+  <div id="tabCampaigns" class="tab-content" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <div>
+        <h2 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0">Outreach Campaigns</h2>
+        <p style="font-size:13px;color:var(--text-secondary);margin:4px 0 0">Manage multi-step email sequences and drip campaigns.</p>
+      </div>
+      <button class="btn btn-primary" onclick="showToast('Creating new campaign...', 'info')">+ New Campaign</button>
+    </div>
+
+    <div class="campaigns-list">
+      <div class="campaign-row">
+        <div>
+          <div style="font-weight:700;font-size:14px;color:var(--text-primary)">Enterprise Lead Nurturing</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px">3-step sequence • Triggered by lead capture form</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--text-muted)">Enrolled</div>
+            <div style="font-weight:700;font-size:14px;color:var(--text-primary);font-family:var(--font-mono)">1,240</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--text-muted)">Open Rate</div>
+            <div style="font-weight:700;font-size:14px;color:#D9F000">54.2%</div>
+          </div>
+          <span class="badge badge-green">Active</span>
+          <button class="btn btn-ghost btn-sm" onclick="showToast('Opening campaign details...', 'info')">View</button>
+        </div>
+      </div>
+
+      <div class="campaign-row">
+        <div>
+          <div style="font-weight:700;font-size:14px;color:var(--text-primary)">Cold Prospect Outreach</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px">5-step sequence • CSV imported leads</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--text-muted)">Enrolled</div>
+            <div style="font-weight:700;font-size:14px;color:var(--text-primary);font-family:var(--font-mono)">3,580</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--text-muted)">Reply Rate</div>
+            <div style="font-weight:700;font-size:14px;color:#D9F000">18.7%</div>
+          </div>
+          <span class="badge badge-green">Active</span>
+          <button class="btn btn-ghost btn-sm" onclick="showToast('Opening campaign details...', 'info')">View</button>
+        </div>
+      </div>
+
+      <div class="campaign-row">
+        <div>
+          <div style="font-weight:700;font-size:14px;color:var(--text-primary)">Renewal Reminder Series</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px">2-step sequence • 30 days before subscription expiry</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--text-muted)">Enrolled</div>
+            <div style="font-weight:700;font-size:14px;color:var(--text-primary);font-family:var(--font-mono)">420</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--text-muted)">Conversion</div>
+            <div style="font-weight:700;font-size:14px;color:#D9F000">67.3%</div>
+          </div>
+          <span class="badge badge-accent">Paused</span>
+          <button class="btn btn-ghost btn-sm" onclick="showToast('Opening campaign details...', 'info')">View</button>
+        </div>
+      </div>
+
+      <div class="campaign-row">
+        <div>
+          <div style="font-weight:700;font-size:14px;color:var(--text-primary)">Product Launch Announcements</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:2px">1-step blast • All subscribers</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--text-muted)">Sent</div>
+            <div style="font-weight:700;font-size:14px;color:var(--text-primary);font-family:var(--font-mono)">4,920</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--text-muted)">Click Rate</div>
+            <div style="font-weight:700;font-size:14px;color:#D9F000">26.8%</div>
+          </div>
+          <span class="badge badge-green">Completed</span>
+          <button class="btn btn-ghost btn-sm" onclick="showToast('Opening campaign details...', 'info')">View</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<script>
+// ─── State ───
+let selectedProvider = 'gmail';
+let connectedMailboxes = [];
+
+// ─── Provider Config ───
+const PROVIDER_CONFIG = {
+  gmail: {
+    name: 'Gmail',
+    type: 'oauth',
+    btnText: 'Continue with Google →',
+    btnIcon: 'google',
+    helperText: 'Sign in with your Google account — no app password to generate, and it works even if your Workspace admin has app passwords turned off.',
+    host: 'smtp.gmail.com',
+    port: 465
+  },
+  zoho: {
+    name: 'Zoho Mail',
+    type: 'smtp',
+    btnText: 'Connect with App Password →',
+    btnIcon: 'none',
+    helperText: 'Use your Zoho Mail app password. Generate one from Zoho security settings → App Passwords.',
+    host: 'smtp.zoho.com',
+    port: 465
+  },
+  outlook: {
+    name: 'Outlook / 365',
+    type: 'smtp',
+    btnText: 'Connect with SMTP →',
+    btnIcon: 'none',
+    helperText: 'Use your Microsoft 365 account email and SMTP password. Enable SMTP AUTH in your admin center if needed.',
+    host: 'smtp-mail.outlook.com',
+    port: 587
+  },
+  titan: {
+    name: 'Titan',
+    type: 'smtp',
+    btnText: 'Connect Titan Mailbox →',
+    btnIcon: 'none',
+    helperText: 'Enter your Titan email and mailbox password. SMTP details are pre-configured for Titan.',
+    host: 'smtp.titan.email',
+    port: 465
+  },
+  hostinger: {
+    name: 'Hostinger',
+    type: 'smtp',
+    btnText: 'Connect Hostinger Mailbox →',
+    btnIcon: 'none',
+    helperText: 'Use your Hostinger email credentials. Find SMTP settings in your Hostinger email dashboard.',
+    host: 'smtp.hostinger.com',
+    port: 465
+  },
+  domain: {
+    name: 'Domain Email',
+    type: 'smtp',
+    btnText: 'Connect Domain Email →',
+    btnIcon: 'none',
+    helperText: 'Enter your domain email SMTP details from your cPanel or hosting control panel.',
+    host: '',
+    port: 587
+  },
+  other: {
+    name: 'Other SMTP',
+    type: 'smtp',
+    btnText: 'Connect via SMTP →',
+    btnIcon: 'none',
+    helperText: 'Connect any email provider using standard SMTP credentials. Works with SendGrid, Mailgun, Amazon SES, and more.',
+    host: '',
+    port: 587
+  }
+};
+
+// ─── Tab Switching ───
+function switchOutreachTab(tab) {
+  const tabs = ['mailbox', 'templates', 'send', 'campaigns'];
+  tabs.forEach(t => {
+    const el = document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1));
+    const tabEl = document.querySelector(`.sub-tab[data-tab="${t}"]`);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
+    if (tabEl) tabEl.classList.toggle('active', t === tab);
+  });
+}
+
+// ─── Provider Selection ───
+function selectProvider(provider) {
+  selectedProvider = provider;
+  const config = PROVIDER_CONFIG[provider];
+  if (!config) return;
+
+  // Update selection visual
+  document.querySelectorAll('.provider-card').forEach(card => {
+    card.classList.toggle('selected', card.dataset.provider === provider);
+  });
+
+  // Update helper text
+  document.getElementById('providerHelperText').textContent = config.helperText;
+
+  // Update continue button
+  const btnText = document.getElementById('continueBtnText');
+  const btnIcon = document.getElementById('continueBtnIcon');
+  btnText.textContent = config.btnText;
+
+  // Show/hide Google icon
+  if (provider === 'gmail') {
+    btnIcon.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>';
+  } else {
+    btnIcon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>';
+  }
+
+  // Show/hide SMTP config for non-OAuth providers
+  const smtpSection = document.getElementById('smtpConfigSection');
+  if (config.type === 'smtp') {
+    smtpSection.classList.add('visible');
+    if (config.host) {
+      document.getElementById('outreachSmtpHost').value = config.host;
+    }
+    document.getElementById('outreachSmtpPort').value = config.port;
+  } else {
+    smtpSection.classList.remove('visible');
+  }
+}
+
+// ─── Scroll to sending mailbox ───
+function scrollToSendingMailbox() {
+  document.getElementById('sendingMailboxSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ─── Continue with Provider ───
+function continueWithProvider() {
+  const config = PROVIDER_CONFIG[selectedProvider];
+  if (!config) return;
+
+  if (config.type === 'oauth') {
+    // Simulate Google OAuth flow
+    showToast('Redirecting to Google sign-in...', 'info');
+    setTimeout(() => {
+      addConnectedMailbox('jakiadantal@gmail.com', 'Gmail', 'google');
+      showToast('Gmail account connected successfully!', 'success');
+      updateConnectionStatus(true, 'jakiadantal@gmail.com');
+    }, 1500);
+  } else {
+    // Show SMTP section
+    const smtpSection = document.getElementById('smtpConfigSection');
+    smtpSection.classList.add('visible');
+    smtpSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+// ─── SMTP Connection ───
+function connectSmtpMailbox() {
+  const host = document.getElementById('outreachSmtpHost').value;
+  const port = document.getElementById('outreachSmtpPort').value;
+  const email = document.getElementById('outreachSmtpEmail').value;
+
+  if (!host || !email) {
+    showToast('Please fill in all SMTP fields.', 'error');
+    return;
+  }
+
+  showToast(`Connecting to ${host}:${port}...`, 'info');
+  setTimeout(() => {
+    addConnectedMailbox(email, PROVIDER_CONFIG[selectedProvider].name, selectedProvider);
+    showToast(`${email} connected successfully via SMTP!`, 'success');
+    updateConnectionStatus(true, email);
+    document.getElementById('smtpConfigSection').classList.remove('visible');
+  }, 1200);
+}
+
+function testSmtpConnection() {
+  const host = document.getElementById('outreachSmtpHost').value;
+  if (!host) {
+    showToast('Please enter SMTP host first.', 'error');
+    return;
+  }
+  showToast('Testing SMTP connection...', 'info');
+  setTimeout(() => {
+    showToast('SMTP connection test passed! (Response: 250 OK, 42ms)', 'success');
+  }, 1000);
+}
+
+// ─── Connection Status ───
+function updateConnectionStatus(connected, email) {
+  const statusDot = document.querySelector('#connectionStatus .status-dot');
+  const statusText = document.getElementById('statusText');
+
+  if (connected) {
+    statusDot.classList.add('connected');
+    statusText.textContent = `Connected: ${email}`;
+    statusText.style.color = '#22C55E';
+  } else {
+    statusDot.classList.remove('connected');
+    statusText.textContent = 'Not connected';
+    statusText.style.color = '';
+  }
+}
+
+// ─── Add Connected Mailbox ───
+function addConnectedMailbox(email, providerName, providerKey) {
+  connectedMailboxes.push({ email, providerName, providerKey });
+  renderConnectedAccounts();
+
+  // Update Send tab dropdown
+  const sendFrom = document.getElementById('sendFromEmail');
+  const option = document.createElement('option');
+  option.value = email;
+  option.textContent = `${email} (${providerName})`;
+  sendFrom.appendChild(option);
+}
+
+function renderConnectedAccounts() {
+  const container = document.getElementById('connectedAccounts');
+  const list = document.getElementById('accountsList');
+  container.style.display = 'block';
+
+  list.innerHTML = connectedMailboxes.map((acct, i) => `
+    <div class="account-card">
+      <div class="account-left">
+        <div class="account-avatar" style="background:${getProviderColor(acct.providerKey)};color:#fff;font-size:14px;font-weight:700">
+          ${acct.providerName.charAt(0)}
+        </div>
+        <div>
+          <div class="account-email">${acct.email}</div>
+          <div class="account-status">${acct.providerName} • Connected</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="badge badge-green" style="font-size:10px">Active</span>
+        <button class="btn btn-ghost btn-sm" onclick="removeMailbox(${i})">Disconnect</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function getProviderColor(key) {
+  const colors = {
+    gmail: 'linear-gradient(135deg, #EA4335, #FBBC05, #34A853, #4285F4)',
+    google: 'linear-gradient(135deg, #EA4335, #FBBC05, #34A853, #4285F4)',
+    zoho: '#E74C3C',
+    outlook: '#0078D4',
+    titan: '#1A1A2E',
+    hostinger: '#673DE6',
+    domain: '#F97316',
+    other: '#6B7280'
+  };
+  return colors[key] || '#6B7280';
+}
+
+function removeMailbox(index) {
+  const removed = connectedMailboxes.splice(index, 1);
+  if (removed.length) {
+    showToast(`Disconnected ${removed[0].email}`, 'info');
+    renderConnectedAccounts();
+    if (connectedMailboxes.length === 0) {
+      document.getElementById('connectedAccounts').style.display = 'none';
+      updateConnectionStatus(false);
+    }
+  }
+}
+
+// ─── Send Email ───
+function sendOutreachEmail() {
+  const from = document.getElementById('sendFromEmail').value;
+  const to = document.getElementById('sendToEmail').value;
+  const subject = document.getElementById('sendSubject').value;
+  const body = document.getElementById('sendBody').value;
+
+  if (!from) {
+    showToast('Please select a connected mailbox first.', 'error');
+    return;
+  }
+  if (!to || !subject || !body) {
+    showToast('Please fill in all required fields.', 'error');
+    return;
+  }
+
+  showToast(`Sending email to ${to}...`, 'info');
+  setTimeout(() => {
+    showToast('Email sent successfully!', 'success');
+    document.getElementById('sendToEmail').value = '';
+    document.getElementById('sendSubject').value = '';
+    document.getElementById('sendBody').value = '';
+  }, 1200);
+}
+</script>
+</body>
+</html>

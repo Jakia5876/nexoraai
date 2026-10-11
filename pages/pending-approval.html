@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Pending Super Admin Approval — NEXORAAI</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+
+  <style>
+    .pending-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      background: radial-gradient(circle at 50% 10%, rgba(21,128,61,0.06) 0%, #FFFFFF 65%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pending-glow {
+      position: absolute;
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(217,240,0,0.12) 0%, transparent 70%);
+      top: -120px;
+      right: -100px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .pending-container {
+      width: 100%;
+      max-width: 640px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .pending-card {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border);
+      border-radius: 24px;
+      padding: 44px 40px;
+      box-shadow: 0 20px 45px -10px rgba(15,23,42,0.08);
+      position: relative;
+    }
+
+    .pulse-ring {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(217,119,6,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px auto;
+      position: relative;
+    }
+
+    .pulse-ring::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid rgba(217,119,6,0.4);
+      animation: pulseAnim 2s infinite ease-out;
+    }
+
+    @keyframes pulseAnim {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+
+    .step-track {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 28px 0;
+      position: relative;
+    }
+
+    .step-box {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 12px;
+      text-align: center;
+      transition: all 0.25s ease;
+    }
+
+    .step-box.done {
+      border-color: rgba(22,163,74,0.3);
+      background: rgba(22,163,74,0.05);
+    }
+
+    .step-box.current {
+      border-color: rgba(217,119,6,0.4);
+      background: rgba(217,119,6,0.08);
+      box-shadow: 0 4px 12px rgba(217,119,6,0.1);
+    }
+
+    .step-box.locked {
+      opacity: 0.6;
+    }
+
+    .info-summary-table {
+      width: 100%;
+      margin: 20px 0;
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      font-size: 13.5px;
+    }
+
+    .info-summary-table td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-summary-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .info-label {
+      color: var(--text-muted);
+      width: 38%;
+      background: var(--bg-secondary);
+      font-weight: 500;
+    }
+
+    .info-val {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .live-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .pill-pending {
+      background: rgba(217,119,6,0.12);
+      color: #D97706;
+      border: 1px solid rgba(217,119,6,0.25);
+    }
+
+    .pill-approved {
+      background: rgba(22,163,74,0.12);
+      color: #16A34A;
+      border: 1px solid rgba(22,163,74,0.25);
+    }
+
+    .pill-rejected {
+      background: rgba(220,38,38,0.12);
+      color: #DC2626;
+      border: 1px solid rgba(220,38,38,0.25);
+    }
+
+    .dot-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: dotPulseAnim 1.4s infinite ease-in-out;
+    }
+
+    @keyframes dotPulseAnim {
+      0%, 100% { opacity: 0.3; transform: scale(0.85); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    @media (max-width: 600px) {
+      .pending-card { padding: 32px 20px; }
+      .step-track { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="light-mode">
+
+  <div class="pending-glow"></div>
+
+  <div class="pending-page">
+    <div class="pending-container">
+      
+      <!-- Logo Header -->
+      <div style="text-align:center;margin-bottom:28px">
+        <a href="../index.html" class="logo" style="justify-content:center;display:flex;align-items:center;gap:10px;text-decoration:none">
+          <img src="../assets/images/logo.png" alt="NEXORAAI" class="brand-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" style="display:none;height:36px;width:auto;object-fit:contain" onload="this.style.display='block'; if(this.nextElementSibling) this.nextElementSibling.style.display='none';" />
+          <div class="logo-icon" style="display:flex">
+            <svg width="34" height="34" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="8" fill="#D9F000" fill-opacity="0.15"/>
+              <path d="M8 24L14 8H16L10 24H8Z" fill="#D9F000"/>
+              <path d="M16 8L22 24H20L14 8H16Z" fill="#D9F000" fill-opacity="0.6"/>
+              <circle cx="22" cy="10" r="3" fill="#9BE600"/>
+              <circle cx="22" cy="10" r="1.5" fill="#D9F000"/>
+            </svg>
+          </div>
+          <span class="logo-text" style="font-size:22px">NEXORA<span class="logo-accent">AI</span></span>
+        </a>
+      </div>
+
+      <!-- Main Status Card -->
+      <div class="pending-card" id="statusCard">
+        
+        <!-- Icon & Status Pill -->
+        <div class="pulse-ring" id="statusIconRing">
+          <svg id="statusIconSvg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+
+        <div style="text-align:center;margin-bottom:18px">
+          <div class="live-status-pill pill-pending" id="statusPill">
+            <span class="dot-pulse"></span>
+            <span id="statusPillText">Awaiting Super Admin Approval</span>
+          </div>
+        </div>
+
+        <h1 style="font-size:1.65rem;font-weight:800;letter-spacing:-0.02em;text-align:center;color:var(--text-primary);margin-bottom:8px" id="headlineText">
+          আপনার অ্যাকাউন্টটি অনুমোদনের অপেক্ষায় রয়েছে
+        </h1>
+        <p style="text-align:center;color:var(--text-secondary);font-size:14.5px;line-height:1.6;margin-bottom:20px" id="bodyText">
+          নিরাপত্তা এবং সিস্টেমের সর্বোচ্চ পারফরম্যান্স নিশ্চিত করতে প্রতিটি নতুন ব্যবহারকারীর অ্যাকাউন্ট <strong>সুপার অ্যাডমিন (Super Admin)</strong> দ্বারা যাচাই ও অনুমোদন করা বাধ্যতামূলক। অ্যাডমিন অনুমোদন সম্পন্ন করলেই আপনি সম্পূর্ণ ড্যাশবোর্ডে প্রবেশ করতে পারবেন।
+        </p>
+
+        <!-- Step Progression Track -->
+        <div class="step-track" id="stepTrack">
+          <div class="step-box done">
+            <div style="font-size:16px;margin-bottom:4px">✅</div>
+            <div style="font-size:12px;font-weight:700;color:var(--success)">১. রেজিস্ট্রেশন সম্পন্ন</div>
+            <div style="font-size:11px;color:var(--text-muted)">Completed</div>
+          </div>
+          <div class="step-box current" id="stepAdminBox">
+            <div style="font-size:16px;margin-bottom:4px">⏳</div>
+            <div style="font-size:12px;font-weight:700;color:var(--warning)" id="stepAdminTitle">২. সুপার অ্যাডমিন ভেরিফিকেশন</div>
+            <div style="font-size:11px;color:var(--text-muted)">In Review</div>
+          </div>
+          <div class="step-box locked" id="stepDashBox">
+            <div style="font-size:16px;margin-bottom:4px">🔒</div>
+            <div style="font-size:12px;font-weight:700;color:var(--text-muted)" id="stepDashTitle">৩. ড্যাশবোর্ড অ্যাক্সেস</div>
+            <div style="font-size:11px;color:var(--text-muted)">Pending Unlock</div>
+          </div>
+        </div>
+
+        <!-- Account Metadata Summary -->
+        <table class="info-summary-table">
+          <tr>
+            <td class="info-label">আবেদনকারীর নাম:</td>
+            <td class="info-val" id="dispName">Loading...</td>
+          </tr>
+          <tr>
+            <td class="info-label">রেজিস্টার্ড ইমেইল:</td>
+            <td class="info-val" id="dispEmail" style="font-family:var(--font-mono);font-size:13px">Loading...</td>
+          </tr>
+          <tr>
+            <td class="info-label">ব্যবসার নাম / প্রতিষ্ঠান:</td>
+            <td class="info-val" id="dispBusiness">Workspace</td>
+          </tr>
+          <tr>
+            <td class="info-label">আবেদনের সময়:</td>
+            <td class="info-val" id="dispTime">-</td>
+          </tr>
+          <tr>
+            <td class="info-label">বর্তমান অনুমতি:</td>
+            <td class="info-val">
+              <span class="badge badge-yellow" id="dispStatusBadge">অপেক্ষমাণ (Pending Review)</span>
+            </td>
+          </tr>
+        </table>
+
+        <!-- Live Auto-Refresh Notice -->
+        <div style="background:var(--bg-secondary);border:1px dashed var(--border);border-radius:12px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px;font-size:13px">
+          <div style="display:flex;align-items:center;gap:8px;color:var(--text-secondary)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin-icon" style="animation:spin 3s linear infinite"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+            <span>লাইভ স্ট্যাটাস চেক স্বয়ংক্রিয়ভাবে চলছে (<span id="countdownSec">6</span>s)</span>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="checkStatusNow(true)" id="refreshBtn" style="font-size:12px;padding:4px 10px">
+            Refresh Now
+          </button>
+        </div>
+
+        <style>
+          @keyframes spin { 100% { transform: rotate(360deg); } }
+        </style>
+
+        <!-- Actions -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <button type="button" class="btn btn-primary w-full" id="btnDashboardAction" style="padding:14px;font-size:15px;display:none" onclick="goToDashboard()">
+            🚀 ড্যাশবোর্ডে প্রবেশ করুন (Enter Dashboard)
+          </button>
+
+          <a href="mailto:jakiadantal@gmail.com?subject=Nexora%20AI%20Account%20Approval%20Request" class="btn btn-secondary w-full" style="justify-content:center;padding:12px;font-size:14px;text-decoration:none">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            সুপার অ্যাডমিনের সাথে যোগাযোগ করুন (Request Priority Review)
+          </a>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;font-size:13px">
+            <a href="login.html" style="color:var(--text-muted);text-decoration:none">← অন্য অ্যাকাউন্টে লগইন করুন</a>
+            <a href="javascript:void(0)" onclick="handleSignOut()" style="color:var(--danger);text-decoration:none;font-weight:600">লগআউট (Sign Out)</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Security Trust Footer -->
+      <div style="text-align:center;margin-top:24px;font-size:12.5px;color:var(--text-muted)">
+        🔒 Secured by NEXORAAI Enterprise Role-Based Access Control (RBAC) & PostgreSQL RLS
+      </div>
+
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="../assets/js/app.js"></script>
+  <script>
+    let pollInterval = null;
+    let countdown = 6;
+    let countdownTimer = null;
+
+    async function loadAccountData() {
+      // 1. Get current logged in or cached user
+      let user = NexoraAuth.getCachedUser();
+      const session = await NexoraAuth.getSession();
+      if (session && session.user) {
+        user = Object.assign({}, user || {}, session.user, session.user.user_metadata || {});
+      }
+
+      if (!user) {
+        // Fallback for direct preview
+        user = {
+          name: 'Registered Merchant',
+          email: 'user@business.com',
+          business_name: 'Nexora Partner Store',
+          created_at: new Date().toISOString(),
+          approval_status: 'pending'
+        };
+      }
+
+      document.getElementById('dispName').textContent = user.name || user.full_name || 'Merchant Partner';
+      document.getElementById('dispEmail').textContent = user.email || 'user@example.com';
+      document.getElementById('dispBusiness').textContent = user.business_name || (user.name + ' Workspace') || 'Workspace';
+      document.getElementById('dispTime').textContent = new Date(user.created_at || Date.now()).toLocaleString('en-US', {
+        dateStyle: 'medium', timeStyle: 'short'
+      });
+
+      // Check URL parameters for explicit status (e.g. ?status=suspended)
+      const urlStatus = new URLSearchParams(window.location.search).get('status');
+      if (urlStatus === 'suspended' || urlStatus === 'rejected') {
+        renderRejectedState(urlStatus);
+        return;
+      }
+
+      // Initial status check
+      checkStatusNow(false);
+      startLivePolling();
+    }
+
+    async function checkStatusNow(showUserToast) {
+      const btn = document.getElementById('refreshBtn');
+      if (btn) btn.classList.add('loading');
+
+      try {
+        let user = NexoraAuth.getCachedUser();
+        const session = await NexoraAuth.getSession();
+        if (session && session.user) {
+          user = Object.assign({}, user || {}, session.user);
+        }
+
+        const status = await NexoraAuth.getApprovalStatus(user);
+
+        if (status === 'approved') {
+          renderApprovedState();
+          if (showUserToast) {
+            Toast.success('অনুমোদিত হয়েছে! 🎉', 'Super Admin has approved your account! Opening dashboard...');
+          }
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1500);
+          return;
+        } else if (status === 'rejected' || status === 'suspended') {
+          renderRejectedState(status);
+          if (showUserToast) {
+            Toast.error('অনুরোধ প্রত্যাখ্যাত', 'Your account access was restricted by Super Admin.');
+          }
+        } else {
+          // Still pending
+          if (showUserToast) {
+            Toast.info('স্ট্যাটাস আপডেট', 'Your application is still in review with the Super Admin.');
+          }
+        }
+      } catch (e) {
+        console.warn('Status check warning:', e);
+      } finally {
+        if (btn) btn.classList.remove('loading');
+        countdown = 6;
+      }
+    }
+
+    function renderApprovedState() {
+      clearInterval(pollInterval);
+      clearInterval(countdownTimer);
+
+      const pill = document.getElementById('statusPill');
+      pill.className = 'live-status-pill pill-approved';
+      pill.innerHTML = '<span>✅</span> <span>Account Approved! Full Access Granted</span>';
+
+      document.getElementById('headlineText').textContent = 'অভিনন্দন! আপনার অ্যাকাউন্ট অনুমোদিত হয়েছে 🎉';
+      document.getElementById('bodyText').innerHTML = 'সুপার অ্যাডমিন আপনার অ্যাকাউন্টটি সফলভাবে অনুমোদন করেছেন। আপনি এখন WhatsApp অটোমেশন, ক্যাম্পেইন, ইনবক্স এবং এআই এজেন্ট সহ সমস্ত ফিচার ব্যবহার করতে প্রস্তুত।';
+
+      document.getElementById('statusIconRing').style.background = 'rgba(22,163,74,0.12)';
+      document.getElementById('statusIconSvg').setAttribute('stroke', '#16A34A');
+      document.getElementById('statusIconSvg').innerHTML = '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>';
+
+      // Update step tracker
+      const stepAdminBox = document.getElementById('stepAdminBox');
+      stepAdminBox.className = 'step-box done';
+      stepAdminBox.innerHTML = '<div style="font-size:16px;margin-bottom:4px">✅</div><div style="font-size:12px;font-weight:700;color:var(--success)">২. অ্যাডমিন অনুমোদন</div><div style="font-size:11px;color:var(--text-muted)">Approved</div>';
+
+      const stepDashBox = document.getElementById('stepDashBox');
+      stepDashBox.className = 'step-box current';
+      stepDashBox.style.background = 'rgba(22,163,74,0.08)';
+      stepDashBox.style.borderColor = 'rgba(22,163,74,0.3)';
+      stepDashBox.innerHTML = '<div style="font-size:16px;margin-bottom:4px">🚀</div><div style="font-size:12px;font-weight:700;color:var(--success)">৩. ড্যাশবোর্ড উন্মুক্ত</div><div style="font-size:11px;color:var(--text-muted)">Ready</div>';
+
+      document.getElementById('dispStatusBadge').className = 'badge badge-green';
+      document.getElementById('dispStatusBadge').textContent = 'সক্রিয় ও অনুমোদিত (Active & Approved)';
+
+      const dashBtn = document.getElementById('btnDashboardAction');
+      dashBtn.style.display = 'block';
+    }
+
+    function renderRejectedState(status) {
+      clearInterval(pollInterval);
+      clearInterval(countdownTimer);
+
+      const pill = document.getElementById('statusPill');
+      pill.className = 'live-status-pill pill-rejected';
+      pill.innerHTML = '<span>⚠️</span> <span>' + (status === 'suspended' ? 'Account Suspended' : 'Application Declined') + '</span>';
+
+      document.getElementById('headlineText').textContent = status === 'suspended' 
+        ? 'আপনার অ্যাকাউন্টটি স্থগিত করা হয়েছে' 
+        : 'অ্যাকাউন্ট অনুমোদন বাতিল করা হয়েছে';
+
+      document.getElementById('bodyText').textContent = 'সিস্টেম পলিসি বা তথ্যের অসঙ্গতির কারণে সুপার অ্যাডমিন অ্যাকাউন্টটি স্থগিত/প্রত্যাখ্যান করেছেন। বিস্তারিত জানতে অ্যাডমিনের সাথে সরাসরি যোগাযোগ করুন।';
+
+      document.getElementById('statusIconRing').style.background = 'rgba(220,38,38,0.12)';
+      document.getElementById('statusIconSvg').setAttribute('stroke', '#DC2626');
+      document.getElementById('statusIconSvg').innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>';
+
+      document.getElementById('dispStatusBadge').className = 'badge badge-red';
+      document.getElementById('dispStatusBadge').textContent = status === 'suspended' ? 'স্থগিত (Suspended)' : 'প্রত্যাখ্যাত (Declined)';
+    }
+
+    function startLivePolling() {
+      clearInterval(pollInterval);
+      clearInterval(countdownTimer);
+
+      countdown = 6;
+      countdownTimer = setInterval(() => {
+        countdown--;
+        if (countdown < 0) countdown = 6;
+        const el = document.getElementById('countdownSec');
+        if (el) el.textContent = countdown;
+      }, 1000);
+
+      pollInterval = setInterval(() => {
+        checkStatusNow(false);
+      }, 6000);
+    }
+
+    function goToDashboard() {
+      window.location.href = 'dashboard.html';
+    }
+
+    function handleSignOut() {
+      NexoraAuth.signOut();
+    }
+
+    document.addEventListener('DOMContentLoaded', loadAccountData);
+  </script>
+</body>
+</html>

@@ -41,6 +41,13 @@
       border-radius: 28px;
     }
   </style>
+<link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>NexoraAuth.requireAuth();</script>
 </head>
 <body class="light-mode" data-page="email">
 <div class="toast-container" id="toastContainer"></div>
@@ -53,6 +60,9 @@
 
   <!-- Multi-Channel Navigation Tabs -->
   <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:12px">
+    <a href="dashboard-outreach.html" class="btn btn-ghost btn-sm" style="gap:6px">
+      🚀 Outreach
+    </a>
     <a href="dashboard-broadcasts.html" class="btn btn-ghost btn-sm" style="gap:6px">
       <span>💬</span> WhatsApp Bulk SMS
     </a>
@@ -739,6 +749,7 @@ function startEmailBlastProcess() {
 function switchMainTab(tab) {
   document.getElementById('sectionCompose').style.display = tab === 'compose' ? 'block' : 'none';
   document.getElementById('sectionHistory').style.display = tab === 'history' ? 'block' : 'none';
+  document.getElementById('sectionDrips').style.display = tab === 'drips' ? 'block' : 'none';
 }
 
 function openSmtpSettings() {
