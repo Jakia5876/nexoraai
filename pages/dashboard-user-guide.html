@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Guide & Business Playbook — NEXORAAI</title>
+  <meta name="description" content="Complete step-by-step user manual and playbook for business owners using NEXORAAI WhatsApp AI, CRM, Automations, and E-commerce Cart Recovery." />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/design-system.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png" />
+  <style>
+    .userguide-hero {
+      background: linear-gradient(135deg, rgba(217,240,0,0.12) 0%, rgba(21,128,61,0.08) 100%);
+      border: 1px solid rgba(217,240,0,0.3);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 24px;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+    }
+    .userguide-search-wrap {
+      position: relative;
+      margin: 18px 0 0 0;
+    }
+    .userguide-search-input {
+      width: 100%;
+      padding: 13px 20px 13px 44px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      font-size: 14.5px;
+      color: var(--text-primary);
+      outline: none;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .userguide-search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(21,128,61,0.15);
+    }
+    .userguide-search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+    .ug-pills-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 6px 2px 16px 2px;
+      margin-bottom: 22px;
+      scrollbar-width: thin;
+    }
+    .ug-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ug-pill:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: rgba(21,128,61,0.05);
+    }
+    .ug-pill.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(21,128,61,0.25);
+    }
+    .ug-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 26px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+      border-left: 4px solid var(--primary);
+    }
+    .ug-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+    .ug-card.cat-start { border-left-color: #10B981; }
+    .ug-card.cat-wa { border-left-color: #25D366; }
+    .ug-card.cat-ai { border-left-color: #8B5CF6; }
+    .ug-card.cat-auto { border-left-color: #F59E0B; }
+    .ug-card.cat-marketing { border-left-color: #EC4899; }
+    .ug-card.cat-commerce { border-left-color: #EF4444; }
+    .ug-card.cat-crm { border-left-color: #3B82F6; }
+    .ug-card.cat-integ { border-left-color: #06B6D4; }
+
+    .ug-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .ug-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .ug-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .ug-step {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+    .ug-step:last-child {
+      margin-bottom: 0;
+    }
+    .ug-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    .ug-code {
+      background: #0B1117;
+      border: 1px solid #1F2937;
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: #86EFAC;
+      line-height: 1.6;
+      overflow-x: auto;
+      margin: 12px 0;
+      position: relative;
+    }
+    .ug-copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #E2E8F0;
+      font-size: 11px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .ug-copy-btn:hover {
+      background: var(--primary);
+      color: #fff;
+    }
+    .ug-callout {
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      margin: 14px 0;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+    .ug-callout.tip { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.3); color: #047857; }
+    .ug-callout.warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); color: #B45309; }
+    .ug-callout.info { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.3); color: #1D4ED8; }
+
+    .quick-start-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .qs-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .qs-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary);
+    }
+    .qs-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .qs-title {
+      font-weight: 700;
+      font-size: 14.5px;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+    .qs-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body class="light-mode" data-page="user-guide">
+<div class="toast-container" id="toastContainer"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+<script>createDashboardShell('user-guide', 'User Guide & Business Playbook');</script>
+
+<main class="dash-main">
+<div class="page-content">
+
+  <!-- Hero Header -->
+  <div class="userguide-hero">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span class="badge badge-green" style="font-weight:800;font-size:11px;letter-spacing:0.06em">CUSTOMER & BUSINESS USER GUIDE</span>
+          <span class="badge badge-accent" style="font-size:11px;font-weight:700">ব্যবহারকারী নির্দেশিকা v3.0</span>
+        </div>
+        <h1 style="font-size:26px;font-weight:900;color:var(--text-primary);margin:0 0 6px">
+          NEXORAAI User Guide & Playbook (ব্যবহারকারী গাইড)
+        </h1>
+        <p style="font-size:14px;color:var(--text-secondary);margin:0;max-width:760px;line-height:1.55">
+          আপনার ব্যবসার WhatsApp সেলস অটোমেশন, এআই কাস্টমার সাপোর্ট এজেন্ট, বাল্ক মার্কেটিং ক্যাম্পেইন, এবং ই-কমার্স পরিত্যক্ত কার্ট রিকভারির সম্পূর্ণ গাইড।
+        </p>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <a href="onboarding.html" class="btn btn-primary btn-sm" style="font-weight:700;display:flex;align-items:center;gap:6px">
+          <span>🚀 Interactive Setup Wizard</span>
+        </a>
+        <button class="btn btn-secondary btn-sm" onclick="window.print()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          Print Guide
+        </button>
+      </div>
+    </div>
+
+    <!-- Live Search -->
+    <div class="userguide-search-wrap">
+      <svg class="userguide-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" id="userGuideSearch" class="userguide-search-input" placeholder="Search user guide: WhatsApp QR connect, AI knowledge upload, automations, cart recovery, bulk sms..." onkeyup="searchUserGuide(this.value)" />
+    </div>
+  </div>
+
+  <!-- Quick Start Cards -->
+  <div class="quick-start-grid">
+    <div class="qs-card" onclick="filterUserGuide('start')">
+      <div class="qs-icon">🏁</div>
+      <div class="qs-title">১. দ্রুত শুরু (Quick Start)</div>
+      <div class="qs-desc">৫ মিনিটে আপনার অ্যাকাউন্ট কনফিগার করুন</div>
+    </div>
+    <div class="qs-card" onclick="filterUserGuide('wa')">
+      <div class="qs-icon">📱</div>
+      <div class="qs-title">২. WhatsApp কানেকশন</div>
+      <div class="qs-desc">QR Code বা Official Meta Cloud API সেটআপ</div>
+    </div>
+    <div class="qs-card" onclick="filterUserGuide('ai')">
+      <div class="qs-icon">🤖</div>
+      <div class="qs-title">৩. এআই এজেন্ট ও নলেজ বেস</div>
+      <div class="qs-desc">প্রোডাক্ট ক্যাটালগ ও FAQ ফাইল আপলোড</div>
+    </div>
+    <div class="qs-card" onclick="filterUserGuide('commerce')">
+      <div class="qs-icon">🛒</div>
+      <div class="qs-title">৪. কার্ট রিকভারি ও সেলস</div>
+      <div class="qs-desc">অর্ডার ট্র্যাকিং ও পরিত্যক্ত চেকআউট রিকভারি</div>
+    </div>
+    <div class="qs-card" onclick="filterUserGuide('marketing')">
+      <div class="qs-icon">📢</div>
+      <div class="qs-title">৫. বাল্ক এসএমএস ও ইমেইল</div>
+      <div class="qs-desc">স্মার্ট অ্যান্টি-ব্যান শিডিউল ক্যাম্পেইন</div>
+    </div>
+  </div>
+
+  <!-- Category Pills Filter -->
+  <div class="ug-pills-bar">
+    <button type="button" class="ug-pill active" onclick="filterUserGuide('all', this)" data-cat="all">
+      <span>📑 All Topics (সকল বিষয়)</span>
+    </button>
+    <button type="button" class="ug-pill" onclick="filterUserGuide('start', this)" data-cat="start">
+      <span>🏁 Quick Start</span>
+    </button>
+    <button type="button" class="ug-pill" onclick="filterUserGuide('wa', this)" data-cat="wa">
+      <span>📱 WhatsApp Connect</span>
+    </button>
+    <button type="button" class="ug-pill" onclick="filterUserGuide('ai', this)" data-cat="ai">
+      <span>🤖 AI & Knowledge Base</span>
+    </button>
+    <button type="button" class="ug-pill" onclick="filterUserGuide('auto', this)" data-cat="auto">
+      <span>⚡ Chatbots & Automations</span>
+    </button>
+    <button type="button" class="ug-pill" onclick="filterUserGuide('marketing', this)" data-cat="marketing">
+      <span>📢 Bulk WhatsApp & Email</span>
+    </button>
+    <button type="button" class="ug-pill" onclick="filterUserGuide('commerce', this)" data-cat="commerce">
+      <span>🛒 Orders & Cart Recovery</span>
+    </button>
+    <button type="button" class="ug-pill" onclick="filterUserGuide('crm', this)" data-cat="crm">
+      <span>👥 Contacts & Leads CRM</span>
+    </button>
+    <button type="button" class="ug-pill" onclick="filterUserGuide('integ', this)" data-cat="integ">
+      <span>🔌 WooCommerce & Integrations</span>
+    </button>
+  </div>
+
+  <!-- ==================== MODULE 1: QUICK START ==================== -->
+  <div class="ug-card cat-start" data-category="start">
+    <div class="ug-header">
+      <div class="ug-title-wrap">
+        <div class="ug-icon" style="background:rgba(16,185,129,0.12);color:#10B981">🏁</div>
+        <div>
+          <h2 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0 0 4px">
+            Module 1: Getting Started with NEXORAAI (দ্রুত শুরু ও অ্যাকাউন্ট সেটআপ)
+          </h2>
+          <p style="font-size:13px;color:var(--text-muted);margin:0">Basic workspace onboarding, business profile, and platform navigation</p>
+        </div>
+      </div>
+      <span class="badge badge-green">GETTING STARTED</span>
+    </div>
+
+    <p style="font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px">
+      NEXORAAI-তে আপনাকে স্বাগতম! আপনার ব্যবসা শুরু করতে নিচের ৪টি সহজ ধাপ সম্পন্ন করুন:
+    </p>
+
+    <div class="ug-step">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <span class="ug-num">1</span>
+        <strong style="color:var(--text-primary);font-size:14.5px">ব্যবসার প্রোফাইল কনফিগারেশন</strong>
+      </div>
+      <div style="font-size:13.5px;color:var(--text-secondary);line-height:1.6;padding-left:36px">
+        <a href="dashboard-settings.html" style="color:var(--primary);font-weight:700">Settings</a> পেজে গিয়ে আপনার শপ/ব্যবসার নাম, অফিশিয়াল ইমেইল, মুদ্রা (BDT / USD), এবং টাইমজোন (Asia/Dhaka) সিলেক্ট করুন।
+      </div>
+    </div>
+
+    <div class="ug-step">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <span class="ug-num">2</span>
+        <strong style="color:var(--text-primary);font-size:14.5px">হোয়াটসঅ্যাপ নম্বর যুক্ত করা</strong>
+      </div>
+      <div style="font-size:13.5px;color:var(--text-secondary);line-height:1.6;padding-left:36px">
+        <a href="dashboard-whatsapp.html" style="color:var(--primary);font-weight:700">WhatsApp Gateway</a> পেজে গিয়ে আপনার ফোন দিয়ে কিউআর কোড (QR Code) স্ক্যান করুন।
+      </div>
+    </div>
+
+    <div class="ug-step">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <span class="ug-num">3</span>
+        <strong style="color:var(--text-primary);font-size:14.5px">প্রোডাক্ট বা নলেজ বেস ডকুমেন্ট আপলোড</strong>
+      </div>
+      <div style="font-size:13.5px;color:var(--text-secondary);line-height:1.6;padding-left:36px">
+        <a href="dashboard-knowledge.html" style="color:var(--primary);font-weight:700">Knowledge Base</a> পেজে আপনার পণ্যের তালিকা, মূল্য এবং সাধারণ প্রশ্নোত্তর (FAQ) সমৃদ্ধ PDF বা টেক্সট ফাইল আপলোড করুন।
+      </div>
+    </div>
+
+    <div class="ug-callout tip">
+      <div style="font-size:18px">💡</div>
+      <div>
+        <strong>প্রো-টিপ:</strong> আপনি যদি সম্পূর্ণ সেটআপটি ধাপে ধাপে গাইড হিসেবে দেখতে চান, তবে আমাদের ইন্টারেক্টিভ <a href="onboarding.html" style="font-weight:700;text-decoration:underline">Setup Wizard</a> রান করতে পারেন।
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODULE 2: WHATSAPP CONNECT ==================== -->
+  <div class="ug-card cat-wa" data-category="wa">
+    <div class="ug-header">
+      <div class="ug-title-wrap">
+        <div class="ug-icon" style="background:rgba(37,211,102,0.12);color:#25D366">📱</div>
+        <div>
+          <h2 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0 0 4px">
+            Module 2: WhatsApp Setup & Connection (হোয়াটসঅ্যাপ সংযোগ পদ্ধতি)
+          </h2>
+          <p style="font-size:13px;color:var(--text-muted);margin:0">QR Code Web Gateway and Official Meta WhatsApp Cloud API connection methods</p>
+        </div>
+      </div>
+      <span class="badge badge-accent">WHATSAPP</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px;margin-bottom:18px">
+      <div class="ug-step" style="border-top:3px solid #25D366">
+        <div style="font-weight:800;color:var(--text-primary);margin-bottom:8px;font-size:15px">
+          পদ্ধতি ক: QR Code Gateway (সবচেয়ে সহজ)
+        </div>
+        <ol style="margin:0;padding-left:20px;font-size:13px;color:var(--text-secondary);line-height:1.6">
+          <li>আপনার মোবাইল থেকে WhatsApp ওপেন করুন।</li>
+          <li>উপরে ৩-ডটে ট্যাপ করে <strong>Linked Devices</strong> সিলেক্ট করুন।</li>
+          <li><strong>Link a device</strong> চাপুন এবং ড্যাশবোর্ডে প্রদর্শিত QR Code স্ক্যান করুন।</li>
+          <li>কানেক্ট হওয়ার সাথে সাথে আপনার স্ট্যাটাস <span class="badge badge-green">Connected</span> দেখাবে।</li>
+        </ol>
+      </div>
+
+      <div class="ug-step" style="border-top:3px solid #06B6D4">
+        <div style="font-weight:800;color:var(--text-primary);margin-bottom:8px;font-size:15px">
+          পদ্ধতি খ: Official Meta Cloud API
+        </div>
+        <ol style="margin:0;padding-left:20px;font-size:13px;color:var(--text-secondary);line-height:1.6">
+          <li>Meta for Developers একাউন্ট থেকে WhatsApp Business Cloud API চালু করুন।</li>
+          <li>আপনার <strong>Phone Number ID</strong> এবং <strong>Permanent Access Token</strong> কপি করুন।</li>
+          <li>ড্যাশবোর্ডের <a href="dashboard-whatsapp.html" style="font-weight:700">Meta API Setup</a> ফিল্ডে পেস্ট করে Save করুন।</li>
+          <li>অফিশিয়াল গ্রিন টিক ও আনলিমিটেড ভলিউম ক্যাম্পেইনের জন্য এটি আদর্শ।</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="ug-callout warn">
+      <div style="font-size:18px">⚠️</div>
+      <div>
+        <strong>অ্যান্টি-ব্যান নিয়ম (Anti-Ban Warming Policy):</strong> নতুন নম্বরে প্রথম দিনেই একসাথে হাজার হাজার অপরিচিত কাস্টমারকে মেসেজ পাঠাবেন না! দিনে ৩০-৫০ জন দিয়ে শুরু করুন এবং প্রতি মেসেজের মাঝে ২ থেকে ৪ সেকেন্ড বিরতি রাখুন।
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODULE 3: AI AGENTS & KNOWLEDGE BASE ==================== -->
+  <div class="ug-card cat-ai" data-category="ai">
+    <div class="ug-header">
+      <div class="ug-title-wrap">
+        <div class="ug-icon" style="background:rgba(139,92,246,0.12);color:#8B5CF6">🤖</div>
+        <div>
+          <h2 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0 0 4px">
+            Module 3: AI Agents & Knowledge Base (এআই সাপোর্ট এজেন্ট ও নলেজ বেস)
+          </h2>
+          <p style="font-size:13px;color:var(--text-muted);margin:0">Train GPT-4o, Claude & Gemini on your shop FAQ and product information</p>
+        </div>
+      </div>
+      <span class="badge badge-purple">AI AGENT</span>
+    </div>
+
+    <div class="ug-step">
+      <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px">১. প্রোডাক্ট তথ্য ও FAQ ফাইল আপলোড</div>
+      <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.55;margin:0">
+        <a href="dashboard-knowledge.html" style="font-weight:700;color:var(--primary)">Knowledge Base</a> পেজে যান। আপনার ডেলিভারি চার্জ (যেমন: ঢাকার ভেতর ৬০৳, বাইরে ১২০৳), রিটার্ন পলিসি, সাইজ চার্ট, এবং অফার সম্বলিত PDF, Word বা টেক্সট ফাইল ড্রপ করুন। আমাদের ব্যাকএন্ড স্বয়ংক্রিয়ভাবে এটি এআই ভেক্টর ডাটাবেজে যুক্ত করবে।
+      </p>
+    </div>
+
+    <div class="ug-step">
+      <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px">২. এআই এজেন্টের প্রম্পট ও কথা বলার ধরন নির্ধারণ</div>
+      <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.55;margin-bottom:8px">
+        <a href="dashboard-ai-agents.html" style="font-weight:700;color:var(--primary)">AI Agents</a> পেজে গিয়ে এজেন্টের ব্যক্তিত্ব সিলেক্ট করুন: <em>"Professional & Courteous (মার্জিত ও পেশাদার)"</em> অথবা <em>"Friendly Bengali Sales Representative"</em>।
+      </p>
+      <div class="ug-code">
+// এজেন্টের জন্য সেরা সিস্টেম প্রম্পট উদাহরণ:
+"আপনি একজন অভিজ্ঞ সেলস অ্যাসিস্ট্যান্ট। সর্বদা মার্জিত ভাষায় বাংলায় কাস্টমারকে সালাম জানিয়ে উত্তর দিবেন। 
+নলেজ বেসের বাইরে কোনো মনগড়া দাম বলবেন না। কোনো তথ্য না জানা থাকলে বলবেন: 
+'আমাদের প্রতিনিধি শীঘ্রই আপনার সাথে যোগাযোগ করবেন'।"
+      </div>
+    </div>
+
+    <div class="ug-step">
+      <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px">৩. হিউম্যান হ্যান্ডঅফ (Human Handoff)</div>
+      <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.55;margin:0">
+        কাস্টমার যদি জটিল কোনো সমস্যা নিয়ে কথা বলতে চায় বা "agent" / "কথা বলতে চাই" লিখে, তখন এআই স্বয়ংক্রিয়ভাবে কথোপকথন হোল্ড করে মানুষের কাছে নোটিফিকেশন পাঠিয়ে দেবে।
+      </p>
+    </div>
+  </div>
+
+  <!-- ==================== MODULE 4: AUTOMATIONS ==================== -->
+  <div class="ug-card cat-auto" data-category="auto">
+    <div class="ug-header">
+      <div class="ug-title-wrap">
+        <div class="ug-icon" style="background:rgba(245,158,11,0.12);color:#F59E0B">⚡</div>
+        <div>
+          <h2 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0 0 4px">
+            Module 4: Automations & Keyword Triggers (চ্যাটবট ও কিওয়ার্ড অটোমেশন)
+          </h2>
+          <p style="font-size:13px;color:var(--text-muted);margin:0">Instant greetings, off-hours replies, and keyword auto-responses</p>
+        </div>
+      </div>
+      <span class="badge badge-yellow">AUTOMATIONS</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:14px">
+      <div class="ug-step">
+        <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px">👋 Welcome Greeting</div>
+        <div style="font-size:13px;color:var(--text-secondary);line-height:1.5">
+          যেকোনো কাস্টমার প্রথমবার মেসেজ দিলে সাথে সাথে স্বাগতম বার্তা ও প্রধান মেনু অপশন পাঠাবে।
+        </div>
+      </div>
+      <div class="ug-step">
+        <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px">🌙 Out-of-Hours Auto Reply</div>
+        <div style="font-size:13px;color:var(--text-secondary);line-height:1.5">
+          রাত ১০টার পর মেসেজ আসলে জানিয়ে দেবে: "আমাদের অফিস সকাল ৯টায় খুলবে। আপনার মেসেজ পেয়েছি।"
+        </div>
+      </div>
+      <div class="ug-step">
+        <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px">🔑 Keyword Triggers</div>
+        <div style="font-size:13px;color:var(--text-secondary);line-height:1.5">
+          কাস্টমার 'দাম', 'price', 'order', 'address' ইত্যাদি লিখলে পূর্বনির্ধারিত উত্তর চলে যাবে।
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODULE 5: INCOMPLETE CART RECOVERY ==================== -->
+  <div class="ug-card cat-commerce" data-category="commerce">
+    <div class="ug-header">
+      <div class="ug-title-wrap">
+        <div class="ug-icon" style="background:rgba(239,68,68,0.12);color:#EF4444">🛒</div>
+        <div>
+          <h2 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0 0 4px">
+            Module 5: Incomplete Orders & Cart Recovery (পরিত্যক্ত চেকআউট রিকভারি)
+          </h2>
+          <p style="font-size:13px;color:var(--text-muted);margin:0">Recover dropped e-commerce orders on WhatsApp with 1-click checkout confirmation</p>
+        </div>
+      </div>
+      <span class="badge badge-red">CART RECOVERY</span>
+    </div>
+
+    <p style="font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px">
+      অনলাইন শপের প্রায় ৬০-৭০% ক্রেতা চেকআউট পেজে নাম ও নম্বর দেওয়ার পর পেমেন্ট না করে বা অর্ডার কনফার্ম না করে পেইজ বন্ধ করে দেয়। NEXORAAI এই ক্রেতাদের স্বয়ংক্রিয়ভাবে রিকভার করে:
+    </p>
+
+    <div class="ug-step">
+      <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px">১. WooCommerce বা কাস্টম ওয়েবসাইটে ট্র্যাকার প্লাগইন বসানো</div>
+      <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.55;margin-bottom:10px">
+        আপনার চেকআউট পেজের <code>&lt;/body&gt;</code> ট্যাগের ঠিক আগে নিচের স্ক্রিপ্টটি বসিয়ে দিন:
+      </p>
+      <div class="ug-code">
+&lt;script src="https://nexoraai.com/assets/js/iot-checkout.js" 
+  data-store="YOUR_STORE_NAME" 
+  data-webhook="https://nexoraai.com/api/webhooks/orders"&gt;&lt;/script&gt;
+      </div>
+    </div>
+
+    <div class="ug-step">
+      <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px">২. হোয়াটসঅ্যাপে ১-ক্লিকে রিকভারি পাঠানো</div>
+      <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.55;margin:0">
+        <a href="dashboard-incomplete-orders.html" style="font-weight:700;color:var(--primary)">Incomplete Orders</a> পেজে গিয়ে যেসকল ক্রেতা চেকআউটে আটকে রয়েছে তাদের নামের পাশে থাকা <strong>"Send WhatsApp Recovery"</strong> বাটনে ক্লিক করলেই প্রি-ফিল্ড অফার ও কনফার্মেশন লিংক সহ মেসেজ চলে যাবে।
+      </p>
+    </div>
+  </div>
+
+  <!-- ==================== MODULE 6: BULK MARKETING & EMAIL ==================== -->
+  <div class="ug-card cat-marketing" data-category="marketing">
+    <div class="ug-header">
+      <div class="ug-title-wrap">
+        <div class="ug-icon" style="background:rgba(236,72,153,0.12);color:#EC4899">📢</div>
+        <div>
+          <h2 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0 0 4px">
+            Module 6: WhatsApp Bulk SMS & Email Blaster (বাল্ক মেসেজিং ও মার্কেটিং)
+          </h2>
+          <p style="font-size:13px;color:var(--text-muted);margin:0">Send targeted promotional campaigns without getting banned</p>
+        </div>
+      </div>
+      <span class="badge badge-pink">MARKETING</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:16px">
+      <div class="ug-step">
+        <div style="font-weight:800;color:var(--text-primary);margin-bottom:6px">📱 WhatsApp Bulk SMS</div>
+        <p style="font-size:13px;color:var(--text-secondary);line-height:1.55;margin:0">
+          <a href="dashboard-broadcasts.html" style="font-weight:700">Broadcasts</a> পেজে কাস্টমারদের ফোন নম্বর CSV ফরম্যাটে আপলোড করুন। মেসেজে <code>{{name}}</code> ট্যাগ ব্যবহার করুন যাতে প্রতিটি ক্রেতা তার নাম দিয়ে মেসেজ পায়।
+        </p>
+      </div>
+      <div class="ug-step">
+        <div style="font-weight:800;color:var(--text-primary);margin-bottom:6px">📧 Bulk Email Blaster</div>
+        <p style="font-size:13px;color:var(--text-secondary);line-height:1.55;margin:0">
+          <a href="dashboard-email.html" style="font-weight:700">Email Blaster</a> পেজে আপনার জিমেইল/এসএমটিপি (SMTP) কানেক্ট করে আকর্ষণীয় নিউজলেটার ও অফার ইমেইল পাঠাতে পারবেন।
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODULE 7: CONTACTS & LEADS CRM ==================== -->
+  <div class="ug-card cat-crm" data-category="crm">
+    <div class="ug-header">
+      <div class="ug-title-wrap">
+        <div class="ug-icon" style="background:rgba(59,130,246,0.12);color:#3B82F6">👥</div>
+        <div>
+          <h2 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0 0 4px">
+            Module 7: Contacts & Sales Pipeline CRM (কন্টাক্টস ও সেলস পাইপলাইন)
+          </h2>
+          <p style="font-size:13px;color:var(--text-muted);margin:0">Manage customer tags, segment lists, and track sales deals</p>
+        </div>
+      </div>
+      <span class="badge badge-blue">CRM</span>
+    </div>
+
+    <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px">
+      আপনার সমস্ত কাস্টমার ডাটাবেজ এক ছাতার নিচে গুছিয়ে রাখুন:
+    </p>
+
+    <ul style="margin:0;padding-left:24px;font-size:13.5px;color:var(--text-secondary);line-height:1.7">
+      <li><strong>ট্যাগিং (Tags):</strong> কাস্টমারদের "VIP", "Wholesale", "New Lead", "Repeat Buyer" ইত্যাদি ট্যাগে সাজান।</li>
+      <li><strong>কানবান পাইপলাইন (Kanban Pipeline):</strong> <a href="dashboard-leads.html" style="font-weight:700">Leads</a> পেজে কাস্টমারকে এক স্টেজ থেকে অন্য স্টেজে (Lead &rarr; Contacted &rarr; Order Placed &rarr; Won) ড্র্যাগ-অ্যান্ড-ড্রপ করে ট্র্যাকিং করুন।</li>
+      <li><strong>অমনিচ্যানেল ইনবক্স:</strong> <a href="dashboard-inbox.html" style="font-weight:700">Inbox</a> পেজে একই উইন্ডোতে সব কাস্টমারের সাথে লাইভ চ্যাট করুন।</li>
+    </ul>
+  </div>
+
+  <!-- ==================== MODULE 8: INTEGRATIONS ==================== -->
+  <div class="ug-card cat-integ" data-category="integ">
+    <div class="ug-header">
+      <div class="ug-title-wrap">
+        <div class="ug-icon" style="background:rgba(6,182,212,0.12);color:#06B6D4">🔌</div>
+        <div>
+          <h2 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0 0 4px">
+            Module 8: Webhooks, E-Commerce & n8n Integration (ইন্টিগ্রেশন গাইড)
+          </h2>
+          <p style="font-size:13px;color:var(--text-muted);margin:0">Connect WooCommerce, Shopify, n8n workflows, Google Sheets, and custom API</p>
+        </div>
+      </div>
+      <span class="badge badge-accent">INTEGRATIONS</span>
+    </div>
+
+    <div class="ug-step">
+      <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px">১. এপিআই কি (API Key) সংগ্রহ</div>
+      <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.55;margin:0">
+        <a href="dashboard-api.html" style="font-weight:700;color:var(--primary)">API & Keys</a> পেজে গিয়ে <strong>Generate New API Key</strong> চাপুন এবং আপনার সুরক্ষিত কি সংরক্ষণ করুন।
+      </p>
+    </div>
+
+    <div class="ug-step">
+      <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px">২. আউটবাউন্ড ওয়েবহুক (Webhooks)</div>
+      <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.55;margin:0">
+        <a href="dashboard-webhooks.html" style="font-weight:700;color:var(--primary)">Webhooks</a> পেজে আপনার n8n বা Zapier এন্ডপয়েন্ট ইউআরএল দিন। মেসেজ আসলে বা নতুন লিড যুক্ত হলে সাথে সাথে সেখানে ডাটা পোস্ট হয়ে যাবে।
+      </p>
+    </div>
+  </div>
+
+  <!-- Need More Help Banner -->
+  <div class="card" style="padding:24px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-lg);text-align:center">
+    <div style="font-size:24px;margin-bottom:8px">💬 কোনো বিষয়ে সাহায্য প্রয়োজন?</div>
+    <p style="font-size:14px;color:var(--text-secondary);max-width:540px;margin:0 auto 16px;line-height:1.5">
+      আমাদের সাপোর্ট টিম সর্বদা আপনার পাশে রয়েছে। যেকোনো প্রশ্ন বা কারিগরি সমস্যায় টিকিট খুলুন অথবা লাইভ চ্যাট করুন।
+    </p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="dashboard-support.html" class="btn btn-primary btn-sm" style="font-weight:700">Open Support Ticket</a>
+      <a href="faq.html" class="btn btn-secondary btn-sm">Read FAQs</a>
+      <a href="documentation.html" class="btn btn-secondary btn-sm">Developer API Docs</a>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<script>
+function filterUserGuide(cat, btn) {
+  const pills = document.querySelectorAll('.ug-pill');
+  if (btn) {
+    pills.forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+  } else {
+    pills.forEach(p => {
+      if (p.getAttribute('data-cat') === cat) p.classList.add('active');
+      else p.classList.remove('active');
+    });
+  }
+
+  const cards = document.querySelectorAll('.ug-card');
+  cards.forEach(card => {
+    const cardCat = card.getAttribute('data-category');
+    if (cat === 'all' || cardCat === cat) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+function searchUserGuide(query) {
+  const q = (query || '').toLowerCase().trim();
+  const cards = document.querySelectorAll('.ug-card');
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    if (!q || text.includes(q)) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>

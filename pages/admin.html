@@ -300,12 +300,12 @@
       <a href="javascript:void(0)" onclick="setAdminTab('email')" class="sidebar-item" id="admTab-email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg><span class="sidebar-item-label">Email Monitor</span></a>
       <a href="javascript:void(0)" onclick="setAdminTab('audit')" class="sidebar-item" id="admTab-audit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg><span class="sidebar-item-label">Audit Logs</span></a>
     </div>
-    <span class="sidebar-group-label">Governance & Standards</span>
+    <span class="sidebar-group-label">Documentation & Operations</span>
     <div class="sidebar-group">
       <a href="javascript:void(0)" onclick="setAdminTab('guidelines')" class="sidebar-item" id="admTab-guidelines">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path><path d="M8 7h8"></path><path d="M8 11h6"></path></svg>
-        <span class="sidebar-item-label">Guidelines & SOP</span>
-        <span class="badge badge-green" style="font-size:10px;padding:2px 6px;margin-left:auto">Full Docs</span>
+        <span class="sidebar-item-label">Admin Guide & SOP</span>
+        <span class="badge badge-green" style="font-size:10px;padding:2px 6px;margin-left:auto">ADMIN</span>
       </a>
     </div>
     <span class="sidebar-group-label">Configuration</span>
@@ -1457,6 +1457,8 @@ add_action('wp_footer', function() {
       </button>
       <button type="button" class="guide-pill" onclick="filterGuidelines('billing', this)" data-cat="billing">
         <span>💳 Subscriptions & KYC</span>
+      <button type="button" class="guide-pill" onclick="filterGuidelines('approval', this)" data-cat="approval">
+        <span>🛡️ User Approval & Roles</span>
       </button>
       <button type="button" class="guide-pill" onclick="filterGuidelines('incident', this)" data-cat="incident">
         <span>🚨 Incident & Emergency</span>
@@ -1465,6 +1467,77 @@ add_action('wp_footer', function() {
 
     <div id="guideResultsCount" style="font-size:13px;color:var(--text-muted);margin-bottom:16px;display:none">
       Showing matching guidelines for query: "<strong id="searchQueryBadge"></strong>"
+    </div>
+
+    <!-- ==================== ARTICLE 0: USER APPROVAL WORKFLOW ==================== -->
+    <div class="guide-article cat-sec" data-category="approval">
+      <div class="guide-sec-header">
+        <div class="guide-sec-title-wrap">
+          <div class="guide-sec-icon" style="background:rgba(22,163,74,0.12);color:#16A34A">🛡️</div>
+          <div>
+            <h2 style="font-size:18px;font-weight:800;color:var(--text-primary);margin:0 0 4px">
+              0. Super Admin User Approval & Registration Management (ইউজার অনুমোদন ও একাউন্ট ম্যানেজমেন্ট গাইড)
+            </h2>
+            <p style="font-size:13px;color:var(--text-muted);margin:0">
+              Complete workflow for inspecting, approving, rejecting, and suspending tenant user accounts
+            </p>
+          </div>
+        </div>
+        <span class="badge badge-green">SUPER ADMIN ESSENTIAL</span>
+      </div>
+
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:16px">
+        NEXORAAI প্ল্যাটফর্মে প্রতিটি নতুন সাইন-আপ স্বয়ংক্রিয়ভাবে <code>pending</code> (অপেক্ষমাণ) অবস্থায় থাকে। কোনো সাধারণ ব্যবহারকারী সুপার এডমিনের অনুমোদন ছাড়া ড্যাশবোর্ড বা টেন্যান্ট ডাটা অ্যাক্সেস করতে পারবে না।
+      </p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;margin-bottom:16px">
+        <div class="guide-step-card">
+          <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px;display:flex;align-items:center;gap:6px">
+            <span class="guide-step-num">1</span>
+            <span>ইউজার ম্যানেজমেন্টে পেন্ডিং তালিকা দেখা</span>
+          </div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.5">
+            সাইডবার থেকে <strong>User Management</strong> ট্যাবে যান। উপরের ফিল্টার থেকে <strong>Pending Approval</strong> সিলেক্ট করলেই সকল অপেক্ষমাণ নতুন ব্যবহারকারীদের নাম, ইমেইল এবং রেজিস্ট্রেশন তারিখ প্রদর্শিত হবে।
+          </div>
+        </div>
+
+        <div class="guide-step-card">
+          <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px;display:flex;align-items:center;gap:6px">
+            <span class="guide-step-num">2</span>
+            <span>১-ক্লিকে অনুমোদন (Approve User)</span>
+          </div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.5">
+            ইউজারের পাশে থাকা সবুজ <strong>"Approve"</strong> বাটনে চাপ দিন। সাথে সাথে Supabase ডাটাবেসে <code>approve_user()</code> প্রসিডিউর কল হবে, প্রোফাইল <code>approved</code> হবে এবং ইউজারের ওয়ার্কস্পেস সম্পূর্ণ আনলক হবে।
+          </div>
+        </div>
+
+        <div class="guide-step-card">
+          <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px;display:flex;align-items:center;gap:6px">
+            <span class="guide-step-num">3</span>
+            <span>রিজেক্ট বা বাতিল (Reject with Reason)</span>
+          </div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.5">
+            সন্দেহজনক বা ফেক সাইন-আপ বাতিল করতে লাল <strong>"Reject"</strong> বাটন চাপুন। একটি কারণ (Rejection Reason) উল্লেখ করলে ইউজার তার স্ক্রিনে কারণ দেখতে পাবে এবং পুনরায় তথ্য আপডেট করতে পারবে।
+          </div>
+        </div>
+
+        <div class="guide-step-card">
+          <div style="font-weight:700;color:var(--text-primary);margin-bottom:6px;display:flex;align-items:center;gap:6px">
+            <span class="guide-step-num">4</span>
+            <span>রুট এডমিন প্রিভিলেজ (Permanent Root Access)</span>
+          </div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.5">
+            প্রধান সুপার এডমিন একাউন্ট (<code>jakiadantal@gmail.com</code>) স্থায়ীভাবে অটো-অনুমোদিত এবং আনলিমিটেড পারমিশন প্রাপ্ত। কোনো অবস্থাতেই রুট এডমিন লকআউট হবে না।
+          </div>
+        </div>
+      </div>
+
+      <div class="guide-callout success">
+        <div style="font-size:18px">🔒</div>
+        <div>
+          <strong>Row Level Security (RLS) গ্যারান্টি:</strong> পেন্ডিং থাকা অবস্থায় কোনো ইউজার ডিরেক্টলি এপিআই বা ডাটাবেজে হিট করলেও কোনো টেন্যান্ট ডেটা রিড/রাইট করতে পারবে না; শুধুমাত্র অনুমোদিত ইউজাররাই কন্টাক্ট, লিড ও অর্ডার দেখতে পারবে।
+        </div>
+      </div>
     </div>
 
     <!-- ==================== ARTICLE 1: ARCHITECTURE ==================== -->
