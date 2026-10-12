@@ -98,6 +98,10 @@ const LanguageManager = (() => {
   let currentLang = localStorage.getItem(STORAGE_KEY) || 'bn';
 
   function applyLang(lang) {
+    if (window.switchSiteLang && typeof window.switchSiteLang === 'function') {
+      window.switchSiteLang(lang, false);
+      return;
+    }
     currentLang = lang === 'en' ? 'en' : 'bn';
     try { localStorage.setItem(STORAGE_KEY, currentLang); } catch (e) {}
 
@@ -114,9 +118,10 @@ const LanguageManager = (() => {
 
     document.documentElement.lang = currentLang;
 
-    // Apply translations by merging global and page dictionaries
+    // Apply translations by merging global, master, and page dictionaries
+    const masterDict = (window.I18N_MASTER && window.I18N_MASTER[currentLang]) ? window.I18N_MASTER[currentLang] : {};
     const pageDict = (window.I18N_DICT && window.I18N_DICT[currentLang]) ? window.I18N_DICT[currentLang] : {};
-    const dict = Object.assign({}, I18N_GLOBAL[currentLang] || {}, pageDict);
+    const dict = Object.assign({}, I18N_GLOBAL[currentLang] || {}, masterDict, pageDict);
 
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
@@ -131,6 +136,10 @@ const LanguageManager = (() => {
   }
 
   function setLanguage(lang) {
+    if (window.switchSiteLang && typeof window.switchSiteLang === 'function') {
+      window.switchSiteLang(lang, true);
+      return;
+    }
     applyLang(lang);
     const msg = currentLang === 'en' ? 'Switched to English' : 'বাংলা ভাষায় পরিবর্তিত হয়েছে';
     if (window.Toast && typeof window.Toast.show === 'function') {
@@ -141,7 +150,11 @@ const LanguageManager = (() => {
   }
 
   function init() {
-    applyLang(currentLang);
+    if (window.switchSiteLang && typeof window.switchSiteLang === 'function') {
+      window.switchSiteLang(currentLang, false);
+    } else {
+      applyLang(currentLang);
+    }
     window.switchSiteLang = setLanguage;
 
     document.querySelectorAll('#langBtnBN, #langMobileBtnBN').forEach(btn => {

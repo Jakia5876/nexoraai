@@ -122,12 +122,12 @@
         </a>
         <nav class="site-nav">
           <ul>
-            <li><a href="../index.html" class="nav-link">Home</a></li>
-            <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
-            <li><a href="features.html" class="nav-link">Features</a></li>
-            <li><a href="pricing.html" class="nav-link active">Pricing</a></li>
-            <li><a href="documentation.html" class="nav-link">Docs</a></li>
-            <li><a href="help.html" class="nav-link">Help</a></li>
+            <li><a href="../index.html" class="nav-link" data-i18n="nav_home">Home</a></li>
+            <li><a href="how-it-works.html" class="nav-link" data-i18n="nav_how">How It Works</a></li>
+            <li><a href="features.html" class="nav-link" data-i18n="nav_features">Features</a></li>
+            <li><a href="pricing.html" class="nav-link active" data-i18n="nav_pricing">Pricing</a></li>
+            <li><a href="documentation.html" class="nav-link" data-i18n="nav_docs">Docs</a></li>
+            <li><a href="help.html" class="nav-link" data-i18n="nav_help">Help</a></li>
           </ul>
         </nav>
         <div class="header-actions">
@@ -145,22 +145,22 @@
   <!-- Pricing Hero -->
   <section style="padding:120px 0 60px;text-align:center">
     <div class="container">
-      <span class="badge badge-accent" style="margin-bottom:16px">TRANSPARENT PRICING</span>
-      <h1 style="font-size:48px;font-weight:900;letter-spacing:-0.03em;margin:0 0 16px">
+      <span class="badge badge-accent" style="margin-bottom:16px" data-i18n="pricing_hero_badge">TRANSPARENT PRICING</span>
+      <h1 style="font-size:48px;font-weight:900;letter-spacing:-0.03em;margin:0 0 16px" data-i18n="pricing_hero_title">
         Simple Pricing, <span style="color:var(--primary)">Massive ROI</span>
       </h1>
-      <p style="font-size:18px;color:var(--text-secondary);max-width:640px;margin:0 auto">
+      <p style="font-size:18px;color:var(--text-secondary);max-width:640px;margin:0 auto" data-i18n="pricing_hero_sub">
         Start with a 14-day free trial on any tier. No credit card required. Cancel anytime.
       </p>
 
       <!-- Toggle -->
       <div class="pricing-toggle-box">
-        <span id="monthlyLabel" style="font-weight:700;color:var(--text-primary);font-size:14px">Monthly</span>
+        <span id="monthlyLabel" style="font-weight:700;color:var(--text-primary);font-size:14px" data-i18n="billing_monthly">Monthly</span>
         <label class="switch" style="position:relative;display:inline-block;width:44px;height:24px">
           <input type="checkbox" id="billingCycle" onchange="toggleBilling(this)" style="opacity:0;width:0;height:0">
           <span class="slider round" style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:rgba(255,255,255,0.2);transition:.4s;border-radius:24px"></span>
         </label>
-        <span id="annualLabel" style="color:var(--text-muted);font-size:14px">Annual <span class="badge badge-green" style="font-size:10px;margin-left:4px">Save 20%</span></span>
+        <span id="annualLabel" style="color:var(--text-muted);font-size:14px"><span data-i18n="billing_annual">Annual</span> <span class="badge badge-green" style="font-size:10px;margin-left:4px" data-i18n="billing_save20">Save 20%</span></span>
       </div>
 
       <!-- Pricing Cards -->
@@ -288,9 +288,12 @@
   <script>
     function toggleBilling(cb) {
       const isAnnual = cb.checked;
-      document.getElementById('starterPrice').innerText = isAnnual ? '৳ 559' : '৳ 699';
-      document.getElementById('proPrice').innerText = isAnnual ? '৳ 2,399' : '৳ 2,999';
-      document.getElementById('busPrice').innerText = isAnnual ? '৳ 3,999' : '৳ 4,999';
+      const lang = localStorage.getItem('nexora_lang') || 'bn';
+      const isBn = lang === 'bn';
+
+      document.getElementById('starterPrice').innerText = isBn ? (isAnnual ? '৳ ৫৫৯' : '৳ ৬৯৯') : (isAnnual ? '৳ 559' : '৳ 699');
+      document.getElementById('proPrice').innerText = isBn ? (isAnnual ? '৳ ২,৩৯৯' : '৳ ২,৯৯৯') : (isAnnual ? '৳ 2,399' : '৳ 2,999');
+      document.getElementById('busPrice').innerText = isBn ? (isAnnual ? '৳ ৩,৯৯৯' : '৳ ৪,৯৯৯') : (isAnnual ? '৳ 3,999' : '৳ 4,999');
 
       document.getElementById('starterBdt').innerText = isAnnual ? '≈ $5.20 USD' : '≈ $6.50 USD';
       document.getElementById('proBdt').innerText = isAnnual ? '≈ $21.50 USD' : '≈ $27.00 USD';
@@ -307,6 +310,7 @@
       document.getElementById('bdtSavings').innerText = '≈ ৳ ' + savedBdt.toLocaleString() + ' BDT Net Savings';
     }
   </script>
+  <script src="../assets/js/i18n.js" defer></script>
   <script src="../assets/js/app.js" defer></script>
 </body>
 </html>

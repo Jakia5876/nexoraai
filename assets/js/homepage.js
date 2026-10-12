@@ -208,6 +208,9 @@ const I18N_DICT = {
     plan_bus_name: "বিজনেস (Business)",
     plan_bus_desc: "এজেন্সি এবং হাই-ভলিউম এন্টারপ্রাইজের জন্য আনলিমিটেড ক্যাপাসিটি।",
     plan_popular_badge: "সর্বাধিক জনপ্রিয়",
+    plan_price_starter: "৳ ৬৯৯",
+    plan_price_pro: "৳ ২,৯৯৯",
+    plan_price_bus: "৳ ৪,৯৯৯",
     plan_btn_starter: "শুরু করুন",
     plan_btn_pro: "শুরু করুন ফ্রি",
     plan_btn_bus: "শুরু করুন",
@@ -367,6 +370,9 @@ const I18N_DICT = {
     plan_bus_name: "Business",
     plan_bus_desc: "Enterprise throughput for high-volume brands, marketing agencies, and large sales teams.",
     plan_popular_badge: "Most Popular",
+    plan_price_starter: "৳ 699",
+    plan_price_pro: "৳ 2,999",
+    plan_price_bus: "৳ 4,999",
     plan_btn_starter: "Get Started",
     plan_btn_pro: "Start Free Trial",
     plan_btn_bus: "Get Started",
@@ -451,7 +457,8 @@ window.switchSiteLang = function(lang) {
   document.documentElement.lang = selectedLang;
 
   // Update all data-i18n elements
-  const dict = I18N_DICT[selectedLang] || {};
+  const masterDict = (window.I18N_MASTER && window.I18N_MASTER[selectedLang]) ? window.I18N_MASTER[selectedLang] : {};
+  const dict = Object.assign({}, masterDict, I18N_DICT[selectedLang] || {});
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (dict[key] !== undefined) {
@@ -463,9 +470,11 @@ window.switchSiteLang = function(lang) {
     }
   });
 
-  if (window.LanguageManager && typeof window.LanguageManager.applyLang === 'function') {
-    window.LanguageManager.applyLang(selectedLang);
-  }
+  // Step numbers
+  const isEn = selectedLang === 'en';
+  document.querySelectorAll('.step-number').forEach((el, idx) => {
+    el.innerText = isEn ? ('0' + (idx + 1)) : (['০১', '০২', '০৩', '০৪'][idx] || el.innerText);
+  });
 
   const toastMsg = selectedLang === 'en' ? 'Switched to English' : 'বাংলা ভাষায় পরিবর্তিত হয়েছে';
   if (window.Toast && typeof window.Toast.show === 'function') {

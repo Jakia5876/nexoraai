@@ -204,6 +204,12 @@
   <script src="../assets/js/auth.js"></script>
 </head>
 <body class="light-mode">
+  <div style="position:fixed;top:20px;right:24px;z-index:9999">
+    <div class="lang-toggle-wrap" id="langToggleWrap" role="group" aria-label="Language selection">
+      <button type="button" class="lang-pill-btn" id="langBtnEN" onclick="switchSiteLang('en')" title="Switch to English">EN</button>
+      <button type="button" class="lang-pill-btn active" id="langBtnBN" onclick="switchSiteLang('bn')" title="বাংলা">BN</button>
+    </div>
+  </div>
 
   <div class="auth-page">
     <!-- Left Panel -->
@@ -338,6 +344,7 @@
 
   <div class="toast-container" id="toastContainer"></div>
 
+  <script src="../assets/js/i18n.js" defer></script>
   <script src="../assets/js/app.js"></script>
   <script>
     function togglePasswordVisibility(inputId, btn) {

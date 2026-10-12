@@ -27,15 +27,19 @@
         </a>
         <nav class="site-nav">
           <ul>
-            <li><a href="../index.html" class="nav-link">Home</a></li>
-            <li><a href="how-it-works.html" class="nav-link">How It Works</a></li>
-            <li><a href="features.html" class="nav-link">Features</a></li>
-            <li><a href="pricing.html" class="nav-link">Pricing</a></li>
-            <li><a href="documentation.html" class="nav-link">Docs</a></li>
-            <li><a href="help.html" class="nav-link">Help</a></li>
+            <li><a href="../index.html" class="nav-link" data-i18n="nav_home">Home</a></li>
+            <li><a href="how-it-works.html" class="nav-link" data-i18n="nav_how">How It Works</a></li>
+            <li><a href="features.html" class="nav-link" data-i18n="nav_features">Features</a></li>
+            <li><a href="pricing.html" class="nav-link" data-i18n="nav_pricing">Pricing</a></li>
+            <li><a href="documentation.html" class="nav-link" data-i18n="nav_docs">Docs</a></li>
+            <li><a href="help.html" class="nav-link" data-i18n="nav_help">Help</a></li>
           </ul>
         </nav>
         <div class="header-actions">
+          <div class="lang-toggle-wrap" id="langToggleWrap" role="group" aria-label="Language selection">
+            <button type="button" class="lang-pill-btn" id="langBtnEN" onclick="switchSiteLang('en')" title="Switch to English">EN</button>
+            <button type="button" class="lang-pill-btn active" id="langBtnBN" onclick="switchSiteLang('bn')" title="বাংলায় পরিবর্তন করুন">BN</button>
+          </div>
           <a href="login.html" class="btn btn-ghost">Login</a>
           <a href="register.html" class="btn btn-primary">Start Free Trial</a>
         </div>
@@ -146,6 +150,7 @@
     </div>
   </footer>
 
+  <script src="../assets/js/i18n.js" defer></script>
   <script src="../assets/js/app.js"></script>
   <script>
     function handleDemoRequest(e) {

@@ -109,6 +109,10 @@ function createDashboardShell(activePage, pageTitle) {
       <button class="btn btn-secondary btn-sm" onclick="openCommandPalette()" style="margin-left:14px;font-size:12px;padding:4px 10px;gap:6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><span>Quick Search</span><kbd style="background:rgba(255,255,255,0.1);padding:1px 5px;border-radius:3px;font-size:10px">Ctrl K</kbd></button>
     </div>
     <div class="topbar-right">
+      <div class="lang-toggle-wrap" id="langToggleWrap" role="group" aria-label="Language selection" style="margin-right:6px">
+        <button type="button" class="lang-pill-btn" id="langBtnEN" onclick="switchSiteLang('en')" title="Switch to English">EN</button>
+        <button type="button" class="lang-pill-btn active" id="langBtnBN" onclick="switchSiteLang('bn')" title="বাংলা">BN</button>
+      </div>
       <button class="btn-icon" id="themeToggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="icon-sun" style="display:none"><circle cx="12" cy="12" r="5"></circle></svg></button>
       <div class="dropdown">
         <button class="user-profile-btn" data-dropdown>
@@ -155,6 +159,12 @@ function createDashboardShell(activePage, pageTitle) {
   </div>`;
 
   document.body.insertAdjacentHTML('afterbegin', sidebarHTML);
+
+  // Synchronize language state across newly inserted sidebar & topbar
+  if (window.switchSiteLang && typeof window.switchSiteLang === 'function') {
+    const savedLang = localStorage.getItem('nexora_lang') || 'bn';
+    window.switchSiteLang(savedLang, false);
+  }
 
   // Command Palette Keyboard Shortcut Listener
   document.addEventListener('keydown', (e) => {
