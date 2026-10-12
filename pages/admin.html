@@ -722,45 +722,11 @@
         <h1 class="page-title">Subscription Plans & Quotas</h1>
         <p class="page-subtitle">Configure public pricing, message limits, AI tokens, and features in real-time</p>
       </div>
-      <button class="btn btn-primary" onclick="showToast('Opening plan editor modal...', 'info')">+ Add Plan</button>
+      <button class="btn btn-primary" onclick="openPlanEditorModal()">+ Add Plan</button>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:20px">
-      <div class="card" style="padding:24px">
-        <div style="font-weight:800;font-size:18px;margin-bottom:4px">Starter</div>
-        <div style="font-size:24px;font-weight:900;color:var(--primary);margin-bottom:12px">৳ 699 <span style="font-size:13px;color:var(--text-muted)">/mo</span></div>
-        <ul style="list-style:none;padding:0;font-size:13px;color:var(--text-secondary);display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
-          <li>1 WhatsApp Number</li>
-          <li>5,000 Messages / mo</li>
-          <li>1 AI Agent Persona</li>
-          <li>2 Team Seats</li>
-        </ul>
-        <button class="btn btn-secondary btn-sm" style="width:100%" onclick="showToast('Editing Starter Plan limits & price', 'info')">Edit Limits</button>
-      </div>
-
-      <div class="card" style="padding:24px;border:2px solid var(--primary)">
-        <div style="font-weight:800;font-size:18px;margin-bottom:4px">Professional (Featured)</div>
-        <div style="font-size:24px;font-weight:900;color:var(--primary);margin-bottom:12px">৳ 2,999 <span style="font-size:13px;color:var(--text-muted)">/mo</span></div>
-        <ul style="list-style:none;padding:0;font-size:13px;color:var(--text-secondary);display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
-          <li>3 WhatsApp Numbers</li>
-          <li>50,000 Messages / mo</li>
-          <li>Unlimited AI Agents</li>
-          <li>10 Team Seats</li>
-        </ul>
-        <button class="btn btn-primary btn-sm" style="width:100%" onclick="showToast('Editing Professional Plan', 'info')">Edit Limits</button>
-      </div>
-
-      <div class="card" style="padding:24px">
-        <div style="font-weight:800;font-size:18px;margin-bottom:4px">Business</div>
-        <div style="font-size:24px;font-weight:900;color:var(--primary);margin-bottom:12px">৳ 4,999 <span style="font-size:13px;color:var(--text-muted)">/mo</span></div>
-        <ul style="list-style:none;padding:0;font-size:13px;color:var(--text-secondary);display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
-          <li>10 WhatsApp Numbers</li>
-          <li>200,000 Messages / mo</li>
-          <li>RAG Vector Search Store</li>
-          <li>Unlimited Team Seats</li>
-        </ul>
-        <button class="btn btn-secondary btn-sm" style="width:100%" onclick="showToast('Editing Business Plan', 'info')">Edit Limits</button>
-      </div>
+    <div id="adminPlansContainer" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:20px">
+      <!-- Dynamically populated by loadAdminPlans() -->
     </div>
   </div>
 
@@ -1260,6 +1226,94 @@ add_action('wp_footer', function() {
       <div style="display:flex;justify-content:flex-end;gap:10px">
         <button class="btn btn-primary" onclick="closeTrackerModal()">Got It!</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Plan Editor Modal -->
+  <div id="planEditorModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.78);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(5px)">
+    <div class="card" style="width:90%;max-width:620px;max-height:92vh;overflow-y:auto;padding:26px;background:var(--bg-card);border:1px solid var(--border);border-radius:14px;box-shadow:0 25px 50px rgba(0,0,0,0.6)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:12px">
+        <h3 style="margin:0;font-size:18px;display:flex;align-items:center;gap:8px" id="planModalTitle">
+          ⚙️ Edit Subscription Plan & Limits
+        </h3>
+        <button class="btn btn-ghost btn-sm" onclick="closePlanEditorModal()" style="font-size:18px;line-height:1">✕</button>
+      </div>
+
+      <form id="planEditorForm" onsubmit="savePlanFromModal(event)">
+        <input type="hidden" id="editPlanId" value="">
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:6px">Plan Name</label>
+            <input type="text" id="editPlanName" class="form-control" placeholder="e.g. Starter" required style="width:100%">
+          </div>
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:6px">Slug Identifier</label>
+            <input type="text" id="editPlanSlug" class="form-control" placeholder="e.g. starter" required style="width:100%">
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:6px">Monthly Price (৳ BDT)</label>
+            <input type="number" id="editPlanMonthlyPrice" class="form-control" min="0" step="1" placeholder="699" required style="width:100%">
+          </div>
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:6px">Yearly Price (৳ BDT)</label>
+            <input type="number" id="editPlanYearlyPrice" class="form-control" min="0" step="1" placeholder="6990" style="width:100%">
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:6px">WhatsApp Numbers Limit</label>
+            <input type="number" id="editPlanWhatsAppLimit" class="form-control" min="1" placeholder="1" required style="width:100%">
+          </div>
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:6px">Messages / Month Limit</label>
+            <input type="number" id="editPlanMessageLimit" class="form-control" min="100" placeholder="5000" required style="width:100%">
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:6px">AI Agent Personas Limit (0 = Unlimited)</label>
+            <input type="number" id="editPlanAiLimit" class="form-control" min="0" placeholder="1" required style="width:100%">
+          </div>
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:6px">Team Member Seats (0 = Unlimited)</label>
+            <input type="number" id="editPlanTeamLimit" class="form-control" min="0" placeholder="2" required style="width:100%">
+          </div>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <label style="display:block;font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:6px">Short Description / Subtitle</label>
+          <input type="text" id="editPlanDesc" class="form-control" placeholder="e.g. Ideal for small retail businesses" style="width:100%">
+        </div>
+
+        <div style="background:var(--bg-secondary);padding:14px;border-radius:8px;margin-bottom:18px;display:flex;gap:20px;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-primary)">
+            <input type="checkbox" id="editPlanFeatured" style="width:16px;height:16px">
+            ⭐ <strong>Featured Plan</strong> (Highlight with border)
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text-primary)">
+            <input type="checkbox" id="editPlanActive" checked style="width:16px;height:16px">
+            🟢 <strong>Active</strong> (Available for checkout)
+          </label>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:16px">
+          <div>
+            <button type="button" id="btnDeletePlan" class="btn btn-ghost btn-sm" style="color:var(--danger);display:none" onclick="deletePlanFromModal()">
+              🗑️ Delete Plan
+            </button>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button type="button" class="btn btn-secondary" onclick="closePlanEditorModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="btnSavePlan">Save Plan Limits</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -2822,6 +2876,246 @@ async function toggleSuspendUser(userId, btn) {
   }
 }
 
+// ==================== PLAN MANAGEMENT LOGIC ====================
+let adminPlansList = [
+  {
+    id: 'e48b4b13-ff00-48f6-8a79-912cf03c9e89',
+    name: 'Starter',
+    slug: 'starter',
+    description: 'Ideal for small retail businesses starting out with WhatsApp automated recovery.',
+    monthly_price: 699,
+    yearly_price: 6990,
+    whatsapp_limit: 1,
+    message_limit: 5000,
+    ai_limit: 1,
+    team_member_limit: 2,
+    featured: false,
+    active: true
+  },
+  {
+    id: 'f8b394e4-1a98-42c8-a623-63a68ba9c2b0',
+    name: 'Professional (Featured)',
+    slug: 'professional',
+    description: 'Best for fast-growing businesses needing automated funnels and multi-agent AI.',
+    monthly_price: 2999,
+    yearly_price: 29990,
+    whatsapp_limit: 3,
+    message_limit: 50000,
+    ai_limit: 5,
+    team_member_limit: 10,
+    featured: true,
+    active: true
+  },
+  {
+    id: '79aa6220-d884-4db4-9a9a-e1cb12719c29',
+    name: 'Business',
+    slug: 'business',
+    description: 'Full enterprise suite with high message limits and dedicated RAG vector stores.',
+    monthly_price: 4999,
+    yearly_price: 49990,
+    whatsapp_limit: 10,
+    message_limit: 200000,
+    ai_limit: 20,
+    team_member_limit: 50,
+    featured: false,
+    active: true
+  }
+];
+
+function renderAdminPlans() {
+  const container = document.getElementById('adminPlansContainer');
+  if (!container) return;
+
+  container.innerHTML = adminPlansList.map(p => {
+    const isFeatured = !!p.featured;
+    const borderStyle = isFeatured ? 'border:2px solid var(--primary)' : '';
+    const btnClass = isFeatured ? 'btn-primary' : 'btn-secondary';
+    const numPrice = Number(p.monthly_price || 0).toLocaleString();
+    const numMsgs = Number(p.message_limit || 0).toLocaleString();
+    const numWhatsApp = p.whatsapp_limit || 1;
+    const aiText = (p.ai_limit === 0 || p.ai_limit >= 100) ? 'Unlimited AI Agents' : `${p.ai_limit} AI Agent Persona${p.ai_limit > 1 ? 's' : ''}`;
+    const seatsText = (p.team_member_limit === 0 || p.team_member_limit >= 100) ? 'Unlimited Team Seats' : `${p.team_member_limit} Team Seats`;
+
+    return `
+      <div class="card" style="padding:24px;display:flex;flex-direction:column;justify-content:space-between;${borderStyle}" data-plan-id="${p.id}">
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+            <div style="font-weight:800;font-size:18px">${p.name}</div>
+            ${isFeatured ? '<span class="badge badge-accent" style="font-size:10px">POPULAR</span>' : ''}
+          </div>
+          <div style="font-size:24px;font-weight:900;color:var(--primary);margin-bottom:12px">
+            ৳ ${numPrice} <span style="font-size:13px;color:var(--text-muted)">/mo</span>
+          </div>
+          <ul style="list-style:none;padding:0;font-size:13px;color:var(--text-secondary);display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+            <li>📱 ${numWhatsApp} WhatsApp Number${numWhatsApp > 1 ? 's' : ''}</li>
+            <li>💬 ${numMsgs} Messages / mo</li>
+            <li>🤖 ${aiText}</li>
+            <li>👥 ${seatsText}</li>
+            ${p.description ? `<li style="font-size:11px;color:var(--text-muted);margin-top:4px"><em>${p.description}</em></li>` : ''}
+          </ul>
+        </div>
+        <button type="button" class="btn ${btnClass} btn-sm" style="width:100%" onclick="openPlanEditorModal('${p.id}')">
+          ✏️ Edit Limits
+        </button>
+      </div>
+    `;
+  }).join('');
+
+  if (window.LanguageManager) LanguageManager.applyLang(LanguageManager.getLang());
+}
+
+async function loadAdminPlans() {
+  renderAdminPlans();
+
+  const client = (window.NexoraAuth && (typeof NexoraAuth.getClient === 'function' ? NexoraAuth.getClient() : NexoraAuth.client)) || null;
+  if (!client) return;
+
+  try {
+    const { data, error } = await client
+      .from('plans')
+      .select('*')
+      .order('monthly_price', { ascending: true });
+
+    if (!error && data && data.length > 0) {
+      adminPlansList = data;
+      renderAdminPlans();
+    }
+  } catch (err) {
+    console.warn('Failed to load plans from Supabase:', err);
+  }
+}
+
+function openPlanEditorModal(planId) {
+  const modal = document.getElementById('planEditorModal');
+  if (!modal) return;
+
+  const plan = adminPlansList.find(p => p.id === planId);
+  const title = document.getElementById('planModalTitle');
+  const delBtn = document.getElementById('btnDeletePlan');
+
+  if (plan) {
+    if (title) title.innerHTML = `⚙️ Edit Plan: <strong>${plan.name}</strong>`;
+    document.getElementById('editPlanId').value = plan.id;
+    document.getElementById('editPlanName').value = plan.name || '';
+    document.getElementById('editPlanSlug').value = plan.slug || '';
+    document.getElementById('editPlanMonthlyPrice').value = plan.monthly_price || '';
+    document.getElementById('editPlanYearlyPrice').value = plan.yearly_price || (plan.monthly_price ? plan.monthly_price * 10 : '');
+    document.getElementById('editPlanWhatsAppLimit').value = plan.whatsapp_limit || 1;
+    document.getElementById('editPlanMessageLimit').value = plan.message_limit || 5000;
+    document.getElementById('editPlanAiLimit').value = plan.ai_limit !== undefined ? plan.ai_limit : 1;
+    document.getElementById('editPlanTeamLimit').value = plan.team_member_limit !== undefined ? plan.team_member_limit : 2;
+    document.getElementById('editPlanDesc').value = plan.description || '';
+    document.getElementById('editPlanFeatured').checked = !!plan.featured;
+    document.getElementById('editPlanActive').checked = plan.active !== false;
+    if (delBtn) delBtn.style.display = 'inline-block';
+  } else {
+    if (title) title.textContent = '➕ Create New Subscription Plan';
+    document.getElementById('editPlanId').value = '';
+    document.getElementById('editPlanName').value = '';
+    document.getElementById('editPlanSlug').value = '';
+    document.getElementById('editPlanMonthlyPrice').value = '999';
+    document.getElementById('editPlanYearlyPrice').value = '9990';
+    document.getElementById('editPlanWhatsAppLimit').value = '2';
+    document.getElementById('editPlanMessageLimit').value = '10000';
+    document.getElementById('editPlanAiLimit').value = '2';
+    document.getElementById('editPlanTeamLimit').value = '3';
+    document.getElementById('editPlanDesc').value = '';
+    document.getElementById('editPlanFeatured').checked = false;
+    document.getElementById('editPlanActive').checked = true;
+    if (delBtn) delBtn.style.display = 'none';
+  }
+
+  modal.style.display = 'flex';
+}
+
+function closePlanEditorModal() {
+  const modal = document.getElementById('planEditorModal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function savePlanFromModal(e) {
+  e.preventDefault();
+  const saveBtn = document.getElementById('btnSavePlan');
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Saving...'; }
+
+  const id = document.getElementById('editPlanId').value.trim();
+  const name = document.getElementById('editPlanName').value.trim();
+  const slug = document.getElementById('editPlanSlug').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+  const monthly_price = parseFloat(document.getElementById('editPlanMonthlyPrice').value) || 0;
+  const yearly_price = parseFloat(document.getElementById('editPlanYearlyPrice').value) || (monthly_price * 10);
+  const whatsapp_limit = parseInt(document.getElementById('editPlanWhatsAppLimit').value, 10) || 1;
+  const message_limit = parseInt(document.getElementById('editPlanMessageLimit').value, 10) || 5000;
+  const ai_limit = parseInt(document.getElementById('editPlanAiLimit').value, 10) || 1;
+  const team_member_limit = parseInt(document.getElementById('editPlanTeamLimit').value, 10) || 2;
+  const description = document.getElementById('editPlanDesc').value.trim();
+  const featured = document.getElementById('editPlanFeatured').checked;
+  const active = document.getElementById('editPlanActive').checked;
+
+  const planObj = {
+    name,
+    slug,
+    description,
+    monthly_price,
+    yearly_price,
+    whatsapp_limit,
+    message_limit,
+    ai_limit,
+    team_member_limit,
+    featured,
+    active,
+    updated_at: new Date().toISOString()
+  };
+
+  if (id) {
+    planObj.id = id;
+    const idx = adminPlansList.findIndex(p => p.id === id);
+    if (idx !== -1) {
+      adminPlansList[idx] = { ...adminPlansList[idx], ...planObj };
+    }
+  } else {
+    planObj.id = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : ('plan_' + Date.now());
+    adminPlansList.push(planObj);
+  }
+
+  renderAdminPlans();
+  closePlanEditorModal();
+  showToast(`Plan "${name}" updated successfully! Limits and pricing saved.`, 'success');
+
+  if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save Plan Limits'; }
+
+  const client = (window.NexoraAuth && (typeof NexoraAuth.getClient === 'function' ? NexoraAuth.getClient() : NexoraAuth.client)) || null;
+  if (!client) return;
+
+  try {
+    const { error } = await client.from('plans').upsert(planObj);
+    if (error) console.warn('Supabase plan upsert warning:', error);
+  } catch (err) {
+    console.warn('Supabase plan save error:', err);
+  }
+}
+
+async function deletePlanFromModal() {
+  const id = document.getElementById('editPlanId').value;
+  if (!id) return;
+  const plan = adminPlansList.find(p => p.id === id);
+  const name = plan ? plan.name : 'this plan';
+
+  if (!confirm(`Are you sure you want to delete the plan "${name}"?`)) return;
+
+  adminPlansList = adminPlansList.filter(p => p.id !== id);
+  renderAdminPlans();
+  closePlanEditorModal();
+  showToast(`Plan "${name}" deleted.`, 'warning');
+
+  const client = (window.NexoraAuth && (typeof NexoraAuth.getClient === 'function' ? NexoraAuth.getClient() : NexoraAuth.client)) || null;
+  if (!client) return;
+  try {
+    await client.from('plans').delete().eq('id', id);
+  } catch(e) {
+    console.warn('Supabase delete plan error:', e);
+  }
+}
+
 async function loadAdminRealAuditLogs() {
   const tbody = document.getElementById('adminAuditTableBody');
   if (!tbody || !window.NexoraAuth) return;
@@ -2868,8 +3162,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Load real users & audit logs from Supabase
+  // Load real users, plans & audit logs from Supabase
   loadAdminRealUsers();
+  loadAdminPlans();
   loadAdminRealAuditLogs();
 
   // Check URL hash or stored target tab
