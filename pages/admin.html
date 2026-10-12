@@ -2477,7 +2477,7 @@ function logoutAdmin() {
 async function loadAdminRealUsers() {
   const tbody = document.getElementById('adminUserTableBody');
   if (!tbody || !window.NexoraAuth) return;
-  const client = NexoraAuth.getClient();
+  const client = (window.NexoraAuth && (typeof NexoraAuth.getClient === 'function' ? NexoraAuth.getClient() : NexoraAuth.client)) || null;
   if (!client) return;
 
   try {
@@ -2553,7 +2553,7 @@ async function loadAdminRealUsers() {
 
 async function approveUserAccount(userId, btn) {
   if (btn) { btn.disabled = true; btn.textContent = 'Approving...'; }
-  const client = NexoraAuth.getClient();
+  const client = (window.NexoraAuth && (typeof NexoraAuth.getClient === 'function' ? NexoraAuth.getClient() : NexoraAuth.client)) || null;
   try {
     const { error } = await client.from('profiles').update({ approval_status: 'approved', approved_at: new Date().toISOString() }).eq('user_id', userId);
     if (error) throw error;
@@ -2576,7 +2576,7 @@ async function resetUserPassword(email) {
 
 async function toggleSuspendUser(userId, btn) {
   if (btn) { btn.disabled = true; }
-  const client = NexoraAuth.getClient();
+  const client = (window.NexoraAuth && (typeof NexoraAuth.getClient === 'function' ? NexoraAuth.getClient() : NexoraAuth.client)) || null;
   try {
     const { error } = await client.from('profiles').update({ approval_status: 'suspended' }).eq('user_id', userId);
     if (error) throw error;
@@ -2591,7 +2591,7 @@ async function toggleSuspendUser(userId, btn) {
 async function loadAdminRealAuditLogs() {
   const tbody = document.getElementById('adminAuditTableBody');
   if (!tbody || !window.NexoraAuth) return;
-  const client = NexoraAuth.getClient();
+  const client = (window.NexoraAuth && (typeof NexoraAuth.getClient === 'function' ? NexoraAuth.getClient() : NexoraAuth.client)) || null;
   if (!client) return;
 
   try {

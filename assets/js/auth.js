@@ -204,6 +204,7 @@
 
   window.NexoraAuth = {
     client: client,
+    getClient: function() { return client; },
     getSession: getSession,
     isSuperAdmin: isSuperAdmin,
     signIn: signIn,
