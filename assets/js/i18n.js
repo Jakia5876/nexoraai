@@ -630,6 +630,50 @@
     ["সার্চ পেজ, কন্টাক্ট, অটোমেশন...", "Search pages, contacts, deals, automations..."],
     ["সেটআপ উইজার্ড", "Setup Wizard"],
     ["প্ল্যাটফর্ম নির্দেশিকা ও অ্যাডমিন SOP", "Platform Guidelines & Admin SOP"],
+    ["প্ল্যাটফর্ম ওভারভিউ", "Platform Overview"],
+    ["টেন্যান্ট ও ইউজারস", "Tenants & Users"],
+    ["ইউজার ম্যানেজমেন্ট", "User Management"],
+    ["অর্গানাইজেশনস", "Organizations"],
+    ["প্ল্যান ও প্রাইসিং", "Plans & Pricing"],
+    ["সেলস ও অর্ডারস", "Sales & Orders"],
+    ["ইনকমপ্লিট অর্ডারস", "Incomplete Orders"],
+    ["লেনদেন ও ট্রানজ্যাকশন", "Transactions"],
+    ["ইনফ্রাস্ট্রাকচার", "Infrastructure"],
+    ["হোয়াটসঅ্যাপ মনিটর", "WhatsApp Monitor"],
+    ["ইমেইল মনিটর", "Email Monitor"],
+    ["অডিট লগস", "Audit Logs"],
+    ["ডকুমেন্টেশন ও অপারেশনস", "Documentation & Operations"],
+    ["অ্যাডমিন গাইড ও SOP", "Admin Guide & SOP"],
+    ["কনফিগারেশন", "Configuration"],
+    ["সিস্টেম সেটিংস", "System Settings"],
+    ["অ্যাপে ফিরে যান", "Exit to App"],
+    ["NEXORAAI সিস্টেম অ্যাডমিনিস্ট্রেশন", "NEXORAAI System Administration"],
+    ["প্রোডাকশন ক্লাস্টার: সক্রিয়", "Production Cluster: Healthy"],
+    ["প্ল্যাটফর্ম অডিট ট্রেইল", "Platform Audit Trail"],
+    ["অথেনটিকেশন ইভেন্ট, API কী এবং কনফিগারেশন পরিবর্তনের অপরিবর্তনীয় নিরাপত্তা লগ", "Immutable security log of authentication events, API key revocations, and configuration changes"],
+    ["ইউজার", "User"],
+    ["প্রতিষ্ঠান", "Organization"],
+    ["প্ল্যান", "Plan"],
+    ["রোল", "Role"],
+    ["স্ট্যাটাস", "Status"],
+    ["অ্যাকশনস", "Actions"],
+    ["অ্যাকশন", "Action"],
+    ["ইউজার / অ্যাক্টর", "User / Actor"],
+    ["টেন্যান্ট প্রতিষ্ঠান", "Tenant Org"],
+    ["আইপি অ্যাড্রেস", "IP Address"],
+    ["টাইমস্ট্যাম্প", "Timestamp"],
+    ["সুরক্ষিত অ্যাকাউন্ট", "Protected Account"],
+    ["রুট সুপার অ্যাডমিন", "Root Super Admin"],
+    ["সুপার অ্যাডমিন মাস্টার", "Super Admin Master"],
+    ["সক্রিয় (মূল)", "Active (Primary)"],
+    ["সক্রিয়", "Active"],
+    ["স্থগিত", "Suspended"],
+    ["পেন্ডিং অনুমোদন", "Pending Approval"],
+    ["পাসওয়ার্ড রিসেট", "Reset PW"],
+    ["সাসপেন্ড", "Suspend"],
+    ["অনুমোদন করুন", "Approve"],
+    ["বাতিল করুন", "Reject"],
+    ["সকল বিজনেস টেন্যান্টের ইউজার অ্যাকাউন্ট অনুসন্ধান ও পরিচালনা করুন", "Search, inspect, and manage system accounts across all business tenants"],
 
     // System Status
     ["সকল সিস্টেম স্বাভাবিক রয়েছে", "All Systems Operational"],
@@ -819,11 +863,29 @@
   /**
    * Translates a single text string losslessly based on target language
    */
+  /**
+   * Translates a single text string losslessly based on target language
+   */
   function translatePhrase(text, targetLang) {
     if (!text || typeof text !== 'string') return null;
     const trimmed = text.trim();
     if (!trimmed) return null;
     const lower = trimmed.toLowerCase();
+
+    // 1. Never convert IP addresses (IPv4 or IPv6, e.g. 118.67.214.12, 103.145.23.4)
+    if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?(\/\d+)?$/.test(trimmed)) {
+      return null;
+    }
+
+    // 2. Never convert emails, domains, API keys, hashes, transaction IDs (e.g. ch_3OqF..., key_live_...)
+    if (
+      /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(trimmed) ||
+      /^https?:\/\//i.test(trimmed) ||
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(trimmed) ||
+      /^(ch_|key_|sk_|pk_|sb_|api_|wh_)[a-zA-Z0-9_-]+$/i.test(trimmed)
+    ) {
+      return null;
+    }
 
     const isEn = enToBnMap.has(lower);
     const isBn = bnToEnMap.has(lower);
@@ -837,7 +899,11 @@
     } else {
       if (isBn) return trimmed; // already Bengali
       if (isEn) return enToBnMap.get(lower);
-      if (/^[0-9,\.৳\+\/\%\s\-\:\(\)\>\✓\🚀\🤖\⚡\💬\📄\🌐]+$/.test(trimmed)) {
+      // Only convert plain display prices, counts or percentages (not IP addresses or versions)
+      if (
+        /^([0-9]{1,3}(,[0-9]{3})*|[0-9]+)(\s*(৳|\$|%|\/mo|\/month|\/মাস|\/বছর|\+))?$/.test(trimmed) ||
+        /^(৳|\$)\s*[0-9,]+(\.[0-9]+)?$/.test(trimmed)
+      ) {
         return toBnDigits(trimmed);
       }
     }
@@ -887,6 +953,16 @@
     
     document.querySelectorAll(selectors).forEach(el => {
       if (el.getAttribute('data-i18n')) return;
+
+      // Skip elements that should never be translated (code, monospace, IP addresses, etc.)
+      if (
+        el.hasAttribute('data-no-translate') ||
+        el.closest('[data-no-translate]') ||
+        el.closest('code, pre, .font-mono') ||
+        (el.style && el.style.fontFamily && el.style.fontFamily.includes('mono'))
+      ) {
+        return;
+      }
 
       // When element has no child element tags (plain text container)
       if (el.children.length === 0) {

@@ -63,6 +63,22 @@ ALTER TABLE public.organization_members DROP CONSTRAINT IF EXISTS organization_m
 ALTER TABLE public.organization_members ADD CONSTRAINT organization_members_status_check
   CHECK (status IN ('active', 'invited', 'suspended', 'pending'));
 
+-- Ensure audit_logs table exists
+CREATE TABLE IF NOT EXISTS public.audit_logs (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  organization_id UUID REFERENCES public.organizations(id) ON DELETE CASCADE,
+  user_id UUID,
+  action TEXT NOT NULL,
+  resource TEXT,
+  entity_type TEXT,
+  entity_id UUID,
+  metadata JSONB DEFAULT '{}'::jsonb,
+  ip_address TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
+
 -- ------------------------------------------------------------
 -- 2. ENSURE SUPER ADMIN SETUP (Root Super Admin: jakiadantal@gmail.com)
 -- ------------------------------------------------------------
@@ -130,71 +146,132 @@ LANGUAGE plpgsql SECURITY DEFINER
 SET search_path = public
 AS $$
 DECLARE
-  v_name TEXT := COALESCE(NULLIF(NEW.raw_user_meta_data->>'full_name', ''), split_part(NEW.email, '@', 1));
-  v_business TEXT := COALESCE(NULLIF(NEW.raw_user_meta_data->>'business_name', ''), v_name || ' Workspace');
-  v_country TEXT := COALESCE(NULLIF(NEW.raw_user_meta_data->>'country', ''), 'BD');
-  v_is_root_admin BOOLEAN := (lower(NEW.email) = 'jakiadantal@gmail.com');
-  v_initial_status TEXT := CASE WHEN v_is_root_admin THEN 'approved' ELSE 'pending' END;
-  v_org_status TEXT := CASE WHEN v_is_root_admin THEN 'active' ELSE 'pending_approval' END;
-  v_member_status TEXT := CASE WHEN v_is_root_admin THEN 'active' ELSE 'pending' END;
+  v_name TEXT;
+  v_business TEXT;
+  v_country TEXT;
+  v_phone TEXT;
+  v_avatar TEXT;
+  v_is_root_admin BOOLEAN;
+  v_initial_status TEXT;
+  v_org_status TEXT;
+  v_member_status TEXT;
   v_org UUID;
   v_plan UUID;
 BEGIN
-  -- 1. Insert Profile with appropriate approval status
+  -- Safe name resolution (supports Google OAuth "name" / "full_name" and email)
+  v_name := COALESCE(
+    NULLIF(TRIM(NEW.raw_user_meta_data->>'full_name'), ''),
+    NULLIF(TRIM(NEW.raw_user_meta_data->>'name'), ''),
+    NULLIF(TRIM(split_part(NEW.email, '@', 1)), ''),
+    'User'
+  );
+
+  v_business := COALESCE(
+    NULLIF(TRIM(NEW.raw_user_meta_data->>'business_name'), ''),
+    v_name || ' Workspace'
+  );
+
+  v_country := COALESCE(
+    NULLIF(TRIM(NEW.raw_user_meta_data->>'country'), ''),
+    'BD'
+  );
+
+  v_phone := NULLIF(TRIM(NEW.raw_user_meta_data->>'phone'), '');
+
+  v_avatar := COALESCE(
+    NULLIF(TRIM(NEW.raw_user_meta_data->>'avatar_url'), ''),
+    NULLIF(TRIM(NEW.raw_user_meta_data->>'picture'), '')
+  );
+
+  v_is_root_admin := (lower(COALESCE(NEW.email, '')) = 'jakiadantal@gmail.com');
+  v_initial_status := CASE WHEN v_is_root_admin THEN 'approved' ELSE 'pending' END;
+  v_org_status := CASE WHEN v_is_root_admin THEN 'active' ELSE 'pending_approval' END;
+  v_member_status := CASE WHEN v_is_root_admin THEN 'active' ELSE 'pending' END;
+
+  -- 1. Insert Profile
   INSERT INTO public.profiles (
-    user_id, full_name, email, phone, approval_status, approved_at
+    user_id, full_name, email, phone, avatar_url, approval_status, approved_at
   )
   VALUES (
-    NEW.id, v_name, NEW.email, NULLIF(NEW.raw_user_meta_data->>'phone', ''), 
+    NEW.id, v_name, COALESCE(NEW.email, ''), v_phone, v_avatar,
     v_initial_status, 
     CASE WHEN v_is_root_admin THEN NOW() ELSE NULL END
   )
   ON CONFLICT (user_id) DO UPDATE SET
-    full_name = EXCLUDED.full_name,
-    email = EXCLUDED.email;
+    full_name = COALESCE(NULLIF(EXCLUDED.full_name, ''), public.profiles.full_name),
+    email = COALESCE(NULLIF(EXCLUDED.email, ''), public.profiles.email),
+    avatar_url = COALESCE(EXCLUDED.avatar_url, public.profiles.avatar_url);
 
   -- 2. If Root Admin, ensure record in public.super_admins
   IF v_is_root_admin THEN
-    INSERT INTO public.super_admins (user_id)
-    VALUES (NEW.id)
-    ON CONFLICT (user_id) DO NOTHING;
+    BEGIN
+      INSERT INTO public.super_admins (user_id)
+      VALUES (NEW.id)
+      ON CONFLICT (user_id) DO NOTHING;
+    EXCEPTION WHEN OTHERS THEN
+      RAISE WARNING 'super_admins insert warning: %', SQLERRM;
+    END;
   END IF;
 
   -- 3. Create Organization Workspace
-  INSERT INTO public.organizations (name, slug, owner_id, country, status)
-  VALUES (
-    v_business,
-    COALESCE(NULLIF(trim(both '-' from lower(regexp_replace(v_business, '[^a-zA-Z0-9]+', '-', 'g'))), ''), 'workspace')
-      || '-' || substr(replace(NEW.id::text, '-', ''), 1, 6),
-    NEW.id, left(v_country, 2), v_org_status
-  )
-  RETURNING id INTO v_org;
+  BEGIN
+    INSERT INTO public.organizations (name, slug, owner_id, country, status)
+    VALUES (
+      v_business,
+      COALESCE(NULLIF(trim(both '-' from lower(regexp_replace(v_business, '[^a-zA-Z0-9]+', '-', 'g'))), ''), 'workspace')
+        || '-' || substr(replace(NEW.id::text, '-', ''), 1, 6),
+      NEW.id, left(v_country, 2), v_org_status
+    )
+    RETURNING id INTO v_org;
+  EXCEPTION WHEN OTHERS THEN
+    INSERT INTO public.organizations (name, slug, owner_id, country, status)
+    VALUES (
+      v_business,
+      'workspace-' || substr(replace(NEW.id::text, '-', ''), 1, 8),
+      NEW.id, 'BD', v_org_status
+    )
+    RETURNING id INTO v_org;
+  END;
 
   -- 4. Create Organization Member entry
-  INSERT INTO public.organization_members (organization_id, user_id, role, status)
-  VALUES (v_org, NEW.id, 'owner', v_member_status)
-  ON CONFLICT (organization_id, user_id) DO NOTHING;
+  IF v_org IS NOT NULL THEN
+    BEGIN
+      INSERT INTO public.organization_members (organization_id, user_id, role, status)
+      VALUES (v_org, NEW.id, 'owner', v_member_status)
+      ON CONFLICT (organization_id, user_id) DO NOTHING;
+    EXCEPTION WHEN OTHERS THEN
+      RAISE WARNING 'organization_members insert warning: %', SQLERRM;
+    END;
 
-  -- 5. Attach initial subscription plan
-  SELECT id INTO v_plan FROM public.plans WHERE active ORDER BY monthly_price ASC LIMIT 1;
-  IF v_plan IS NOT NULL THEN
-    INSERT INTO public.subscriptions (organization_id, plan_id, status, trial_end)
-    VALUES (
-      v_org, 
-      v_plan, 
-      CASE WHEN v_is_root_admin THEN 'active' ELSE 'trialing' END, 
-      NOW() + INTERVAL '14 days'
-    );
+    -- 5. Attach initial subscription plan
+    BEGIN
+      SELECT id INTO v_plan FROM public.plans WHERE active ORDER BY monthly_price ASC LIMIT 1;
+      IF v_plan IS NOT NULL THEN
+        INSERT INTO public.subscriptions (organization_id, plan_id, status, trial_end)
+        VALUES (
+          v_org, 
+          v_plan, 
+          CASE WHEN v_is_root_admin THEN 'active' ELSE 'trialing' END, 
+          NOW() + INTERVAL '14 days'
+        );
+      END IF;
+    EXCEPTION WHEN OTHERS THEN
+      RAISE WARNING 'subscriptions insert warning: %', SQLERRM;
+    END;
+
+    -- 6. Log Registration Audit Event (safe try-catch prevents blocking signup)
+    BEGIN
+      INSERT INTO public.audit_logs (user_id, organization_id, action, resource, metadata)
+      VALUES (
+        NEW.id, v_org, 
+        CASE WHEN v_is_root_admin THEN 'super_admin_registered' ELSE 'user_registration_pending_approval' END,
+        'users',
+        jsonb_build_object('email', NEW.email, 'full_name', v_name, 'status', v_initial_status)
+      );
+    EXCEPTION WHEN OTHERS THEN
+      NULL;
+    END;
   END IF;
-
-  -- 6. Log Registration Audit Event
-  INSERT INTO public.audit_logs (user_id, organization_id, action, resource, metadata)
-  VALUES (
-    NEW.id, v_org, 
-    CASE WHEN v_is_root_admin THEN 'super_admin_registered' ELSE 'user_registration_pending_approval' END,
-    'users',
-    jsonb_build_object('email', NEW.email, 'full_name', v_name, 'status', v_initial_status)
-  );
 
   RETURN NEW;
 END;
