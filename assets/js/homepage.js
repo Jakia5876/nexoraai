@@ -439,50 +439,52 @@ const I18N_DICT = {
 
 window.I18N_DICT = I18N_DICT;
 
-window.switchSiteLang = function(lang) {
-  const selectedLang = lang === 'en' ? 'en' : 'bn';
-  try { localStorage.setItem('nexora_lang', selectedLang); } catch (e) {}
+if (typeof window.switchSiteLang !== 'function') {
+  window.switchSiteLang = function(lang) {
+    const selectedLang = lang === 'en' ? 'en' : 'bn';
+    try { localStorage.setItem('nexora_lang', selectedLang); } catch (e) {}
 
-  // Update button active state
-  document.querySelectorAll('#langBtnBN, #langMobileBtnBN').forEach(btn => {
-    btn.classList.toggle('active', selectedLang === 'bn');
-  });
-  document.querySelectorAll('#langBtnEN, #langMobileBtnEN').forEach(btn => {
-    btn.classList.toggle('active', selectedLang === 'en');
-  });
-  document.querySelectorAll('[data-lang]').forEach(btn => {
-    btn.classList.toggle('active', btn.getAttribute('data-lang') === selectedLang);
-  });
+    // Update button active state
+    document.querySelectorAll('#langBtnBN, #langMobileBtnBN').forEach(btn => {
+      btn.classList.toggle('active', selectedLang === 'bn');
+    });
+    document.querySelectorAll('#langBtnEN, #langMobileBtnEN').forEach(btn => {
+      btn.classList.toggle('active', selectedLang === 'en');
+    });
+    document.querySelectorAll('[data-lang]').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === selectedLang);
+    });
 
-  document.documentElement.lang = selectedLang;
+    document.documentElement.lang = selectedLang;
 
-  // Update all data-i18n elements
-  const masterDict = (window.I18N_MASTER && window.I18N_MASTER[selectedLang]) ? window.I18N_MASTER[selectedLang] : {};
-  const dict = Object.assign({}, masterDict, I18N_DICT[selectedLang] || {});
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (dict[key] !== undefined) {
-      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-        el.placeholder = dict[key];
-      } else {
-        el.innerHTML = dict[key];
+    // Update all data-i18n elements
+    const masterDict = (window.I18N_MASTER && window.I18N_MASTER[selectedLang]) ? window.I18N_MASTER[selectedLang] : {};
+    const dict = Object.assign({}, masterDict, I18N_DICT[selectedLang] || {});
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key] !== undefined) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.placeholder = dict[key];
+        } else {
+          el.innerHTML = dict[key];
+        }
       }
+    });
+
+    // Step numbers
+    const isEn = selectedLang === 'en';
+    document.querySelectorAll('.step-number').forEach((el, idx) => {
+      el.innerText = isEn ? ('0' + (idx + 1)) : (['০১', '০২', '০৩', '০৪'][idx] || el.innerText);
+    });
+
+    const toastMsg = selectedLang === 'en' ? 'Switched to English' : 'বাংলা ভাষায় পরিবর্তিত হয়েছে';
+    if (window.Toast && typeof window.Toast.show === 'function') {
+      window.Toast.show(toastMsg, 'info');
+    } else if (typeof showToast === 'function') {
+      showToast(toastMsg, 'info');
     }
-  });
-
-  // Step numbers
-  const isEn = selectedLang === 'en';
-  document.querySelectorAll('.step-number').forEach((el, idx) => {
-    el.innerText = isEn ? ('0' + (idx + 1)) : (['০১', '০২', '০৩', '০৪'][idx] || el.innerText);
-  });
-
-  const toastMsg = selectedLang === 'en' ? 'Switched to English' : 'বাংলা ভাষায় পরিবর্তিত হয়েছে';
-  if (window.Toast && typeof window.Toast.show === 'function') {
-    window.Toast.show(toastMsg, 'info');
-  } else if (typeof showToast === 'function') {
-    showToast(toastMsg, 'info');
-  }
-};
+  };
+}
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {

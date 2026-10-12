@@ -60,113 +60,25 @@ const ThemeManager = (() => {
 // ============================================
 // LANGUAGE MANAGER (EN / BN)
 // ============================================
-const LanguageManager = (() => {
-  const STORAGE_KEY = 'nexora_lang';
-  const I18N_GLOBAL = {
-    bn: {
-      nav_home: "হোম",
-      nav_how: "যেভাবে কাজ করে",
-      nav_features: "ফিচারসমূহ",
-      nav_pricing: "প্রাইসিং",
-      nav_docs: "ডকুমেন্টেশন",
-      nav_help: "হেল্প সেন্টার",
-      nav_login: "লগইন",
-      nav_register: "শুরু করুন ফ্রি",
-      footer_desc: "হোয়াটসঅ্যাপ ক্লাউড API, অটোনোমাস AI এজেন্টস, ড্রপ-অফ অর্ডার রিকভারি এবং কমার্স অটোমেশনের সর্বাধুনিক প্ল্যাটফর্ম।",
-      footer_col_prod: "প্রোডাক্ট",
-      footer_col_res: "রিসোর্স",
-      footer_col_comp: "কোম্পানি ও পলিসি",
-      footer_copy: "© ২০২৬ NEXORAAI. সর্বস্বত্ব সংরক্ষিত।"
-    },
-    en: {
-      nav_home: "Home",
-      nav_how: "How It Works",
-      nav_features: "Features",
-      nav_pricing: "Pricing",
-      nav_docs: "Documentation",
-      nav_help: "Help Center",
-      nav_login: "Login",
-      nav_register: "Get Started Free",
-      footer_desc: "The all-in-one platform for WhatsApp Cloud API, AI agents, cart drop-off recovery, and sales automation.",
-      footer_col_prod: "Product",
-      footer_col_res: "Resources",
-      footer_col_comp: "Company & Legal",
-      footer_copy: "© 2026 NEXORAAI. All rights reserved."
+const LanguageManager = (typeof window !== 'undefined' && window.LanguageManager) ? window.LanguageManager : {
+  init: () => {
+    const l = localStorage.getItem('nexora_lang') || 'bn';
+    if (typeof window.switchSiteLang === 'function') {
+      window.switchSiteLang(l, false);
     }
-  };
-
-  let currentLang = localStorage.getItem(STORAGE_KEY) || 'bn';
-
-  function applyLang(lang) {
-    if (window.switchSiteLang && typeof window.switchSiteLang === 'function') {
-      window.switchSiteLang(lang, false);
-      return;
-    }
-    currentLang = lang === 'en' ? 'en' : 'bn';
-    try { localStorage.setItem(STORAGE_KEY, currentLang); } catch (e) {}
-
-    // Update active states on toggles
-    document.querySelectorAll('#langBtnBN, #langMobileBtnBN').forEach(btn => {
-      btn.classList.toggle('active', currentLang === 'bn');
-    });
-    document.querySelectorAll('#langBtnEN, #langMobileBtnEN').forEach(btn => {
-      btn.classList.toggle('active', currentLang === 'en');
-    });
-    document.querySelectorAll('[data-lang]').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
-    });
-
-    document.documentElement.lang = currentLang;
-
-    // Apply translations by merging global, master, and page dictionaries
-    const masterDict = (window.I18N_MASTER && window.I18N_MASTER[currentLang]) ? window.I18N_MASTER[currentLang] : {};
-    const pageDict = (window.I18N_DICT && window.I18N_DICT[currentLang]) ? window.I18N_DICT[currentLang] : {};
-    const dict = Object.assign({}, I18N_GLOBAL[currentLang] || {}, masterDict, pageDict);
-
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (dict[key] !== undefined) {
-        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-          el.placeholder = dict[key];
-        } else {
-          el.innerHTML = dict[key];
-        }
-      }
-    });
-  }
-
-  function setLanguage(lang) {
-    if (window.switchSiteLang && typeof window.switchSiteLang === 'function') {
+  },
+  setLanguage: (lang) => {
+    if (typeof window.switchSiteLang === 'function') {
       window.switchSiteLang(lang, true);
-      return;
     }
-    applyLang(lang);
-    const msg = currentLang === 'en' ? 'Switched to English' : 'বাংলা ভাষায় পরিবর্তিত হয়েছে';
-    if (window.Toast && typeof window.Toast.show === 'function') {
-      window.Toast.show(msg, 'info');
-    } else if (typeof showToast === 'function') {
-      showToast(msg, 'info');
+  },
+  applyLang: (lang) => {
+    if (typeof window.switchSiteLang === 'function') {
+      window.switchSiteLang(lang, false);
     }
-  }
-
-  function init() {
-    if (window.switchSiteLang && typeof window.switchSiteLang === 'function') {
-      window.switchSiteLang(currentLang, false);
-    } else {
-      applyLang(currentLang);
-    }
-    window.switchSiteLang = setLanguage;
-
-    document.querySelectorAll('#langBtnBN, #langMobileBtnBN').forEach(btn => {
-      btn.addEventListener('click', (e) => { e.preventDefault(); setLanguage('bn'); });
-    });
-    document.querySelectorAll('#langBtnEN, #langMobileBtnEN').forEach(btn => {
-      btn.addEventListener('click', (e) => { e.preventDefault(); setLanguage('en'); });
-    });
-  }
-
-  return { init, setLanguage, applyLang, getLang: () => currentLang };
-})();
+  },
+  getLang: () => localStorage.getItem('nexora_lang') || 'bn'
+};
 
 // ============================================
 // MOBILE NAV
@@ -177,14 +89,14 @@ const MobileNav = (() => {
   function toggle() {
     isOpen = !isOpen;
     const nav = document.getElementById('mobileNav');
-    const toggle = document.getElementById('mobileMenuToggle');
+    const toggleBtn = document.getElementById('mobileMenuToggle');
 
     if (nav) {
       nav.classList.toggle('open', isOpen);
       nav.setAttribute('aria-hidden', String(!isOpen));
     }
-    if (toggle) {
-      toggle.setAttribute('aria-expanded', String(isOpen));
+    if (toggleBtn) {
+      toggleBtn.setAttribute('aria-expanded', String(isOpen));
     }
     document.body.style.overflow = isOpen ? 'hidden' : '';
   }
@@ -192,16 +104,82 @@ const MobileNav = (() => {
   function close() {
     isOpen = false;
     const nav = document.getElementById('mobileNav');
+    const toggleBtn = document.getElementById('mobileMenuToggle');
     if (nav) {
       nav.classList.remove('open');
       nav.setAttribute('aria-hidden', 'true');
     }
+    if (toggleBtn) {
+      toggleBtn.setAttribute('aria-expanded', 'false');
+    }
     document.body.style.overflow = '';
   }
 
+  function autoInjectMobileNav() {
+    const header = document.querySelector('.site-header');
+    if (!header) return;
+
+    let toggleBtn = document.getElementById('mobileMenuToggle');
+    const headerActions = header.querySelector('.header-actions');
+    if (!toggleBtn && headerActions) {
+      toggleBtn = document.createElement('button');
+      toggleBtn.className = 'btn-icon mobile-menu-toggle';
+      toggleBtn.id = 'mobileMenuToggle';
+      toggleBtn.setAttribute('aria-label', 'Toggle mobile menu');
+      toggleBtn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
+      headerActions.appendChild(toggleBtn);
+    }
+
+    let nav = document.getElementById('mobileNav');
+    if (!nav) {
+      const siteNav = header.querySelector('.site-nav');
+      const isPagesDir = window.location.pathname.includes('/pages/');
+      const prefix = isPagesDir ? '' : 'pages/';
+      const homeLink = isPagesDir ? '../index.html' : 'index.html';
+
+      nav = document.createElement('div');
+      nav.className = 'mobile-nav';
+      nav.id = 'mobileNav';
+      nav.setAttribute('aria-hidden', 'true');
+
+      let listHtml = '';
+      if (siteNav && siteNav.querySelector('ul')) {
+        listHtml = siteNav.querySelector('ul').innerHTML;
+      } else {
+        listHtml = `
+          <li><a href="${homeLink}" class="nav-link" data-i18n="nav_home">হোম</a></li>
+          <li><a href="${prefix}how-it-works.html" class="nav-link" data-i18n="nav_how">যেভাবে কাজ করে</a></li>
+          <li><a href="${prefix}features.html" class="nav-link" data-i18n="nav_features">ফিচারসমূহ</a></li>
+          <li><a href="${prefix}pricing.html" class="nav-link" data-i18n="nav_pricing">প্রাইসিং</a></li>
+          <li><a href="${prefix}documentation.html" class="nav-link" data-i18n="nav_docs">ডকুমেন্টেশন</a></li>
+          <li><a href="${prefix}help.html" class="nav-link" data-i18n="nav_help">হেল্প সেন্টার</a></li>
+        `;
+      }
+
+      nav.innerHTML = `
+        <ul>${listHtml}</ul>
+        <div class="mobile-nav-actions" style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+          <a href="${prefix}login.html" class="btn btn-ghost" style="width:100%;justify-content:center" data-i18n="nav_login">লগইন</a>
+          <a href="${prefix}register.html" class="btn btn-primary" style="width:100%;justify-content:center" data-i18n="nav_register">শুরু করুন ফ্রি</a>
+        </div>
+      `;
+      header.appendChild(nav);
+    }
+  }
+
   function init() {
+    autoInjectMobileNav();
+
     const btn = document.getElementById('mobileMenuToggle');
-    if (btn) btn.addEventListener('click', toggle);
+    if (btn) {
+      btn.removeEventListener('click', toggle);
+      btn.addEventListener('click', toggle);
+    }
+
+    // Close on link click
+    document.querySelectorAll('#mobileNav .nav-link, #mobileNav .btn').forEach(link => {
+      link.addEventListener('click', close);
+    });
 
     // Close on outside click
     document.addEventListener('click', (e) => {
@@ -251,16 +229,32 @@ const Toast = (() => {
     info: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`,
   };
 
-  function show({ title, message = '', type = 'info', duration = 4000 }) {
-    const container = document.getElementById('toastContainer');
-    if (!container) return;
+  function show(opts, optType = 'info') {
+    let title = '', message = '', type = optType, duration = 4000;
+    if (typeof opts === 'string') {
+      title = opts;
+      type = optType || 'info';
+    } else if (opts && typeof opts === 'object') {
+      title = opts.title || opts.message || '';
+      message = opts.message || '';
+      type = opts.type || optType || 'info';
+      duration = opts.duration || 4000;
+    }
+
+    let container = document.getElementById('toastContainer');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toastContainer';
+      container.className = 'toast-container';
+      document.body.appendChild(container);
+    }
 
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
     toast.innerHTML = `
       <div class="toast-icon">${ICONS[type] || ICONS.info}</div>
       <div class="toast-content">
-        <div class="toast-title">${escapeHtml(title)}</div>
+        <div class="toast-title">${escapeHtml(title || '')}</div>
         ${message ? `<div class="toast-message">${escapeHtml(message)}</div>` : ''}
       </div>
       <button class="toast-close" aria-label="Close notification">

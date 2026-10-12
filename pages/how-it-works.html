@@ -16,10 +16,33 @@
       grid-template-columns: 1fr 1fr;
       gap: 40px;
       align-items: center;
-      margin-bottom: 80px;
+      margin-bottom: 70px;
+      direction: ltr !important;
+    }
+    @media (min-width: 869px) {
+      .step-card.reverse > :first-child { order: 2; }
+      .step-card.reverse > :last-child { order: 1; }
     }
     @media (max-width: 868px) {
-      .step-card { grid-template-columns: 1fr; }
+      .step-card {
+        grid-template-columns: 1fr !important;
+        gap: 24px;
+        margin-bottom: 48px;
+      }
+      .step-card h2 {
+        font-size: 24px !important;
+      }
+      .step-visual {
+        padding: 18px !important;
+      }
+    }
+    @media (max-width: 480px) {
+      .step-card h2 {
+        font-size: 20px !important;
+      }
+      .step-visual {
+        padding: 14px !important;
+      }
     }
     .step-number {
       font-size: 14px;
@@ -35,7 +58,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
       padding: 30px;
-      box-shadow: 0 16px 32px rgba(0,0,0,0.3);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.06);
     }
   </style>
 <link rel="icon" type="image/x-icon" href="../favicon.ico" />
@@ -45,7 +68,7 @@
 <body class="light-mode">
 
   <!-- Header -->
-  <header class="site-header">
+  <header class="site-header" id="siteHeader">
     <div class="container">
       <div class="header-inner">
         <a href="../index.html" class="logo">
@@ -69,32 +92,51 @@
           </div>
           <a href="login.html" class="btn btn-ghost" data-i18n="nav_login">Login</a>
           <a href="register.html" class="btn btn-primary" data-i18n="nav_register">Start Free Trial</a>
+          <button class="btn-icon mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+      <ul>
+        <li><a href="../index.html" class="nav-link" data-i18n="nav_home">Home</a></li>
+        <li><a href="how-it-works.html" class="nav-link active" data-i18n="nav_how">How It Works</a></li>
+        <li><a href="features.html" class="nav-link" data-i18n="nav_features">Features</a></li>
+        <li><a href="pricing.html" class="nav-link" data-i18n="nav_pricing">Pricing</a></li>
+        <li><a href="documentation.html" class="nav-link" data-i18n="nav_docs">Docs</a></li>
+        <li><a href="help.html" class="nav-link" data-i18n="nav_help">Help</a></li>
+      </ul>
+      <div class="mobile-nav-actions" style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+        <a href="login.html" class="btn btn-ghost" style="width:100%;justify-content:center" data-i18n="nav_login">Login</a>
+        <a href="register.html" class="btn btn-primary" style="width:100%;justify-content:center" data-i18n="nav_register">Start Free Trial</a>
       </div>
     </div>
   </header>
 
   <!-- Hero -->
-  <section style="padding:120px 0 60px;text-align:center">
+  <section style="padding:clamp(80px, 12vw, 120px) 0 40px;text-align:center">
     <div class="container">
       <span class="badge badge-accent" style="margin-bottom:16px">SIMPLE 4-STEP ONBOARDING</span>
-      <h1 style="font-size:48px;font-weight:900;letter-spacing:-0.03em;margin:0 0 16px">
+      <h1 style="font-size:clamp(28px, 6vw, 48px);font-weight:900;letter-spacing:-0.03em;margin:0 0 16px">
         Go Live in Under <span style="color:var(--primary)">5 Minutes</span>
       </h1>
-      <p style="font-size:18px;color:var(--text-secondary);max-width:640px;margin:0 auto">
+      <p style="font-size:clamp(15px, 3.5vw, 18px);color:var(--text-secondary);max-width:640px;margin:0 auto">
         No complicated developer setup. Connect your existing phone number, drop your documents, and let AI handle your customer chats.
       </p>
     </div>
   </section>
 
   <!-- Steps Walkthrough -->
-  <section style="padding:40px 0 80px">
+  <section style="padding:30px 0 70px">
     <div class="container" style="max-width:1040px">
       <!-- Step 1 -->
       <div class="step-card">
         <div>
           <span class="step-number">STEP 01</span>
-          <h2 style="font-size:32px;font-weight:800;margin:0 0 16px">Connect WhatsApp in 60 Seconds</h2>
+          <h2 style="font-size:clamp(22px, 4vw, 32px);font-weight:800;margin:0 0 16px">Connect WhatsApp in 60 Seconds</h2>
           <p style="color:var(--text-secondary);line-height:1.6;font-size:15px;margin-bottom:20px">
             Simply scan our secure QR code with your phone or link your official Meta WhatsApp Business Cloud API account. Zero downtime, zero missed messages.
           </p>
@@ -114,10 +156,10 @@
       </div>
 
       <!-- Step 2 -->
-      <div class="step-card" style="direction:rtl">
-        <div style="direction:ltr">
+      <div class="step-card reverse">
+        <div>
           <span class="step-number">STEP 02</span>
-          <h2 style="font-size:32px;font-weight:800;margin:0 0 16px">Drop Your Business Knowledge</h2>
+          <h2 style="font-size:clamp(22px, 4vw, 32px);font-weight:800;margin:0 0 16px">Drop Your Business Knowledge</h2>
           <p style="color:var(--text-secondary);line-height:1.6;font-size:15px;margin-bottom:20px">
             Upload your product catalog PDFs, paste your website URL, or write your FAQs. Our RAG engine automatically chunks and embeds your data into a dedicated vector knowledge store.
           </p>
@@ -125,7 +167,7 @@
             <span>✓ Accurate answers with zero hallucinations</span>
           </div>
         </div>
-        <div class="step-visual" style="direction:ltr">
+        <div class="step-visual">
           <div style="display:flex;flex-direction:column;gap:12px">
             <div style="padding:14px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);display:flex;align-items:center;gap:12px">
               <span style="font-size:24px">📄</span>
@@ -151,7 +193,7 @@
       <div class="step-card">
         <div>
           <span class="step-number">STEP 03</span>
-          <h2 style="font-size:32px;font-weight:800;margin:0 0 16px">Customize AI Persona & Flows</h2>
+          <h2 style="font-size:clamp(22px, 4vw, 32px);font-weight:800;margin:0 0 16px">Customize AI Persona & Flows</h2>
           <p style="color:var(--text-secondary);line-height:1.6;font-size:15px;margin-bottom:20px">
             Configure your bot's personality, language settings (Bengali or English), office hours, and automatic CRM qualification triggers.
           </p>
@@ -175,15 +217,15 @@
       </div>
 
       <!-- Step 4 -->
-      <div class="step-card" style="direction:rtl">
-        <div style="direction:ltr">
+      <div class="step-card reverse">
+        <div>
           <span class="step-number">STEP 04</span>
-          <h2 style="font-size:32px;font-weight:800;margin:0 0 16px">Watch Leads & Revenue Multiply</h2>
+          <h2 style="font-size:clamp(22px, 4vw, 32px);font-weight:800;margin:0 0 16px">Watch Leads & Revenue Multiply</h2>
           <p style="color:var(--text-secondary);line-height:1.6;font-size:15px;margin-bottom:20px">
             Qualified contacts appear live in your Kanban pipeline, orders sync to your checkout systems, and your agents only handle high-value closing conversations.
           </p>
         </div>
-        <div class="step-visual" style="direction:ltr">
+        <div class="step-visual">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
             <div style="padding:16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);text-align:center">
               <div style="font-size:24px;font-weight:900;color:var(--primary)">1.4s</div>
@@ -200,9 +242,9 @@
   </section>
 
   <!-- CTA -->
-  <section style="padding:80px 0;text-align:center;background:linear-gradient(180deg,var(--bg-card),#070B0D);border-top:1px solid var(--border)">
+  <section style="padding:60px 0;text-align:center;background:linear-gradient(180deg,var(--bg-card),#F8FAFC);border-top:1px solid var(--border)">
     <div class="container">
-      <h2 style="font-size:36px;font-weight:800;margin:0 0 16px">Start Automating Your WhatsApp Today</h2>
+      <h2 style="font-size:clamp(24px, 5vw, 36px);font-weight:800;margin:0 0 16px">Start Automating Your WhatsApp Today</h2>
       <p style="color:var(--text-secondary);font-size:16px;margin:0 0 32px">14-day free trial. No credit card required.</p>
       <a href="register.html" class="btn btn-primary" style="padding:14px 32px;font-size:16px">Claim Your Free Account 🚀</a>
     </div>

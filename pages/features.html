@@ -17,7 +17,7 @@
 <body class="light-mode">
 
   <!-- Header -->
-  <header class="site-header">
+  <header class="site-header" id="siteHeader">
     <div class="container">
       <div class="header-inner">
         <a href="../index.html" class="logo">
@@ -41,28 +41,47 @@
           </div>
           <a href="login.html" class="btn btn-ghost" data-i18n="nav_login">Login</a>
           <a href="register.html" class="btn btn-primary" data-i18n="nav_register">Start Free Trial</a>
+          <button class="btn-icon mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle mobile menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+      <ul>
+        <li><a href="../index.html" class="nav-link" data-i18n="nav_home">Home</a></li>
+        <li><a href="how-it-works.html" class="nav-link" data-i18n="nav_how">How It Works</a></li>
+        <li><a href="features.html" class="nav-link active" data-i18n="nav_features">Features</a></li>
+        <li><a href="pricing.html" class="nav-link" data-i18n="nav_pricing">Pricing</a></li>
+        <li><a href="documentation.html" class="nav-link" data-i18n="nav_docs">Docs</a></li>
+        <li><a href="help.html" class="nav-link" data-i18n="nav_help">Help</a></li>
+      </ul>
+      <div class="mobile-nav-actions" style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px;">
+        <a href="login.html" class="btn btn-ghost" style="width:100%;justify-content:center" data-i18n="nav_login">Login</a>
+        <a href="register.html" class="btn btn-primary" style="width:100%;justify-content:center" data-i18n="nav_register">Start Free Trial</a>
       </div>
     </div>
   </header>
 
   <!-- Hero -->
-  <section style="padding:120px 0 60px;text-align:center">
+  <section style="padding:clamp(80px, 12vw, 120px) 0 40px;text-align:center">
     <div class="container">
       <span class="badge badge-accent" style="margin-bottom:16px">BUILT FOR REVENUE</span>
-      <h1 style="font-size:48px;font-weight:900;letter-spacing:-0.03em;margin:0 0 16px">
+      <h1 style="font-size:clamp(28px, 6vw, 48px);font-weight:900;letter-spacing:-0.03em;margin:0 0 16px">
         Everything You Need to Scale on <span style="color:var(--primary)">WhatsApp</span>
       </h1>
-      <p style="font-size:18px;color:var(--text-secondary);max-width:680px;margin:0 auto">
+      <p style="font-size:clamp(15px, 3.5vw, 18px);color:var(--text-secondary);max-width:680px;margin:0 auto">
         A unified platform combining enterprise WhatsApp connectivity, cutting-edge LLMs, CRM lead management, and visual workflow automation.
       </p>
     </div>
   </section>
 
   <!-- Feature Grid -->
-  <section style="padding:40px 0 80px">
+  <section style="padding:30px 0 70px">
     <div class="container">
-      <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(350px, 1fr));gap:28px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 300px), 1fr));gap:24px">
         <!-- Feature 1 -->
         <div class="card" style="padding:32px">
           <div style="width:48px;height:48px;border-radius:12px;background:rgba(217,240,0,0.15);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px">💬</div>

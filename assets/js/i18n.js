@@ -687,9 +687,64 @@
     ["ধাপ ০৩", "STEP 03"],
     ["ধাপ ০৪", "STEP 04"],
     ["৬০ সেকেন্ডে হোয়াটসঅ্যাপ কানেক্ট করুন", "Connect WhatsApp in 60 Seconds"],
+    ["আপনার ফোন দিয়ে আমাদের নিরাপদ QR কোড স্ক্যান করুন অথবা অফিসিয়াল মেটা হোয়াটসঅ্যাপ বিজনেস ক্লাউড API কানেক্ট করুন। শূন্য ডাউনটাইম, কোনো মিসড মেসেজ নয়।", "Simply scan our secure QR code with your phone or link your official Meta WhatsApp Business Cloud API account. Zero downtime, zero missed messages."],
+    ["✓ ডুয়াল-ইঞ্জিন সাপোর্ট (ক্লাউড API ও QR গেটওয়ে)", "✓ Dual-engine support (Cloud API & QR Gateway)"],
+    ["WhatsApp > Linked Devices দিয়ে স্ক্যান করুন", "Scan with WhatsApp > Linked Devices"],
+    ["সকেট: শুনছে", "Socket: Listening"],
     ["আপনার ব্যবসায়িক তথ্য ও নলেজ আপলোড করুন", "Drop Your Business Knowledge"],
+    ["আপনার প্রোডাক্ট ক্যাটালগ PDF আপলোড করুন, ওয়েবসাইটের URL দিন অথবা সাধারণ প্রশ্নোত্তর লিখুন। আমাদের RAG ইঞ্জিন স্বয়ংক্রিয়ভাবে আপনার তথ্য ভেক্টর ডাটাবেজে যুক্ত করে।", "Upload your product catalog PDFs, paste your website URL, or write your FAQs. Our RAG engine automatically chunks and embeds your data into a dedicated vector knowledge store."],
+    ["✓ নির্ভুল উত্তর ও শূন্য বিভ্রান্তি", "✓ Accurate answers with zero hallucinations"],
+    ["৪১২টি চাঙ্কস এমবেডেড", "412 chunks embedded"],
+    ["৮৬টি ওয়েব চাঙ্কস ইনডেক্সড", "86 web chunks indexed"],
+    ["AI পার্সোনা ও অটোমেশন ফ্লো কাস্টমাইজ করুন", "Customize AI Persona & Flows"],
+    ["আপনার বটের ব্যক্তিত্ব, ভাষার সেটিংস (বাংলা বা ইংরেজি), অফিস সময় এবং স্বয়ংক্রিয় CRM কোয়ালিফিকেশন সেট করুন।", "Configure your bot's personality, language settings (Bengali or English), office hours, and automatic CRM qualification triggers."],
+    ["✓ যেকোনো সময় সরাসরি মানব এজেন্টের কাছে হ্যান্ডঅফ", "✓ Seamless human agent handoff anytime"],
+    ["আসসালামু আলাইকুম! আজ আপনাকে কীভাবে সাহায্য করতে পারি?", "Assalamu Alaikum! How can I assist you with our services today?"],
+    ["বাৎসরিক সাবস্ক্রিপশনের প্রাইসিং কি জানতে পারি?", "Can I get the pricing for annual subscription?"],
+    ["অবশ্যই! আমাদের প্রো প্ল্যান $১৪৯/মাস (বাৎসরিক বিলে ২০% ছাড়)। আপনি কি ফিচার তালিকা দেখতে চান?", "Certainly! Our Pro Plan is $149/mo (or 20% off billed annually). Would you like to view our feature sheet?"],
+    ["লিড ও রেভিনিউ বাড়তে দেখুন", "Watch Leads & Revenue Multiply"],
+    ["কোয়ালিফাইড কন্টাক্ট সরাসরি কানবান পাইপলাইনে যুক্ত হয়, অর্ডার চেকআউট সিস্টেমে সিঙ্ক হয় এবং আপনার সেলস টিম শুধু ক্লোজিংয়ে সময় দেয়।", "Qualified contacts appear live in your Kanban pipeline, orders sync to your checkout systems, and your agents only handle high-value closing conversations."],
+    ["প্রথম রেসপন্স টাইম", "First Response Time"],
+    ["বট রেজোলিউশন রেট", "Bot Resolution Rate"],
+    ["আজই আপনার হোয়াটসঅ্যাপ অটোমেট করা শুরু করুন", "Start Automating Your WhatsApp Today"],
+    ["১৪ দিনের ফ্রি ট্রায়াল। ক্রেডিট কার্ডের প্রয়োজন নেই।", "14-day free trial. No credit card required."],
+    ["আপনার ফ্রি অ্যাকাউন্ট শুরু করুন 🚀", "Claim Your Free Account 🚀"],
     ["ওয়ার্কফ্লো ও লাইভ ট্রিগার তৈরি করুন", "Build Workflows & Live Triggers"],
     ["AI কে ২৪/৭ সেলস ও সাপোর্ট দিতে দিন", "Let AI Sell & Support 24/7"],
+
+    // Features Page Specific
+    ["একটি সমন্বিত প্ল্যাটফর্ম যাতে রয়েছে এন্টারপ্রাইজ হোয়াটসঅ্যাপ কানেক্টিভিটি, সর্বাধুনিক LLM, CRM লিড ম্যানেজমেন্ট এবং ভিজ্যুয়াল ওয়ার্কফ্লো অটোমেশন।", "A unified platform combining enterprise WhatsApp connectivity, cutting-edge LLMs, CRM lead management, and visual workflow automation."],
+    ["একটি সমন্বিত ইন্টারফেসে একাধিক হোয়াটসঅ্যাপ নম্বরের চ্যাট পরিচালনা করুন। স্ট্যাটাস ফিল্টার, এজেন্ট অ্যাসাইন, কন্টাক্ট ট্যাগ এবং সম্পূর্ণ বায়িং হিস্ট্রি দেখুন।", "Handle chats from multiple WhatsApp numbers in one synchronized interface. Filter by status, assign agents, tag contacts, and view complete buyer history."],
+    ["১-ক্লিক AI সাজেশন সহ কো-পাইলট মোড", "Co-pilot mode with 1-click AI suggestions"],
+    ["একাধিক এজেন্টের একসাথে চ্যাট হ্যান্ডলিং", "Multi-agent concurrent chat assignment"],
+    ["টিম এজেন্টদের নিজস্ব অভ্যন্তরীণ নোট", "Internal agent private notes"],
+    ["আপনার নির্দিষ্ট ক্যাটালগ, FAQ ও PDF ডকুমেন্টে ট্রেইন্ড বিশেষায়িত GPT-4o এবং Claude 3.5 পার্সোনা। স্বাভাবিক বাংলা, ইংরেজি ও বাংলিশে তাৎক্ষণিক উত্তর দেয়।", "Deploy specialized GPT-4o and Claude 3.5 personas trained on your exact catalogs, FAQs, and PDF docs. Responds in natural Bangla, English, or Romanized text."],
+    ["এক সেকেন্ডেরও কম সময়ে তাৎক্ষণিক উত্তর", "Instant sub-second response latency"],
+    ["ভ্রান্তিমুক্ত (জিরো হ্যালুসিনেশন) ভেক্টর এমবেডিং", "Hallucination-free vector embedding retrieval"],
+    ["স্বয়ংক্রিয় হিউম্যান এজেন্ট হ্যান্ডঅফ", "Automatic human fallback handoff"],
+    ["নো-কোড ক্যানভাস বিল্ডারে মাল্টি-ব্রাঞ্চ কাস্টমার জার্নি ডিজাইন করুন। কিওয়ার্ড ম্যাচ, সময়সূচী বা ওয়েবহুক ইভেন্টের ভিত্তিতে স্বয়ংক্রিয় অ্যাকশন পরিচালনা করুন।", "Design multi-branch customer journeys with no-code canvas builder. Trigger actions based on keyword matches, schedule hours, or external webhook events."],
+    ["কাস্টম ড্র্যাগ-অ্যান্ড-ড্রপ নোড লজিক", "Custom drag-and-drop node logic"],
+    ["ওয়েবহুক ও Zapier/n8n ইন্টিগ্রেশন", "Webhooks & Zapier/n8n triggers"],
+    ["টাইম-বেসড মেসেজ সিকোয়েন্স ও ড্রিপ", "Time-based sequences & drip campaigns"],
+    ["লিড কোয়ালিফাই করুন এবং কাস্টম কানবান কলামে মুভ করুন। অটোমেটিক লাইফসাইকেল ট্র্যাকিং এবং টিম কোল্যাবরেশন।", "Qualify inbound leads and move through Kanban deal stages. Real-time lifecycle tracking, auto-tagging, and high-value deal alerts."],
+    ["অফিসিয়াল ক্লাউড API দিয়ে বাল্ক মেসেজিং করুন। অপ্ট-ইন ভেরিফিকেশন এবং স্মার্ট রেট-লিমিটিং যাতে কোনো ব্যান না হয়।", "Broadcast personalized marketing and utility notifications with official Cloud API or smart delay pacing. Zero risk of account bans."],
+    ["চ্যাটের ভেতর সরাসরি প্রোডাক্ট ক্যাটালগ দেখান এবং পেমেন্ট লিংক পাঠান। ইনকমপ্লিট কার্ট রিকভারিতে ৭৫%+ কনভার্সন।", "Share product catalogs, generate instant payment links, and recover dropped cart checkouts directly within customer chats."],
+    ["হাই-কনভার্টিং ইমেইল ক্যাম্পেইন পাঠান এবং সরাসরি রিপ্লাই ট্র্যাক করুন। একসাথে মাল্টি-চ্যানেল আউটরিচ।", "High-deliverability SMTP relay engine. Launch scheduled blasts, track open rates, and nurture leads across WhatsApp and email simultaneously."],
+
+    // Documentation & Help
+    ["ডকুমেন্টেশন ও ডেভেলপার গাইড", "Documentation & Developer Guides"],
+    ["NEXORAAI প্ল্যাটফর্মের সম্পূর্ণ সেটআপ, API রেফারেন্স ও অটোমেশন গাইড।", "Complete setup guides, API references, and automation walk-throughs for the NEXORAAI platform."],
+    ["জনপ্রিয় আর্টিকেলে ব্রাউজ করুন", "Browse Popular Articles"],
+    ["কীভাবে হোয়াটসঅ্যাপ ক্লাউড API কানেক্ট করবেন", "How to connect WhatsApp Cloud API"],
+    ["৫ মিনিটের মধ্যে আপনার অফিসিয়াল হোয়াটসঅ্যাপ বিজনেস অ্যাকাউন্ট যুক্ত করার সম্পূর্ণ গাইড।", "Step-by-step walkthrough to get your official Meta WhatsApp Business Cloud API active in under 5 minutes."],
+    ["আপনার ক্যাটালগ দিয়ে AI বট ট্রেনিং", "Training your AI agent with business catalogs"],
+    ["PDF আপলোড ও ওয়েবসাইট ক্রলিং করে কীভাবে বটকে নিখুঁত তথ্য শেখাবেন।", "Learn how vector chunking and embeddings give your AI chatbot accurate answers with zero hallucinations."],
+    ["ড্রপ-অফ অর্ডার রিকভারি সেটআপ", "Setting up abandoned checkout recovery"],
+    ["ওয়েবসাইট থেকে অসমাপ্ত অর্ডার স্বয়ংক্রিয়ভাবে হোয়াটসঅ্যাপ মেসেজে রূপান্তর করার পদ্ধতি।", "Automatically capture dropped customer numbers and send high-converting discount recovery sequences."],
+    ["ওয়েবহুক ও n8n অটোমেশন ওয়ার্কফ্লো", "Webhooks & n8n automation workflows"],
+    ["যেকোনো বাহ্যিক সফটওয়্যার বা CRM-এর সাথে NEXORAAI রিয়েল-টাইমে যুক্ত করার উপায়।", "Connect external apps, Google Sheets, WooCommerce, and custom webhooks seamlessly."],
+    ["সহায়তা প্রয়োজন? আমাদের টিম প্রস্তুত", "Need direct assistance? Our team is standing by"],
+    ["২৪/৭ সার্বক্ষণিক হোয়াটসঅ্যাপ সহায়তা ও ডেডিকেটেড একাউন্ট ম্যানেজার।", "24/7 dedicated support via WhatsApp, live chat, and scheduled onboarding calls."],
 
     // FAQ & Help
     ["সাধারণ জিজ্ঞাসা ও প্রশ্নোত্তর", "Frequently Asked Questions"],
@@ -747,8 +802,10 @@
   const enToBnMap = new Map();
 
   PHRASE_PAIRS.forEach(([bn, en]) => {
-    bnToEnMap.set(bn.trim().toLowerCase(), en);
-    enToBnMap.set(en.trim().toLowerCase(), bn);
+    const cleanBn = bn.trim().toLowerCase();
+    const cleanEn = en.trim().toLowerCase();
+    bnToEnMap.set(cleanBn, en.trim());
+    enToBnMap.set(cleanEn, bn.trim());
   });
 
   // Current language state
@@ -760,28 +817,27 @@
   }
 
   /**
-   * Translates a single text string based on target language
+   * Translates a single text string losslessly based on target language
    */
   function translatePhrase(text, targetLang) {
-    if (!text || typeof text !== 'string') return text;
+    if (!text || typeof text !== 'string') return null;
     const trimmed = text.trim();
-    if (!trimmed) return text;
+    if (!trimmed) return null;
     const lower = trimmed.toLowerCase();
 
+    const isEn = enToBnMap.has(lower);
+    const isBn = bnToEnMap.has(lower);
+
     if (targetLang === 'en') {
-      if (bnToEnMap.has(lower)) {
-        return bnToEnMap.get(lower);
-      }
-      // Check numeric digits
-      if (/^[০-৯,\.৳\+\/\%\s\-]+$/.test(trimmed)) {
+      if (isEn) return trimmed; // already English
+      if (isBn) return bnToEnMap.get(lower);
+      if (/^[০-৯,\.৳\+\/\%\s\-\:\(\)\>\✓\🚀\🤖\⚡\💬\📄\🌐]+$/.test(trimmed)) {
         return toEnDigits(trimmed);
       }
     } else {
-      if (enToBnMap.has(lower)) {
-        return enToBnMap.get(lower);
-      }
-      // Check numeric digits
-      if (/^[0-9,\.৳\+\/\%\s\-]+$/.test(trimmed)) {
+      if (isBn) return trimmed; // already Bengali
+      if (isEn) return enToBnMap.get(lower);
+      if (/^[0-9,\.৳\+\/\%\s\-\:\(\)\>\✓\🚀\🤖\⚡\💬\📄\🌐]+$/.test(trimmed)) {
         return toBnDigits(trimmed);
       }
     }
@@ -832,7 +888,24 @@
     document.querySelectorAll(selectors).forEach(el => {
       if (el.getAttribute('data-i18n')) return;
 
-      // Translate child text nodes safely without destroying child HTML or SVGs
+      // When element has no child element tags (plain text container)
+      if (el.children.length === 0) {
+        const raw = el.textContent;
+        const trimmed = raw.trim();
+        if (!trimmed) return;
+
+        if (!el._origText) {
+          el._origText = trimmed;
+        }
+
+        const trans = translatePhrase(el._origText, lang);
+        if (trans !== null && trans !== trimmed) {
+          el.textContent = trans;
+        }
+        return;
+      }
+
+      // When element has child elements/spans, translate individual text nodes safely
       el.childNodes.forEach(node => {
         if (node.nodeType === Node.TEXT_NODE) {
           const raw = node.nodeValue;
@@ -843,9 +916,9 @@
             node._origText = trimmed;
           }
 
-          const translated = translatePhrase(node._origText, lang);
-          if (translated !== null && translated !== trimmed) {
-            node.nodeValue = raw.replace(trimmed, translated);
+          const trans = translatePhrase(node._origText, lang);
+          if (trans !== null && trans !== trimmed) {
+            node.nodeValue = raw.replace(trimmed, trans);
           }
         }
       });
